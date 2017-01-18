@@ -1,11 +1,7 @@
+
 function build(){
 
-    var string = `
-
-    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200">
-
-
-`;
+    var string = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200">`;
 
     var data = [];
     for (var i = 0; i < 20; i++){
