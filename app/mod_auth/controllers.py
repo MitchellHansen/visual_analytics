@@ -1,7 +1,6 @@
 # Import flask dependencies
 from flask import Blueprint, request, render_template, \
                   flash, g, session, redirect, url_for
-
 # Import password / encryption helper tools
 from werkzeug import check_password_hash, generate_password_hash
 
@@ -47,4 +46,12 @@ def index():
 
 @mod_auth.route('/about', methods=['GET'])
 def about():
-    return 'Testing that shit responds'
+    return 'Visual Analytics is a team that...'
+
+@mod_auth.route('/training')
+def training():
+    return 'The training is working'
+
+
+
+

@@ -5,7 +5,7 @@ function show_admin_login(){
     //  document.getElementById("textStuff").innerHTML="Testing";
 }
 function show_training(){
-    $.ajax({url: "68.186.100.115/about", async: false, success: function(result){
+    $.ajax({url: "/auth/about", async: false, success: function(result){
         console.log(result);
     }});
 
