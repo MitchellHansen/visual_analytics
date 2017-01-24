@@ -40,3 +40,11 @@ def signin():
         flash('Wrong email or password', 'error-message')
 
     return render_template("auth/signin.html", form=form)
+
+@mod_auth.route('/home', methods=['GET', 'POST'])
+def index():
+    return render_template("auth/index.html")
+
+@mod_auth.route('/about', methods=['GET'])
+def about():
+    return 'Testing that shit responds'
