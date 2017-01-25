@@ -1,4 +1,6 @@
 //assuming that button_ submit is the id for the submit button
+//@pushkin_Feleke
+//
 $("button_submit".click(function())){
 
 var email = ('#email').val();
