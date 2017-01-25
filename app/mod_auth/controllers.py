@@ -40,11 +40,11 @@ def signin():
 
     return render_template("auth/signin.html", form=form)
 
-@mod_auth.route('/home', methods=['GET', 'POST'])
+@mod_auth.route('/home')
 def index():
     return render_template("auth/index.html")
 
-@mod_auth.route('/about', methods=['GET'])
+@mod_auth.route('/about')
 def about():
     return 'Visual Analytics is a team that...'
 
