@@ -10,7 +10,23 @@ function show_training(){
     }});
 
     // we need an animation to hide this title screen and pull up the trial screen
-}
+}/*
+function admin_login(){
+    $.ajax({
+	url: "/auth/admin_login"
+	contentType: "application/json; charset=utf-8",,
+	type: "POST", 
+	async: false,
+	data :{
+		email : $('emailInput').val(),
+		password : $('passwordInput').val()
+	})
+	function(result){
+        	console.log(result);
+                $("#about-div").append("<p>" + result + "</p>");
+    	}
+    }});
+}*/
 function show_about(){
     $("#right-hand-container").children().hide();
     $("#about-div").show();

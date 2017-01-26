@@ -1,5 +1,6 @@
 # iMport flask and template operators
 from flask import Flask, render_template
+from flaskext.mysql import MySQL
 
 # Import SQLAlchemy
 from flask.ext.sqlalchemy import SQLAlchemy
@@ -7,6 +8,14 @@ from flask_cors import CORS, cross_origin
 # Define the WSGI application object
 app = Flask(__name__)
 CORS(app)
+mysql = MySQL()
+
+
+app.config['MYSQL_DATABASE_USER'] = 'root'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'kat'
+app.config['MYSQL_DATABASE_DB'] = 'va'
+mysql.init_app(app)
+
 # Configurations
 app.config.from_object('config')
 
