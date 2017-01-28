@@ -58,6 +58,20 @@ def get_results():
     # Take an argument from UI including a test set ID and optionally a ID or graph ID
     return "Dummy data from get_results"
 
+@mod_auth.route('/get_test_sets')
+def get_test_sets():
+    # Here we will return the list of test sets for the FE to load on admin results page
+    return 'Dummy data from get_test_sets'
+
+@mod_auth.route('/save_test_set')
+def save_test_set():
+    # We are goings to take the name of the test set and other data
+    return 'Dummy data from save_test_set'
+
+@mod_auth.route('/save_triall')
+def save_trial():    
+    # After a trail has been created we will take the test set id and add the trial to the db
+    return 'Dummy data from save_trial' 
 
 
 
