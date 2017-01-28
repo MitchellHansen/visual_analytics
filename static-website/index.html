@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="svg_builder.js"></script>
+<script src="index.js"></script>
+
+<title>Visual Analytics</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="w3.css">
+<link rel="stylesheet" href="style.css">
+<body class="w3-content" style="max-width:1300px">
+
+<div class="w3-row hidden" id="navbar-row">
+    <ul class="w3-navbar w3-black">
+        <li><button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey w3-padding-16" onclick="show_trial_login()">Start Test</button></li>
+        <li><button type="button" class="w3-btn w3-btn-block w3-hover-teal w3-padding-16" onclick="show_training()">Training</button></li>
+        <li><button type="button" class="w3-btn w3-btn-block w3-hover-dark-grey w3-padding-16" onclick="show_about()">About</button></li>
+        <li><button type="button" class="w3-btn w3-btn-block w3-hover-brown w3-padding-16" onclick="show_admin_login()">Admin</button></li>
+    </ul>
+</div>
+
+<div class="w3-row" id="home-row">
+  <div class="w3-half w3-black w3-container w3-center" style="height:700px">
+    <div class="w3-padding-64">
+      <h1>Visual Analytics</h1>
+    </div>
+    <div class="w3-padding-64">
+      <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey w3-padding-16" onclick="show_trial_login()">Start Test</button>
+      <button type="button" class="w3-btn w3-btn-block w3-hover-teal w3-padding-16" onclick="show_training()">Training</button>
+      <button type="button" class="w3-btn w3-btn-block w3-hover-dark-grey w3-padding-16" onclick="show_about()">About</button>
+      <button type="button" class="w3-btn w3-btn-block w3-hover-brown w3-padding-16" onclick="show_admin_login()">Admin</button>
+    </div>
+  </div>
+  <div class="w3-half w3-blue-grey w3-container" style="height:700px" id="right-hand-container">
+
+    <div class="w3-padding-64 w3-center hidden" id="trial-login-div">
+      <h5>Trial Login</h5>
+
+      <form class="w3-container">
+
+        <label>Trial Code</label>
+        <input class="w3-input" type="text">
+
+      </form>
+
+    </div>
+
+    <div class="w3-padding-64 w3-center hidden" id="about-div">
+
+      <h5>About</h5>
+      <p>about about about about about</p>
+
+    </div>
+
+    <div class="w3-padding-64 w3-center hidden" id="admin-login-div">
+      <h5>Admin Login</h5>
+
+      <form class="w3-container">
+        <label>Username</label>
+        <input class="w3-input" type="text">
+
+        <label>Password</label>
+        <input class="w3-input" type="text">
+      </form>
+
+      <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey w3-padding-16" onclick="admin_login()">Login</button>
+
+    </div>
+
+  </div>
+</div>
+
+
+<div class="w3-row" id="slider-container">
+
+  <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="training-panel">
+
+  </div>
+
+  <div class="w3-light-grey w3-center" style="min-height:800px" id="main-admin-panel">
+
+      <div class="w3-dark-grey w3-center w3-quarter w3-padding-16" style="">
+
+        <div class="w3-responsive">
+            <table class="w3-table-all">
+                <tr>
+                  <th>Test id</th>
+                  <th>Status</th>
+
+                </tr>
+                <tr>
+                  <td>test 1</td>
+                  <td>Running</td>
+                </tr>
+                <tr>
+                  <td>test 4</td>
+                  <td>Complete</td>
+
+                </tr>
+
+            </table>
+        </div>
+
+      </div>
+
+      <div class="w3-light-grey w3-center w3-quarter" style="">
+        <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey w3-padding-16" onclick="">button 1</button>
+        <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey w3-padding-16" onclick="">button 2</button>
+        <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey w3-padding-16" onclick="">button 3</button>
+      </div>
+
+      <div class="w3-dark-grey w3-center w3-quarter" style="">
+          <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey w3-padding-16" onclick="">button 1</button>
+        <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey w3-padding-16" onclick="">button 2</button>
+        <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey w3-padding-16" onclick="">button 3</button>
+      </div>
+
+      <div class="w3-light-grey w3-center w3-quarter" style="overflow-y:scroll; height:800px;">
+        <nav>
+            <ul class="w3-ul" style="border-bottom: 0px solid #ddd;" id="test-status-list">
+                <li><div style="display:flex;">
+                    <button type="button" class="w3-btn w3-left w3-threequarter w3-btn-block w3-hover-blue-grey w3-padding-16" onclick="">button 3</button>
+                    <div class="w3-card w3-right w3-quarter">
+                        <p>⏲</p>
+                    </div>
+                </div></li>
+
+                <li><div style="display:flex;">
+                    <button type="button" class="w3-btn w3-left w3-threequarter w3-btn-block w3-hover-blue-grey w3-padding-16" onclick="">button 3</button>
+                    <div class="w3-card w3-right w3-quarter">
+                        <p>🛑</p>
+                    </div>
+                </div></li>
+
+                <li><div style="display:flex;">
+                    <button type="button" class="w3-btn w3-left w3-threequarter w3-btn-block w3-hover-blue-grey w3-padding-16" onclick="">button 3</button>
+                    <div class="w3-card w3-right w3-quarter">
+                        <p>✔</p>
+                    </div>
+                </div></li>
+            </ul>
+        </nav>
+      </div>
+
+
+
+  </div>
+
+  <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="graph-edit-admin-panel">
+
+  </div>
+
+  <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="trial-edit-admin-panel">
+
+  </div>
+
+  <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="trial-view-admin-panel">
+
+  </div>
+
+</div>
+
+<li id="test-status-list-element-template" class="hidden"><div style="display:flex;">
+    <button type="button" class="w3-btn w3-left w3-threequarter w3-btn-block w3-hover-blue-grey w3-padding-16" onclick="">button 3</button>
+    <div class="w3-card w3-right w3-quarter">
+        <p>⏲</p>
+    </div>
+</div></li>
+
+<!-- Footer -->
+<footer class="w3-container w3-black w3-padding-16">
+  <p>Powered by <a href="http://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
+  <p>Created by Elliott, Mitchell, Anthony, and Puskin</p>
+</footer>
+
+</body>
+</html>
