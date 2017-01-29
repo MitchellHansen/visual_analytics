@@ -28,24 +28,21 @@ def training():
 
 @mod_auth.route('/admin_login', methods=['GET', 'POST'])
 def admin():
-   # email = request.form['email']
-   # password = request.form['password']
-   #  email = content['email']
-   # password = content['password']
-    #username = request.args.get('email')
-    #password = request.args.get('password')
-    email = 'elliottwalsh94@gmail.com'
-    password = 'Elliott123'
-    admin = {}
-    cursor = mysql.connect().cursor()
-    cursor.execute("SELECT * from admin where email='" + email + "' and password='" + password + "'")
-    data = cursor.fetchone()
-    if data is None:
-     return "Admin does not exist in the SQL DB"
-    else:
-     admin['email'] = email
-     admin['status'] = 'Success'
-     return jsonify(admin)
+    foo = request.json['foo']
+    email = foo.email
+    password = foo.password
+    return("EMAIL: ", email, " ", "PASSWORD: ", password)
+
+    #admin = {}
+    #cursor = mysql.connect().cursor()
+    #cursor.execute("SELECT * from admin where email='" + email + "' and password='" + password + "'")
+    #data = cursor.fetchone()
+    #if data is None:
+    #    return "Admin does not exist in the SQL DB"
+    #else:
+    #    admin['email'] = email
+    #    admin['status'] = 'Success'
+    #return jsonify(admin)
 
 @mod_auth.route('/get_trials')
 def get_trials():

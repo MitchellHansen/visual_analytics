@@ -20,7 +20,7 @@ var password = $('#password').val();
 /*
 console.log("email = "+email);
 console.log("password = "+password);
- 
+
 */
 
 var foo = new object();
@@ -32,9 +32,9 @@ foo.password = password;
                 type:"GET",
                 dataType:"json",
                 data:foo ,
-                url:"/auth/admin_login", 
-                success: function(data) {   
-                    
+                url:"/auth/admin_login",
+                success: function(data) {
+
 		   //alert("i am in ");
                     $.each(data, function (key, value) {
                     console.log(value.email);
@@ -67,4 +67,3 @@ function show_trial_login(){
     $("#right-hand-container").children().hide();
     $("#trial-login-div").show();
 }
-
