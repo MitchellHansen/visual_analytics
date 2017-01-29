@@ -29,7 +29,7 @@ def training():
 @mod_auth.route('/admin_login', methods=['GET', 'POST'])
 def admin():
    # email = request.form['email']
-   # password = request.form['password']    
+   # password = request.form['password']
    #  email = content['email']
    # password = content['password']
     #username = request.args.get('email')
@@ -47,6 +47,11 @@ def admin():
      admin['status'] = 'Success'
      return jsonify(admin)
 
+@mod_auth.route('/get_trials')
+def get_trials():
+    # Here we will return the list of test sets for the FE to load on admin results page
+    return 'Dummy data from get_trials'
+
 @mod_auth.route('/create_trial')
 def create_trial():
     # Take or generate cordanites and send them to the DB as a new trial
@@ -63,18 +68,12 @@ def get_test_sets():
     # Here we will return the list of test sets for the FE to load on admin results page
     return 'Dummy data from get_test_sets'
 
-@mod_auth.route('/save_test_set')
-def save_test_set():
+@mod_auth.route('/create_test_set')
+def create_test_set():
     # We are goings to take the name of the test set and other data
-    return 'Dummy data from save_test_set'
+    return 'Dummy data from create_test_set'
 
-@mod_auth.route('/save_triall')
-def save_trial():    
+@mod_auth.route('/save_trial')
+def save_trial():
     # After a trail has been created we will take the test set id and add the trial to the db
-    return 'Dummy data from save_trial' 
-
-
-
-
-
-
+    return 'Dummy data from save_trial'
