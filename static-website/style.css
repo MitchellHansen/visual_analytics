@@ -1,0 +1,21 @@
+ .hover_group:hover {
+    opacity: 0.5;
+    fill: red;
+}
+
+.hover_group {
+    fill: white;
+    stroke: black;
+}
+
+.hidden {
+    display: none;
+
+}
+
+.hide-scrollbar {
+    overflow-y: scroll;
+}
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
