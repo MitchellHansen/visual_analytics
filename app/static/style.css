@@ -12,3 +12,10 @@
     display: none;
 
 }
+
+.hide-scrollbar {
+    overflow-y: scroll;
+}
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
