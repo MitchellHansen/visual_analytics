@@ -27,50 +27,76 @@ def training():
     return 'The training is working'
 
 @mod_auth.route('/admin_login', methods=['GET', 'POST'])
-def admin():
-    foo = request.json['foo']
-    email = foo.email
-    password = foo.password
-    return("EMAIL: ", email, " ", "PASSWORD: ", password)
+def admin_login():
+    email = request.json['email']
+    password = request.json['password']
 
-    #admin = {}
-    #cursor = mysql.connect().cursor()
-    #cursor.execute("SELECT * from admin where email='" + email + "' and password='" + password + "'")
-    #data = cursor.fetchone()
-    #if data is None:
-    #    return "Admin does not exist in the SQL DB"
-    #else:
-    #    admin['email'] = email
-    #    admin['status'] = 'Success'
-    #return jsonify(admin)
+    admin = {}
+    cursor = mysql.connect().cursor()
+    cursor.execute("SELECT * from admin where email='" + email + "' and password='" + password + "'")
+    data = cursor.fetchone()
+    if data is None:
+        return "No admin found with that email and password"
+    else:
+        admin['email'] = email
+        admin['status'] = 'Success'
+    return jsonify(admin)
 
-@mod_auth.route('/get_trials')
-def get_trials():
-    # Here we will return the list of test sets for the FE to load on admin results page
-    return 'Dummy data from get_trials'
+@mod_auth.route('/auth/get_test_set_statuses')
+def get_test_set_statuses():
+    login_token = request.json['login_token']
+    '''
+    if(request.json['filters']=='None'){
+        filters = 'None'
+    }else{
+        filters = request.json['filters']
+    }
+    '''
+    cursor = mysql.connect().cursor()
+    cursor.execute("SELECT test_set_id,status from test_set_results")
+    data = cursor.fetchone()
+    test_status_list = []
+    if data is None:
+        return "No admin found with that email and password"
+    else:
+        test_status_list = data;
+        return test_set_list
 
-@mod_auth.route('/create_trial')
-def create_trial():
-    # Take or generate cordanites and send them to the DB as a new trial
-    # Return them back to the user via slack
-    return 'Dummy data from create_trial'
+@mod_auth.route('/auth/get_test_templates')
+def get_test_set_statuses():
+    login_token = request.json['login_token']
+    test_set_id = request.json['test_set_id']
+    '''
+    if(request.json['filters']=='None'){
+        filters = 'None'
+    }else{
+        filters = request.json['filters']
+    }
+    '''
+    cursor = mysql.connect().cursor()
+    cursor.execute("SELECT * FROM graph_type WHERE test_set_id=test_set_id")
+    data = cursor.fetchone()
+    get_test_templates = []
+    if data is None:
+        return "There are no graphs for this test_set_id"
+    else:
+        test_status_list = data;
+        return test_set_list
 
-@mod_auth.route('/get_results')
-def get_results():
-    # Take an argument from UI including a test set ID and optionally a ID or graph ID
-    return "Dummy data from get_results"
 
-@mod_auth.route('/get_test_sets')
-def get_test_sets():
-    # Here we will return the list of test sets for the FE to load on admin results page
-    return 'Dummy data from get_test_sets'
 
-@mod_auth.route('/create_test_set')
-def create_test_set():
-    # We are goings to take the name of the test set and other data
-    return 'Dummy data from create_test_set'
+@mod_auth.route('/auth/trial_log_in', methods=['GET', 'POST'])
+def trial_log_in():
+    app_user_id = request.json['login_code']
+    test_set_id = request.json['test_set_id']
 
-@mod_auth.route('/save_trial')
-def save_trial():
-    # After a trail has been created we will take the test set id and add the trial to the db
-    return 'Dummy data from save_trial'
+    user = {}
+    cursor = mysql.connect().cursor()
+    cursor.execute("SELECT * from test_sets where app_user_id='" + app_user_id + "' and test_set_id='" + test_set_id + "'")
+    data = cursor.fetchone()
+    if data is None:
+        return "Invalid User"
+    else:
+        user['app_user_id'] = app_user_id
+        admin['status'] = 'Success'
+    return jsonify(admin)
