@@ -48,9 +48,7 @@ function admin_login(username, password){
     var token = "abcdefg";
 
     if (result == "success"){
-        logged_in = true;
-        auth_token = token;
-        show_admin_window();
+        return token;
     }
     else{
         // Show help message
@@ -187,10 +185,11 @@ function trial_login(login_code){
 //    });
 
   dummy_data = {"trial_name":"trial-1",
-                "total-tests":"5",
-                "tests-complete":"3",
-                "wait-time":"60",
-                "close-time":"timestamp of some sort"
+                "total_tests":"5",
+                "tests_complete":"3",
+                "wait_time":"60",
+                "time_left":"timestamp of some sort",
+                "status": "PARKED"
                 };
 
     // Lets just pretend that returns success
@@ -237,10 +236,11 @@ function get_trial_details(auth_token, trial_id){
 //    });
 
  dummy_data = {"trial_name":"trial-1",
-               "total-tests":"5",
-               "test_ids":"3",
-               "wait-time":"60",
-               "close-time":"timestamp of some sort"
+               "total_tests":"5",
+               "template_ids": [1, 2, 3, 4],
+               "user_ids" : ["asdf", "qwer", "zxcv", "rtg"],
+               "wait_time":"60",
+               "close_time":"timestamp of some sort"
                }
 
     // Lets just pretend that returns success

@@ -1,15 +1,13 @@
 
 
 // To do a back button I think I'm just gonna do this jank jumplist
-
 var screen_enum = { HOME: 1, TEST_EDIT:2, TEST_VIEW:3, TEMPLATE_EDIT:4, ADMIN_HOME:5 };
-
 var screen = screen_enum.HOME;
 
 function transfer_back(){
 
     if (screen == screen_enum.HOME){
-
+        // Do nothing
     }
     else if (screen == screen_enum.TEST_EDIT) {
         toggle_test_edit();
@@ -22,6 +20,10 @@ function transfer_back(){
     else if (screen == screen_enum.TEMPLATE_EDIT) {
     }
     else if (screen == screen_enum.ADMIN_HOME){
+        toggle_admin_view();
+        screen == screen_enum.HOME;
+        selected_template = "";
+        selected_trial = "";
     }
 
 }
@@ -62,10 +64,11 @@ function transfer_to_test_view(){
 function toggle_test_view(){
 
     $("#main-admin-panel").slideToggle();
-    $("#admin-test-view-panel").slideToggle();
+    //$("#admin-test-view-panel").slideToggle();
+    $("#trial-view-admin-panel").slideToggle();
 
     if (screen == screen_enum.TEST_VIEW)
-        screen = screen_enum.HOME;
+        screen = screen_enum.ADMIN_HOME;
     else
         screen = screen_enum.TEST_VIEW;
 }
@@ -86,7 +89,25 @@ function toggle_template_edit(){
         screen = screen_enum.TEST_VIEW;
 }
 
+function toggle_admin_view(){
+    $("#home-row").slideToggle();
+    $("#navbar-row").toggleClass("hidden");
+    //$("#slider-container").slideToggle();
+    $("#main-admin-panel").slideToggle();
 
+    if (screen == screen_enum.ADMIN_HOME)
+        screen = screen_enum.HOME;
+    else
+        screen = screen_enum.ADMIN_HOME;
+
+    // Try and get the test-set names and statuses
+    if (!get_test_set_statuses()){
+        // error
+    }
+    if (!get_test_template_data()){
+        // error
+    }
+}
 
 function transfer_to_test_edit(){
 }
@@ -97,41 +118,15 @@ function transfer_to_test_new(){
 function transfer_to_test_template_edit(){
 }
 
-
-function show_training(){
-
-
-
-}
-
-
-
-function test(){
-    roll_up_reveal_navbar();
-}
-
-function roll_up_reveal_navbar(){
-    $("#home-row").slideUp();
-    $("#navbar-row").show();
-    $("#slider-container").show();
-}
-
 function show_admin_window(){
 
-
     // Roll up the navbar and open the content container
-    roll_up_reveal_navbar();
-    $("#main-admin-panel").slideDown();
+    toggle_admin_view();
 
-    // Try and get the test-set names and statuses
-    if (!get_test_set_statuses()){
 
-    }
-    if (!get_test_template_data()){
 
-    }
 
-    screen = screen_enum.ADMIN_HOME;
+
 }
 
 

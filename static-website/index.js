@@ -5,16 +5,77 @@ var selected_trial = "";
 var selected_template = "";
 
 function admin_login_handler(){
+
+    // Get the creds from the input, and pass them to the api
     var admin_credentials_combo = $("#admin-login-form").serializeArray();
-    admin_login(admin_credentials_combo[0].value, admin_credentials_combo[1].value);
+    token = admin_login(admin_credentials_combo[0].value, admin_credentials_combo[1].value);
+
+    if (token){
+        // Sign in invalid
+    }
+
+    toggle_admin_view();
+
 }
 function trial_login_handler(){
+
+    // Get the login token from the user and get the trial data associated with that login
     var login_code = $("#trial-login-form").serializeArray();
     var trial_data = trial_login(login_code[0].value);
+
+    //toggle_trial_view();
+
+    // Start trial
 }
+
+function view_template_handler(){
+
+    if (selected_template == ""){
+        // do nothing
+    }
+    else {
+
+    }
+}
+
+function view_trial_handler(){
+
+    if (selected_trial == ""){
+        // error
+    }
+    else {
+        var details = get_trial_details();
+        populate_view_test_page(details);
+        toggle_test_view();
+    }
+
+}
+
+
 function begin_training_handler(){
+
 }
+
 function begin_trial(trial_data){
+
+}
+
+function populate_view_test_page(test_details){
+
+    // list all the id's
+
+    $("#trial-view-admin-panel-id-list").empty();
+
+    var html = "";
+    for (var i in test_details.user_ids){
+        html += test_details.user_ids[i] + "<br>";
+    }
+
+    $("#trial-view-admin-panel-id-list").append(html);
+
+
+    // Now fill in the other details
+
 }
 
 function populate_admin_page_active_tests(test_statuses){
