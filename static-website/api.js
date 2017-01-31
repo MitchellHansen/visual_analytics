@@ -207,6 +207,54 @@ function trial_login(login_code){
 }
 
 
+//  API CALL TO : "/auth/get_trial_details"
+//  SENDS       : auth_token, trial_id
+//  RECEIVES    : JSON object with the trial info
+//  dummy_data = {"trial_name":"trial-1",
+//                "total-tests":"5",
+//                "test_ids":"3",
+//                "wait-time":"60",
+//                "close-time":"timestamp of some sort"
+//                }
+// ============================================================================================================
+function get_trial_details(auth_token, trial_id){
+
+
+//    $.ajax({
+//
+//        url: "/auth/get_trial_details",
+//        contentType: "application/json; charset=utf-8",
+//        type: "POST",
+//        async: false,
+//
+//        data :{
+//            token : token
+//        },
+//
+//        success: function(result){
+//            console.log(result);
+//        }
+//    });
+
+ dummy_data = {"trial_name":"trial-1",
+               "total-tests":"5",
+               "test_ids":"3",
+               "wait-time":"60",
+               "close-time":"timestamp of some sort"
+               }
+
+    // Lets just pretend that returns success
+    var result = "success";
+
+    if (result == "success"){
+        return dummy_data;
+        //return result;
+    }
+    else{
+        console.log("Something went wrong");
+        console.log(result);
+    }
+}
 
 
 

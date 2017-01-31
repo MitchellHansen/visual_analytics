@@ -18,18 +18,18 @@
 <div class="w3-row hidden" id="navbar-row">
     <ul class="w3-navbar w3-black">
         <li>
-            <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey w3-padding-16" onclick="">Button 1
+            <button id="back-button" type="button" class="w3-btn w3-btn-block w3-hover-blue-grey w3-padding-16" onclick="transfer_back()">Back
             </button>
         </li>
         <li>
-            <button type="button" class="w3-btn w3-btn-block w3-hover-teal w3-padding-16" onclick="">Button 2</button>
+            <button id="refresh-button" type="button" class="w3-btn w3-btn-block w3-hover-teal w3-padding-16" onclick="">Refresh</button>
         </li>
         <li>
-            <button type="button" class="w3-btn w3-btn-block w3-hover-dark-grey w3-padding-16" onclick="">Button 3
+            <button id="save-button" type="button" class="w3-btn w3-btn-block w3-hover-dark-grey w3-padding-16" onclick="">Save
             </button>
         </li>
         <li>
-            <button type="button" class="w3-btn w3-btn-block w3-hover-brown w3-padding-16" onclick="">Button 4</button>
+            <button id="cancel-button" type="button" class="w3-btn w3-btn-block w3-hover-brown w3-padding-16" onclick="">Cancel</button>
         </li>
     </ul>
 </div>
@@ -172,6 +172,7 @@
     </div>
 
     <div class="w3-light-grey w3-center hidden" style="height:800px" id="admin-test-view-panel">
+
         <div class="w3-dark-grey w3-center w3-quarter hide-scrollbar" style="height:800px;">
 
             <select class="w3-select" name="option" id="test-template-adsf">
