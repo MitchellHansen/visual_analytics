@@ -1,6 +1,6 @@
 # Import flask dependencies
 from flask import Blueprint, request, render_template, \
-                  flash, g, session, redirect, url_for,jsonify
+                  flash, g, session, redirect, url_for,jsonify, json
 # Import password / encryption helper tools
 from werkzeug import check_password_hash, generate_password_hash
 # Import the database object from the main app module
@@ -40,7 +40,7 @@ def admin_login():
     else:
         admin['email'] = email
         admin['status'] = 'Success'
-    return jsonify(admin)
+    return json.dumps(admin)
 
 @mod_auth.route('/auth/get_test_set_statuses')
 def get_test_set_statuses():
@@ -55,12 +55,10 @@ def get_test_set_statuses():
     cursor = mysql.connect().cursor()
     cursor.execute("SELECT test_set_id,status from test_set_results")
     data = cursor.fetchone()
-    test_status_list = []
     if data is None:
         return "No admin found with that email and password"
     else:
-        test_status_list = data;
-        return test_set_list
+        return json.dumps(data)
 
 @mod_auth.route('/auth/get_test_templates')
 def get_test_set_statuses():
@@ -76,12 +74,10 @@ def get_test_set_statuses():
     cursor = mysql.connect().cursor()
     cursor.execute("SELECT * FROM graph_type WHERE test_set_id=test_set_id")
     data = cursor.fetchone()
-    get_test_templates = []
     if data is None:
         return "There are no graphs for this test_set_id"
     else:
-        test_status_list = data;
-        return test_set_list
+        return json.dumps(data)
 
 
 
@@ -98,5 +94,5 @@ def trial_log_in():
         return "Invalid User"
     else:
         user['app_user_id'] = app_user_id
-        admin['status'] = 'Success'
-    return jsonify(admin)
+        user['status'] = 'Success'
+    return json.dumps(user)
