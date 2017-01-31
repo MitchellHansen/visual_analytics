@@ -61,7 +61,7 @@ def get_test_set_statuses():
         return json.dumps(data)
 
 @mod_auth.route('/auth/get_test_templates')
-def get_test_set_statuses():
+def get_test_templates():
     login_token = request.json['login_token']
     test_set_id = request.json['test_set_id']
     '''
