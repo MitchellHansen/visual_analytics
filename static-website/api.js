@@ -257,6 +257,44 @@ function get_trial_details(auth_token, trial_id){
 }
 
 
+//  API CALL TO : "/auth/export_trial"
+//  SENDS       : auth_token, trial_id
+//  RECEIVES    : JSON object with the trial info
+//  dummy_data = straight up csv text;
+// ============================================================================================================
+function exported_trial_details(auth_token, trial_id){
+
+
+//    $.ajax({
+//
+//        url: "/auth/get_trial_details",
+//        contentType: "application/json; charset=utf-8",
+//        type: "POST",
+//        async: false,
+//
+//        data :{
+//            token : token
+//        },
+//
+//        success: function(result){
+//            console.log(result);
+//        }
+//    });
+
+ dummy_data = "column1, column2, column3\nrow1, row1, row1\nrow2, row2, row2";
+
+    // Lets just pretend that returns success
+    var result = "success";
+
+    if (result == "success"){
+        return dummy_data;
+        //return result;
+    }
+    else{
+        console.log("Something went wrong");
+        console.log(result);
+    }
+}
 
 
 

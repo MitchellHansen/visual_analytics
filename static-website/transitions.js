@@ -124,9 +124,6 @@ function show_admin_window(){
     toggle_admin_view();
 
 
-
-
-
 }
 
 
