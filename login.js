@@ -7,7 +7,13 @@ var email = ('#email').val();
 var password = $('#password').val();
 // you could create a console.log here to test username and password;
 /*
+<<<<<<< HEAD
 console.log("email = "+email);
+=======
+
+console.log("email = "+email);
+
+>>>>>>> master
 console.log("password = "+password);
  
 */
