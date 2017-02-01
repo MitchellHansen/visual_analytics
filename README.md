@@ -1,7 +1,7 @@
 # Visual Analytics
 
 ####Group Members
-- Elliott Barcoe
+  - Elliott Barcoe-Walsh
   - Anthony Armatas-Brier
   - Mitchell Hansen
   - Pushkin Feleke
