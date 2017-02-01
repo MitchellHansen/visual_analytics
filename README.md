@@ -1,4 +1,3 @@
-# Visual Analytics
 ![alt text](logo.png "Logo Title Text 1")
 ####Group Members
   - Elliott Barcoe-Walsh
