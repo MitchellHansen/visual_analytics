@@ -30,14 +30,14 @@
 
 * [Python](https://www.python.org/downloads/) - Python provides constructs intended to enable writing clear programs on both a small and large scale
 * [Flask](https://www.fullstackpython.com/flask.html) - Flask is a microframework for Python
-* [MYSQL](https://dev.mysql.com/downloads/) - MySQL is an open-source relational database management system
-* [AJAX](http://www.w3schools.com/xml/ajax_intro.asp)- Request data from a server - after the page has loaded
+* [MySQL](https://dev.mysql.com/downloads/) - MySQL is an open-source relational database management system
+* [Ajax](http://www.w3schools.com/xml/ajax_intro.asp)- Ajax is the use of the XMLHttpRequest object to communicate with server-side scripts
 * [Linux Server](https://www.ubuntu.com/download/ubuntu-kylin) - Using Ubuntu 16.04.1 LTS
 
 ####Front End
 
 * [HTML](http://www.w3schools.com/html/default.asp)-
-* [css](http://www.w3schools.com/css/)- CSS describes how HTML elements should be displayed.
+* [CSS](http://www.w3schools.com/css/)- CSS describes how HTML elements should be displayed.
 * [JavaScript](https://www.javascript.com/)- 
 * [JQuery](https://jquery.com/)- jQuery greatly simplifies JavaScript programming.
 
