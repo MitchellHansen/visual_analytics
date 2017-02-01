@@ -28,11 +28,11 @@
 
 ####Backend:
 
-* [Python](https://www.python.org/downloads/)
-* [Flask](https://www.fullstackpython.com/flask.html)
-* [MYSQL](https://dev.mysql.com/downloads/)
+* [Python](https://www.python.org/downloads/) - Python provides constructs intended to enable writing clear programs on both a small and large scale
+* [Flask](https://www.fullstackpython.com/flask.html) - Flask is a microframework for Python
+* [MYSQL](https://dev.mysql.com/downloads/) - MySQL is an open-source relational database management system
 * [AJAX](http://www.w3schools.com/xml/ajax_intro.asp)- Request data from a server - after the page has loaded
-* [Linux Server](https://www.ubuntu.com/download/ubuntu-kylin)
+* [Linux Server](https://www.ubuntu.com/download/ubuntu-kylin) - Using Ubuntu 16.04.1 LTS
 
 ####Front End
 
