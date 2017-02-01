@@ -72,13 +72,12 @@ def get_test_templates():
     }
     '''
     cursor = mysql.connect().cursor()
-    cursor.execute("SELECT * FROM graph_type WHERE test_set_id=test_set_id")
+    cursor.execute("SELECT * FROM test_sets WHERE test_set_id=test_set_id")
     data = cursor.fetchone()
     if data is None:
         return "There are no graphs for this test_set_id"
     else:
         return json.dumps(data)
-
 
 
 @mod_auth.route('/auth/trial_log_in', methods=['GET', 'POST'])
