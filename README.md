@@ -1,5 +1,4 @@
-# Visual Analytics
-
+![alt text](logo.png "Logo Title Text 1")
 ####Group Members
   - Elliott Barcoe-Walsh
   - Anthony Armatas-Brier
@@ -12,17 +11,6 @@
   - Allows users to take tests 
   - Drag and drop files into Dillinger
   - Export documents as Markdown, HTML and PDF
-
-> The overriding design goal for Markdown's
-> formatting syntax is to make it as readable
-> as possible. The idea is that a
-> Markdown-formatted document should be
-> publishable as-is, as plain text, without
-> looking like it's been marked up with tags
-> or formatting instructions.
-
-
-
 
 ## Tech
 
