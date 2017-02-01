@@ -48,9 +48,7 @@ function admin_login(username, password){
     var token = "abcdefg";
 
     if (result == "success"){
-        logged_in = true;
-        auth_token = token;
-        show_admin_window();
+        return token;
     }
     else{
         // Show help message
@@ -187,10 +185,11 @@ function trial_login(login_code){
 //    });
 
   dummy_data = {"trial_name":"trial-1",
-                "total-tests":"5",
-                "tests-complete":"3",
-                "wait-time":"60",
-                "close-time":"timestamp of some sort"
+                "total_tests":"5",
+                "tests_complete":"3",
+                "wait_time":"60",
+                "time_left":"timestamp of some sort",
+                "status": "PARKED"
                 };
 
     // Lets just pretend that returns success
@@ -207,8 +206,95 @@ function trial_login(login_code){
 }
 
 
+//  API CALL TO : "/auth/get_trial_details"
+//  SENDS       : auth_token, trial_id
+//  RECEIVES    : JSON object with the trial info
+//  dummy_data = {"trial_name":"trial-1",
+//                "total-tests":"5",
+//                "test_ids":"3",
+//                "wait-time":"60",
+//                "close-time":"timestamp of some sort"
+//                }
+// ============================================================================================================
+function get_trial_details(auth_token, trial_id){
 
 
+//    $.ajax({
+//
+//        url: "/auth/get_trial_details",
+//        contentType: "application/json; charset=utf-8",
+//        type: "POST",
+//        async: false,
+//
+//        data :{
+//            token : token
+//        },
+//
+//        success: function(result){
+//            console.log(result);
+//        }
+//    });
+
+ dummy_data = {"trial_name":"trial-1",
+               "total_tests":"5",
+               "template_ids": [1, 2, 3, 4],
+               "user_ids" : ["asdf", "qwer", "zxcv", "rtg"],
+               "wait_time":"60",
+               "close_time":"timestamp of some sort"
+               }
+
+    // Lets just pretend that returns success
+    var result = "success";
+
+    if (result == "success"){
+        return dummy_data;
+        //return result;
+    }
+    else{
+        console.log("Something went wrong");
+        console.log(result);
+    }
+}
+
+
+//  API CALL TO : "/auth/export_trial"
+//  SENDS       : auth_token, trial_id
+//  RECEIVES    : JSON object with the trial info
+//  dummy_data = straight up csv text;
+// ============================================================================================================
+function exported_trial_details(auth_token, trial_id){
+
+
+//    $.ajax({
+//
+//        url: "/auth/get_trial_details",
+//        contentType: "application/json; charset=utf-8",
+//        type: "POST",
+//        async: false,
+//
+//        data :{
+//            token : token
+//        },
+//
+//        success: function(result){
+//            console.log(result);
+//        }
+//    });
+
+ dummy_data = "column1, column2, column3\nrow1, row1, row1\nrow2, row2, row2";
+
+    // Lets just pretend that returns success
+    var result = "success";
+
+    if (result == "success"){
+        return dummy_data;
+        //return result;
+    }
+    else{
+        console.log("Something went wrong");
+        console.log(result);
+    }
+}
 
 
 

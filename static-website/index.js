@@ -4,17 +4,110 @@ var token = "asdofijwer";
 var selected_trial = "";
 var selected_template = "";
 
+window.onload = function(e){
+    admin_login_handler();
+    selected_trial = "test1";
+    view_trial_handler();
+
+};
+
+function download(text, name, type) {
+  var a = document.getElementById("download-button");
+  var file = new Blob([text], {type: type});
+  a.href = URL.createObjectURL(file);
+  a.download = name;
+}
+
+// Handlers take a buttons event and tie them to middle or api code
+
 function admin_login_handler(){
+
+    // Get the creds from the input, and pass them to the api
     var admin_credentials_combo = $("#admin-login-form").serializeArray();
-    admin_login(admin_credentials_combo[0].value, admin_credentials_combo[1].value);
+    token = admin_login(admin_credentials_combo[0].value, admin_credentials_combo[1].value);
+
+    if (token){
+        // Sign in invalid
+    }
+
+    toggle_admin_view();
+
 }
 function trial_login_handler(){
+
+    // Get the login token from the user and get the trial data associated with that login
     var login_code = $("#trial-login-form").serializeArray();
     var trial_data = trial_login(login_code[0].value);
+
+    //toggle_trial_view();
+
+    // Start trial
 }
+
+function view_template_handler(){
+
+    if (selected_template == ""){
+        // do nothing
+    }
+    else {
+
+    }
+}
+
+function view_trial_handler(){
+
+    if (selected_trial == ""){
+        // error
+    }
+    else {
+        var details = get_trial_details();
+        populate_view_test_page(details);
+        toggle_test_view();
+    }
+}
+
+function export_trial_handler(){
+
+    if (selected_trial == ""){
+        // error
+    }
+    else {
+
+        var csv = exported_trial_details(token, selected_trial);
+        download(csv, selected_trial + ".csv", 'text/plain');
+    }
+
+}
+
 function begin_training_handler(){
+
 }
+
 function begin_trial(trial_data){
+
+}
+
+function populate_view_test_page(test_details){
+
+    // list all the id's
+    $("#trial-view-admin-panel-id-list").empty();
+
+    var html = "";
+    for (var i in test_details.user_ids){
+        html += test_details.user_ids[i] + "<br>";
+    }
+
+    $("#trial-view-admin-panel-id-list").append(html);
+
+
+    $("#trial-view-admin-panel-details").empty();
+
+    // Now fill in the other details
+    $("#trial-view-admin-panel-details").append("<p>Trial Name  : " + test_details.trial_name + "<p>");
+    $("#trial-view-admin-panel-details").append("<p>Total tests : " + test_details.total_tests + "<p>");
+    $("#trial-view-admin-panel-details").append("<p>Wait time   : " + test_details.wait_time + "<p>");
+    $("#trial-view-admin-panel-details").append("<p>Close time  : " + test_details.close_time + "<p>");
+
 }
 
 function populate_admin_page_active_tests(test_statuses){
