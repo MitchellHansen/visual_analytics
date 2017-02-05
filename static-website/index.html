@@ -1,8 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="svg_builder.js"></script>
+<script src="graph_rendering.js"></script>
 <script src="index.js"></script>
 <script src="transitions.js"></script>
 <script src="api.js"></script>
@@ -111,7 +112,7 @@
 
             <div class="w3-row">
                 <div class="w3-left-align">
-                    <p>
+                    <!--<p>
                         Did you read the about page? If you did then you would know that Visual Analytics is the
                         practice of viewing data through different representations e.g. line graphs, scatter plots, etc.
                     </p>
@@ -123,7 +124,11 @@
                     </p>
                     <p>
                         You can only select one area per graph, so choose wisely!
-                    </p>
+                    </p>-->
+                    <p>Unsure about how to complete a visual analytics test?</p>
+                    <p>Want to try them out to see how exactly the test will function?</p>
+                    <p>Just want to practice a little?</p>
+                    <p>Just click on the Begin Training button below and it will show you all you need to know!</p>
                 </div>
             </div>
 
@@ -166,209 +171,290 @@
 
 <!--  The bottom app container  -->
 <div class="w3-row" id="slider-container">
-
+    <!-- First Training Window-->
     <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="training-panel">
-
-    </div>
-
-    <div class="w3-light-grey w3-center hidden" style="height:800px" id="admin-test-view-panel">
-
-        <div class="w3-dark-grey w3-center w3-quarter hide-scrollbar" style="height:800px;">
-
-            <select class="w3-select" name="option" id="test-template-adsf">
-                <option value="0">No Filter</option>
-                <option value="1">Running</option>
-                <option value="2">Complete</option>
-                <option value="3">Parked</option>
-            </select>
-
-            <nav>
-                <ul class="w3-ul" style="border-bottom: 0px solid #ddd;" id="test-template-asdf">
-
-                </ul>
-            </nav>
-
+        <h1>How Visual Analytics Tests Work</h1>
+        <p>The two classes below Cls 1 (red) and Cls 2 (green) are multidemensional data representations 
+        of some previously generated data points. The other graphs that fill the screen are distorted versions
+        of either Cls 1 or Cls 2. Your Job is to view these data representations and determine which class they belong to.</p>
+        <img src="training_pics/full_graphic_test.jpg" alt="The full data representation test!" style="width:600px;height:600px;">
+        <!-- buttons under picture-->
+        <div class="button-placement" >
+            <button class="w3-btn" style="margin-right:160px;padding-left:35px;padding-right:35px"
+                onclick="transfer_back()">Back
+            </button>
+            <button class="w3-btn" style="margin-left:160px;padding-left:35px;padding-right:35px"
+                onclick="training_fwd_movement()">Next
+            </button>
         </div>
     </div>
 
-    <div class="w3-light-grey w3-center hidden" style="height:800px" id="main-admin-panel">
+    <!-- second Training Window-->
+    <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="training-selection">
+        <h1>How To Choose</h1>
+        <p><i><b>How do I choose which class each graph originated from?</b></i></p>
+        <div id="selection_first_pics" style="display: inline-block">
+            <img src="training_pics/graph_clean.jpg" alt="The full data representation test!" style="width:100px;height:100px;">
+            <img src="training_pics/graph_class1.jpg" alt="The full data representation test!" style="width:100px;height:100px;">
+            <img src="training_pics/graph_class2.jpg" alt="The full data representation test!" style="width:100px;height:100px;">
+        </div>
+        <p>Each distorted graph is divided up into sections sections. Some sections are clearer representations of the classes than others.
+        You need to find the section which, to you, best signifies either Cls 1 or 2</p>
+        <img src="training_pics/graph_sections.jpg" alt="The full data representation test!" style="width:100px;height:100px;">
+        <p>
+            By clicking on the section you believe to be the best signifier of its class,
+            the color of that section will change to reflect that.
+        </p>
+        <img src="training_pics/graph_class1_selection.jpg" alt="The full data representation test!" style="width:100px;height:100px;">
+        <p>
+            After the first click, the color of the chosen selection will change red to signify it has been selected as a Cls 1 graph.
+            Clicking on it a second time will change it to green, the corisponding color of the Cls 2 graph. If clicked a third time 
+            it will revert back to its original unaltered state. 
+        </p>
+        <img src="training_pics/graph_class2_selection.jpg" alt="The full data representation test!" style="width:100px;height:100px;">
+        <img src="training_pics/graph_og_state.jpg" alt="The full data representation test!" style="width:100px;height:100px;">
+        <p>
+        </p>
+        <!-- buttons under pictures-->
+        <div class="button-placement">
+            <button class="w3-btn" style="margin-right:160px;padding-left:35px;padding-right:35px"
+                    onclick="transfer_back()">
+                Back
+            </button>
+            <button class="w3-btn" style="margin-left:160px;padding-left:35px;padding-right:35px"
+                    onclick="training_fwd_movement()">
+                Proceed To Practice
+            </button>
+        </div>
+    </div>
 
-        <div class="w3-dark-grey w3-center w3-quarter hide-scrollbar" style="height:800px">
+    <!-- third Training Window-->
+    <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="training-practice">
+        
+        <script>
+            build();
+        </script>
 
-            <select class="w3-select" name="option" id="test-template-filter">
-                <option value="0">No Filter</option>
-                <option value="1">Running</option>
-                <option value="2">Complete</option>
-                <option value="3">Parked</option>
-            </select>
 
-            <nav>
-                <ul class="w3-ul" style="border-bottom: 0px solid #ddd;" id="test-template-list">
+        <!-- buttons under practice-->
+        <div class="button-placement-for-practice">
+            <button class="w3-btn" style="margin-right:160px;padding-left:35px;padding-right:35px"
+                    onclick="transfer_back()">
+                Back
+            </button>
+            <button class="w3-btn" style="margin-left:160px;padding-left:35px;padding-right:35px"
+                    onclick="training_fwd_movement()">
+                Next
+            </button>
+        </div>
+    </div>
 
-                </ul>
-            </nav>
+    <!-- fourth Training Window-->
+    <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="training-results">
+    </div>
 
+        <div class="w3-light-grey w3-center hidden" style="height:800px" id="admin-test-view-panel">
+
+            <div class="w3-dark-grey w3-center w3-quarter hide-scrollbar" style="height:800px;">
+
+                <select class="w3-select" name="option" id="test-template-adsf">
+                    <option value="0">No Filter</option>
+                    <option value="1">Running</option>
+                    <option value="2">Complete</option>
+                    <option value="3">Parked</option>
+                </select>
+
+                <nav>
+                    <ul class="w3-ul" style="border-bottom: 0px solid #ddd;" id="test-template-asdf"></ul>
+                </nav>
+
+            </div>
         </div>
 
-        <div class="w3-dark-grey w3-quarter w3-padding-16 w3-border" style="height:800px;">
+        <div class="w3-light-grey w3-center hidden" style="height:800px" id="main-admin-panel">
 
-            <div class="w3-row">
-                <div class="w3-col w3-padding">
-                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="">Edit Template
-                    </button>
-                </div>
+            <div class="w3-dark-grey w3-center w3-quarter hide-scrollbar" style="height:800px">
+
+                <select class="w3-select" name="option" id="test-template-filter">
+                    <option value="0">No Filter</option>
+                    <option value="1">Running</option>
+                    <option value="2">Complete</option>
+                    <option value="3">Parked</option>
+                </select>
+
+                <nav>
+                    <ul class="w3-ul" style="border-bottom: 0px solid #ddd;" id="test-template-list"></ul>
+                </nav>
+
             </div>
 
-            <div class="w3-row">
-                <div class="w3-col w3-padding">
-                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="">New Template
-                    </button>
+            <div class="w3-dark-grey w3-quarter w3-padding-16 w3-border" style="height:800px;">
+
+                <div class="w3-row">
+                    <div class="w3-col w3-padding">
+                        <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="">
+                            Edit Template
+                        </button>
+                    </div>
                 </div>
+
+                <div class="w3-row">
+                    <div class="w3-col w3-padding">
+                        <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="">
+                            New Template
+                        </button>
+                    </div>
+                </div>
+
+                <div class="w3-row">
+                    <div class="w3-col w3-padding">
+                        <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="">
+                            Delete Template
+                        </button>
+                    </div>
+                </div>
+
+                <div class="w3-row">
+                    <div class="w3-col w3-padding">
+                        <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="view_template_handler()">
+                            View Template
+                        </button>
+                    </div>
+                </div>
+
             </div>
 
-            <div class="w3-row">
-                <div class="w3-col w3-padding">
-                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="">Delete Template
-                    </button>
+            <div class="w3-dark-grey w3-quarter w3-padding-16 w3-border" style="height:800px;">
+
+                <div class="w3-row">
+                    <div class="w3-col w3-padding">
+                        <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey"
+                                onclick="view_trial_handler()">
+                            View Test
+                        </button>
+                    </div>
                 </div>
+
+                <div class="w3-row">
+                    <div class="w3-col w3-padding">
+                        <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="export_trial_handler()">Export</button>
+                    </div>
+                    <div class="w3-col w3-padding">
+                        <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick=""><a href="" id="download-button">Download</a></button>
+                    </div>
+                </div>
+
+                <div class="w3-row">
+                    <div class="w3-col w3-padding">
+                        <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="">New Test</button>
+                    </div>
+                </div>
+
+                <div class="w3-row">
+                    <div class="w3-col w3-padding">
+                        <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="">Edit Test</button>
+                    </div>
+                </div>
+
+                <div class="w3-row">
+                    <div class="w3-col w3-padding">
+                        <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="">Delete Test</button>
+                    </div>
+                </div>
+
+                <div class="w3-row">
+                    <div class="w3-col w3-padding">
+                        <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="">Start Test</button>
+                    </div>
+                </div>
+
+                <div class="w3-row">
+                    <div class="w3-col w3-padding">
+                        <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="">End Test</button>
+                    </div>
+                </div>
+
             </div>
 
-            <div class="w3-row">
-                <div class="w3-col w3-padding">
-                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="view_template_handler()">View Template
-                    </button>
-                </div>
-            </div>
+            <div class="w3-dark-grey w3-center w3-quarter hide-scrollbar" style="height:800px;">
 
-        </div>
+                <select class="w3-select" name="option" id="test-status-list-filter-select">
+                    <option value="0">No Filter</option>
+                    <option value="1">Running</option>
+                    <option value="2">Complete</option>
+                    <option value="3">Parked</option>
+                </select>
 
-        <div class="w3-dark-grey w3-quarter w3-padding-16 w3-border" style="height:800px;">
-
-            <div class="w3-row">
-                <div class="w3-col w3-padding">
-                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey"
-                            onclick="view_trial_handler()">View Test
-                    </button>
-                </div>
-            </div>
-
-            <div class="w3-row">
-                <div class="w3-col w3-padding">
-                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="export_trial_handler()">Export</button>
-                </div>
-                 <div class="w3-col w3-padding">
-                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick=""><a href="" id="download-button">Download</a></button>
-                </div>
-            </div>
-
-            <div class="w3-row">
-                <div class="w3-col w3-padding">
-                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="">New Test</button>
-                </div>
-            </div>
-
-            <div class="w3-row">
-                <div class="w3-col w3-padding">
-                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="">Edit Test</button>
-                </div>
-            </div>
-
-            <div class="w3-row">
-                <div class="w3-col w3-padding">
-                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="">Delete Test</button>
-                </div>
-            </div>
-
-            <div class="w3-row">
-                <div class="w3-col w3-padding">
-                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="">Start Test</button>
-                </div>
-            </div>
-
-            <div class="w3-row">
-                <div class="w3-col w3-padding">
-                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="">End Test</button>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="w3-dark-grey w3-center w3-quarter hide-scrollbar" style="height:800px;">
-
-            <select class="w3-select" name="option" id="test-status-list-filter-select">
-                <option value="0">No Filter</option>
-                <option value="1">Running</option>
-                <option value="2">Complete</option>
-                <option value="3">Parked</option>
-            </select>
-
-            <nav>
-                <ul class="w3-ul" style="border-bottom: 0px solid #ddd;" id="test-status-list">
-                    <li>
-                        <div style="display:flex;">
-                            <button type="button"
-                                    class="w3-btn w3-left w3-threequarter w3-btn-block w3-hover-blue-grey w3-padding-16"
-                                    onclick="">button 3
-                            </button>
-                            <div class="w3-card w3-right w3-quarter">
-                                <p>⏲</p>
+                <nav>
+                    <ul class="w3-ul" style="border-bottom: 0px solid #ddd;" id="test-status-list">
+                        <li>
+                            <div style="display:flex;">
+                                <button type="button"
+                                        class="w3-btn w3-left w3-threequarter w3-btn-block w3-hover-blue-grey w3-padding-16"
+                                        onclick="">
+                                    button 3
+                                </button>
+                                <div class="w3-card w3-right w3-quarter">
+                                    <p>⏲</p>
+                                </div>
                             </div>
-                        </div>
-                    </li>
+                        </li>
 
-                    <li>
-                        <div style="display:flex;">
-                            <button type="button"
-                                    class="w3-btn w3-left w3-threequarter w3-btn-block w3-hover-blue-grey w3-padding-16"
-                                    onclick="">button 3
-                            </button>
-                            <div class="w3-card w3-right w3-quarter">
-                                <p>🛑</p>
+                        <li>
+                            <div style="display:flex;">
+                                <button type="button"
+                                        class="w3-btn w3-left w3-threequarter w3-btn-block w3-hover-blue-grey w3-padding-16"
+                                        onclick="">
+                                    button 3
+                                </button>
+                                <div class="w3-card w3-right w3-quarter">
+                                    <p>🛑</p>
+                                </div>
                             </div>
-                        </div>
-                    </li>
+                        </li>
 
-                    <li>
-                        <div style="display:flex;">
-                            <button type="button"
-                                    class="w3-btn w3-left w3-threequarter w3-btn-block w3-hover-blue-grey w3-padding-16"
-                                    onclick="">button 3
-                            </button>
-                            <div class="w3-card w3-right w3-quarter">
-                                <p>✔</p>
+                        <li>
+                            <div style="display:flex;">
+                                <button type="button"
+                                        class="w3-btn w3-left w3-threequarter w3-btn-block w3-hover-blue-grey w3-padding-16"
+                                        onclick="">
+                                    button 3
+                                </button>
+                                <div class="w3-card w3-right w3-quarter">
+                                    <p>✔</p>
+                                </div>
                             </div>
-                        </div>
-                    </li>
-                </ul>
-            </nav>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+
         </div>
 
+        <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="graph-edit-admin-panel">
 
-    </div>
+        </div>
 
-    <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="graph-edit-admin-panel">
+        <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="trial-edit-admin-panel">
 
-    </div>
+        </div>
 
-    <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="trial-edit-admin-panel">
+        <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="trial-view-admin-panel">
 
-    </div>
+            <div class="w3-half w3-dark-gray w3-center w3-padding-64 w3-padding-jumbo" style="height: 800px;" id="">
+                <div class="w3-white w3-padding-large w3-padding-64 w3-center" style="" id="trial-view-admin-panel-id-list">
 
-    <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="trial-view-admin-panel">
+                </div>
+            </div>
 
-        <div class="w3-half w3-dark-gray w3-center w3-padding-64 w3-padding-jumbo" style="height: 800px;" id="">
-            <div class="w3-white w3-padding-large w3-padding-64 w3-center" style="" id="trial-view-admin-panel-id-list">
+            <div class="w3-half w3-dark-gray w3-left-align w3-padding-64" style="height: 800px;" id="trial-view-admin-panel-details">
 
             </div>
-        </div>
-
-        <div class="w3-half w3-dark-gray w3-left-align w3-padding-64" style="height: 800px;" id="trial-view-admin-panel-details">
 
         </div>
 
     </div>
-
-</div>
 
 <li id="test-status-list-element-template" class="hidden">
     <div style="display:flex;">

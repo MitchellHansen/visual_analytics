@@ -1,13 +1,25 @@
 
 
 // To do a back button I think I'm just gonna do this jank jumplist
-var screen_enum = { HOME: 1, TEST_EDIT:2, TEST_VIEW:3, TEMPLATE_EDIT:4, ADMIN_HOME:5 };
+var screen_enum = { HOME: 1, TEST_EDIT:2, TEST_VIEW:3, TEMPLATE_EDIT:4, ADMIN_HOME:5, TRAINING_INFO:6, TRAINING_HOW_WORK:7,TRAINING_PRAC:8 ,TRAINING_RESULTS:9  };
 var screen = screen_enum.HOME;
 
 function transfer_back(){
 
     if (screen == screen_enum.HOME){
         // Do nothing
+    }
+    else if (screen == screen_enum.TRAINING_INFO) {
+        toggle_home_from_training();
+        screen = screen_enum.HOME;
+    }
+    else if (screen == screen_enum.TRAINING_HOW_WORK) {
+        toggle_intro_from_selection();
+        screen = screen_enum.TRAINING_INFO;
+    }
+    else if (screen == screen_enum.TRAINING_PRAC) {
+        toggle_selection_from_practice();
+        screen = screen_enum.TRAINING_HOW_WORK;
     }
     else if (screen == screen_enum.TEST_EDIT) {
         toggle_test_edit();
@@ -27,7 +39,22 @@ function transfer_back(){
     }
 
 }
+//I am going to try something similar to the back functionality Mitchell implimented with the transfer_back back button
+//but this is for moving forward in the training
+function transfer_through_training() {
+    if (screen == screen_enum.HOME) {
+        // Do nothing
+    }
+    else if (screen == screen_enum.TRAINING_INFO) {
+        toggle_training_selection_view();
+        screen = screen_enum.TRAINING_HOW_WORK;
+    }
+    else if (screen == screen_enum.TRAINING_HOW_WORK) {
+        toggle_training_practice_view();
+        screen = screen_enum.TRAINING_PRAC;
+    }
 
+}
 // =================================
 // These functions all have to do with the right panel on the home screen
 
@@ -108,6 +135,48 @@ function toggle_admin_view(){
         // error
     }
 }
+
+//Brings the user back to the main screen from the training info
+function toggle_home_from_training() {
+    $("#training-panel").toggleClass("hidden");
+    $("#home-row").slideToggle();
+}
+//Brings the user back from the selection training to the training info
+function toggle_intro_from_selection() {
+    $("#training-selection").toggleClass("hidden");
+    $("#training-panel").toggleClass("hidden");
+}
+//Brings the user back from the practice training to the selection training
+function toggle_selection_from_practice() {
+    $("#training-practice").toggleClass("hidden");
+    $("#training-selection").toggleClass("hidden");
+}
+
+//This is the function which brings the training screen to the front
+function toggle_training_intro_view() {
+    $("#home-row").slideToggle();
+    //$("#navbar-row").toggleClass("hidden");
+    //$("#training-panel").slideToggle();
+    $("#training-panel").toggleClass("hidden");
+   // $("#training-panel").slideToggle();
+
+    screen = screen_enum.TRAINING_INFO;
+}
+
+function toggle_training_selection_view() {
+    $("#training-panel").toggleClass("hidden");
+    $("#training-selection").toggleClass("hidden");
+
+    //screen = screen_enum.TRAINING_HOW_WORK;
+
+}
+function toggle_training_practice_view() {
+    $("#training-selection").toggleClass("hidden");
+    $("#training-practice").toggleClass("hidden");
+
+
+}
+
 
 function transfer_to_test_edit(){
 }

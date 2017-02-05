@@ -19,3 +19,19 @@
 .hide-scrollbar::-webkit-scrollbar {
     display: none;
 }
+
+.button-placement {
+  border: none;
+  text-align: center;
+  display: inline-block;
+  position: relative;
+  margin-top: 15px;
+}
+
+.button-placement-for-practice {
+  border: none;
+  text-align: center;
+  display: inline-block;
+  position: static;
+  margin-top: 15px;
+}
