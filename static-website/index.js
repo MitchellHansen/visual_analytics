@@ -80,7 +80,11 @@ function export_trial_handler(){
 }
 
 function begin_training_handler(){
+    toggle_training_intro_view();
+}
 
+function training_fwd_movement() {
+    transfer_through_training();
 }
 
 function begin_trial(trial_data){
