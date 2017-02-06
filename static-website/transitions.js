@@ -21,6 +21,10 @@ function transfer_back(){
         toggle_selection_from_practice();
         screen = screen_enum.TRAINING_HOW_WORK;
     }
+    else if (screen == screen_enum.TRAINING_RESULTS) {
+        toggle_practice_from_results();
+        screen = screen_enum.TRAINING_PRAC;
+    }
     else if (screen == screen_enum.TEST_EDIT) {
         toggle_test_edit();
         screen == screen_enum.ADMIN_HOME;
@@ -52,6 +56,14 @@ function transfer_through_training() {
     else if (screen == screen_enum.TRAINING_HOW_WORK) {
         toggle_training_practice_view();
         screen = screen_enum.TRAINING_PRAC;
+    }
+    else if (screen == screen_enum.TRAINING_PRAC) {
+        toggle_training_results_view();
+        screen = screen_enum.TRAINING_RESULTS;
+    }
+    else if (screen == screen_enum.TRAINING_RESULTS) {
+        toggle_back_to_home();
+        screen = screen_enum.HOME;
     }
 
 }
@@ -151,6 +163,11 @@ function toggle_selection_from_practice() {
     $("#training-practice").toggleClass("hidden");
     $("#training-selection").toggleClass("hidden");
 }
+//Brings the user back from the practice training to the selection training
+function toggle_practice_from_results() {
+    $("#training-results").toggleClass("hidden");
+    $("#training-practice").toggleClass("hidden");
+}
 
 //This is the function which brings the training screen to the front
 function toggle_training_intro_view() {
@@ -173,8 +190,14 @@ function toggle_training_selection_view() {
 function toggle_training_practice_view() {
     $("#training-selection").toggleClass("hidden");
     $("#training-practice").toggleClass("hidden");
-
-
+}
+function toggle_training_results_view() {
+    $("#training-practice").toggleClass("hidden");
+    $("#training-results").toggleClass("hidden");
+}
+function toggle_back_to_home() {
+    $("#training-results").toggleClass("hidden");
+    $("#home-row").slideToggle();
 }
 
 

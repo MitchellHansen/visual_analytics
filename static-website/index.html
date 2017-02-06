@@ -107,7 +107,7 @@
         <div class="w3-padding-64 w3-center hidden" id="training-info-div">
 
             <div class="w3-row">
-                <h5>How to</h5>
+                <h5>How To Complete The Test</h5>
             </div>
 
             <div class="w3-row">
@@ -125,16 +125,20 @@
                     <p>
                         You can only select one area per graph, so choose wisely!
                     </p>-->
-                    <p>Unsure about how to complete a visual analytics test?</p>
-                    <p>Want to try them out to see how exactly the test will function?</p>
-                    <p>Just want to practice a little?</p>
-                    <p>Just click on the Begin Training button below and it will show you all you need to know!</p>
+                    <p>
+                    Unsure about how to complete a visual analytics test?
+                    <br>Want to try them out to see how exactly the test will function?
+                    Just want to practice a little?
+                    </p>
+
+                <p>Just click on the Begin Training button below and it will show you all you need to know!</p>
                 </div>
             </div>
 
-            <div class="w3-row">
+            <div class="w3-row" style="padding:10px; margin-top:65px">
                 <button type="button" class="w3-btn w3-btn-block w3-hover-green w3-padding-16"
-                        onclick="begin_training_handler()">Begin Training
+                        onclick="begin_training_handler()">
+                    Begin Training
                 </button>
             </div>
 
@@ -179,7 +183,7 @@
         of either Cls 1 or Cls 2. Your Job is to view these data representations and determine which class they belong to.</p>
         <img src="training_pics/full_graphic_test.jpg" alt="The full data representation test!" style="width:600px;height:600px;">
         <!-- buttons under picture-->
-        <div class="button-placement" >
+        <div class="button-placement" style="padding:10px" >
             <button class="w3-btn" style="margin-right:160px;padding-left:35px;padding-right:35px"
                 onclick="transfer_back()">Back
             </button>
@@ -216,42 +220,80 @@
         <p>
         </p>
         <!-- buttons under pictures-->
-        <div class="button-placement">
+        <div class="button-placement" style="padding:10px">
             <button class="w3-btn" style="margin-right:160px;padding-left:35px;padding-right:35px"
                     onclick="transfer_back()">
                 Back
             </button>
             <button class="w3-btn" style="margin-left:160px;padding-left:35px;padding-right:35px"
                     onclick="training_fwd_movement()">
-                Proceed To Practice
+                Practice
             </button>
         </div>
     </div>
 
     <!-- third Training Window-->
     <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="training-practice">
-        
-        <script>
-            build();
-        </script>
-
+        <h1>Training: Practice</h1>
+        <div class="w3-row" id="graph_space">
+            <script>
+                build();
+                build();
+                build();
+                build();
+                build();
+                build();
+                build();
+                build();
+            </script>
+        </div>
 
         <!-- buttons under practice-->
-        <div class="button-placement-for-practice">
+        <div class="w3-row" id="practice_button_space"  style="padding:10px">
+            <div class="button-placement">
+                <button class="w3-btn" style="margin-right:160px;padding-left:35px;padding-right:35px"
+                        onclick="transfer_back()"> Back
+                </button>
+                <button class="w3-btn" style="margin-left:160px;padding-left:35px;padding-right:35px"
+                        onclick="training_fwd_movement()">
+                    See results
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- fourth Training Window-->
+    <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="training-results">
+        <h1>Practice Results</h1>
+
+        <div class="w3-row result-framing" style="height:100%">
+
+
+            <div class="w3-row w3-container w3-justify w3-indigo" id="results_section">
+                <p style="color:yellow;">OVERALL RESULT: </p>
+                <p style="color:yellow;"> OVERALL TIME </p>
+                <p style="color:yellow;">AVERAGE TIME SPENT ON A GRAPH: </p>
+                <p style="color:yellow;">MOST MISSED GRAPH TYPE: </p>
+                <p style="color:yellow;">KEY SECTIONS SELECTED: </p>
+                <br><br><br><br><br><br><br><br><br><br><br><br><br>
+                <br><br><br><br><br>
+            </div>
+
+        </div>
+        <!-- buttons under results-->
+        <div class="button-placement w3-row" id="results_button_space" style="padding:10px; margin-top:65px">
             <button class="w3-btn" style="margin-right:160px;padding-left:35px;padding-right:35px"
                     onclick="transfer_back()">
                 Back
             </button>
             <button class="w3-btn" style="margin-left:160px;padding-left:35px;padding-right:35px"
                     onclick="training_fwd_movement()">
-                Next
+                Return to home
             </button>
         </div>
+     </div>
     </div>
-
-    <!-- fourth Training Window-->
-    <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="training-results">
-    </div>
+    <!-- End of Training code-->
 
         <div class="w3-light-grey w3-center hidden" style="height:800px" id="admin-test-view-panel">
 

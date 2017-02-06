@@ -38,7 +38,7 @@ function build(){
 
     }
 
-    $("#training-practice").append(string);
+    $("#graph_space").prepend(string);
 //var newSvg = document.getElementById('slider-panel');
 //newSvg.outerHTML += string;
 
