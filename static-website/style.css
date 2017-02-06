@@ -1,11 +1,15 @@
- .hover_group:hover {
+.hover_group:hover {
     opacity: 0.5;
     fill: red;
 }
 
 .hover_group {
     fill: white;
-    stroke: black;
+}
+
+.svg_color {
+    fill: white;
+    stroke:black;
 }
 
 .hidden {

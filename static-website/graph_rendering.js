@@ -30,7 +30,7 @@ function build(){
         var x2 = base_vector2[0] * Math.cos(theta2) - base_vector2[1] * Math.sin(theta2);
         var y2 = base_vector2[1] * Math.cos(theta2) + base_vector2[0] * Math.sin(theta2);
 
-        string += `<g class="hover_group"><polygon points="`;
+        string += `<g class="svg_color"><polygon points="`;
         string += center_point[0] + "," + center_point[1] + " ";
         string += (x1 + center_point[0]) + "," + (y1 + center_point[1]) + " ";
         string += (x2 + center_point[0]) + "," + (y2 + center_point[1]) + " ";
@@ -39,22 +39,57 @@ function build(){
     }
 
     $("#training-practice").append(string);
-//var newSvg = document.getElementById('slider-panel');
-//newSvg.outerHTML += string;
+
+    var rectangle = {width:100, height:100};
+    var degrees = 90;
 
 }
 
-//$(document).ready(function() {
-//    build();
-//    build();
-//    build();
-//    build();
-//    build();
-//    build();
-//    build();
-//    build();
-//    //build();
-//    //build();
-//    //build();
-//    //build();
-//});
+// Thanks stackoverflow
+function edgeOfView(rect, deg) {
+    var twoPI = Math.PI*2;
+    var theta = deg * Math.PI / 180;
+
+    while (theta < -Math.PI) {
+        theta += twoPI;
+    }
+
+    while (theta > Math.PI) {
+        theta -= twoPI;
+    }
+
+    var rectAtan = Math.atan2(rect.height, rect.width);
+    var tanTheta = Math.tan(theta);
+    var region;
+
+    if ((theta > -rectAtan) && (theta <= rectAtan)) {
+        region = 1;
+    } else if ((theta > rectAtan) && (theta <= (Math.PI - rectAtan))) {
+        region = 2;
+    } else if ((theta > (Math.PI - rectAtan)) || (theta <= -(Math.PI - rectAtan))) {
+        region = 3;
+    } else {
+        region = 4;
+    }
+
+    var edgePoint = {x: rect.width/2, y: rect.height/2};
+    var xFactor = 1;
+    var yFactor = 1;
+
+    switch (region) {
+        case 1: yFactor = -1; break;
+        case 2: yFactor = -1; break;
+        case 3: xFactor = -1; break;
+        case 4: xFactor = -1; break;
+    }
+
+    if ((region === 1) || (region === 3)) {
+        edgePoint.x += xFactor * (rect.width / 2.);                                     // "Z0"
+        edgePoint.y += yFactor * (rect.width / 2.) * tanTheta;
+    } else {
+        edgePoint.x += xFactor * (rect.height / (2. * tanTheta));                        // "Z1"
+        edgePoint.y += yFactor * (rect.height /  2.);
+    }
+
+    return edgePoint;
+};

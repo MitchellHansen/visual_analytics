@@ -45,16 +45,5 @@ $("#slider-panel").append(string);
 }
 
 $(document).ready(function() {
-    build();
-    build();
-    build();
-    build();
-    build();
-    build();
-    build();
-    build();
-    build();
-    build();
-    build();
-    build();
+
 });
