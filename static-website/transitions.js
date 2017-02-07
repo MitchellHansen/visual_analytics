@@ -23,13 +23,15 @@ function transfer_back(){
     }
     else if (screen == screen_enum.TEST_EDIT) {
         toggle_test_edit();
-        screen == screen_enum.ADMIN_HOME;
+        screen = screen_enum.ADMIN_HOME;
     }
     else if (screen == screen_enum.TEST_VIEW) {
         toggle_test_view();
-        screen == screen_enum.ADMIN_HOME;
+        screen = screen_enum.ADMIN_HOME;
     }
     else if (screen == screen_enum.TEMPLATE_EDIT) {
+        toggle_template_edit();
+        screen = screen_enum.ADMIN_HOME;
     }
     else if (screen == screen_enum.ADMIN_HOME){
         toggle_admin_view();
@@ -108,12 +110,12 @@ function toggle_test_edit(){
 
 function toggle_template_edit(){
     $("#main-admin-panel").slideToggle();
-    $("#admin-test-view-panel").slideToggle();
+    $("#template-edit-admin-panel").slideToggle();
 
-    if (screen == screen_enum.TEST_VIEW)
+    if (screen == screen_enum.TEMPLATE_EDIT)
         screen = screen_enum.HOME;
     else
-        screen = screen_enum.TEST_VIEW;
+        screen = screen_enum.TEMPLATE_EDIT;
 }
 
 function toggle_admin_view(){

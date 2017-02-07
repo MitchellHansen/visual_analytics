@@ -5,6 +5,21 @@ function set_click(graph, data_point){
     graph_arr[graph]
 }
 
+$(document).ready(function() {
+    build();
+    build();
+    build();
+    build();
+    build();
+    build();
+    build();
+    build();
+    build();
+    build();
+    build();
+    build();
+});
+
 function build(){
 
     var svg_base = $(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200">`);
@@ -95,7 +110,7 @@ function build(){
     //});
 
     // Fun little hack because Jquery sucks
-    //svg_base.html(function(){return this.innerHTML});
+    svg_base.html(function(){return this.innerHTML});
 
     graph_arr[graph_arr.length-1].push(svg_base);
     $("#svg-row").append(svg_base);

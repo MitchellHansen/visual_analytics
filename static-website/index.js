@@ -131,16 +131,16 @@ function populate_admin_page_active_tests(test_statuses){
             $(elem).attr("id", id);
 
             // Get it's status
-            if (test_statuses[key] == "RUNNING"){
+            if (test_statuses[key] == 1){
 
                 // Set the right hand symbol text & the left hand test name text
                 $(elem).children().children().last().text("⏲");
             }
-            else  if (test_statuses[key] == "PARKED"){
+            else  if (test_statuses[key] == 3){
 
                 $(elem).children().children().last().text("✔");
             }
-            else  if (test_statuses[key] == "COMPLETE"){
+            else  if (test_statuses[key] == 2){
 
                 $(elem).children().children().last().text("🛑");
             }

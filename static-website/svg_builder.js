@@ -44,6 +44,3 @@ $("#slider-panel").append(string);
 
 }
 
-$(document).ready(function() {
-
-});
