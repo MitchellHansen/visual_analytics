@@ -18,9 +18,6 @@ mod_auth = Blueprint('auth', __name__, url_prefix='/auth')
 def index():
     return render_template("auth/index.html")
 
-@mod_auth.route('/about')
-def about():
-    return 'Visual Analytics is a team that...'
 
 @mod_auth.route('/training')
 def training():
@@ -40,58 +37,47 @@ def admin_login():
     else:
         admin['email'] = email
         admin['status'] = 'Success'
-    return json.dumps(admin)
+    return jsonify(admin)
 
 @mod_auth.route('/auth/get_test_set_statuses')
 def get_test_set_statuses():
     login_token = request.json['login_token']
-    '''
-    if(request.json['filters']=='None'){
-        filters = 'None'
-    }else{
-        filters = request.json['filters']
-    }
-    '''
+    filters = request.json['filter']
+
     cursor = mysql.connect().cursor()
-    cursor.execute("SELECT test_set_id,status from test_set_results")
+    cursor.execute("SELECT * from test_set_results where status='" + 'filters")
     data = cursor.fetchone()
     if data is None:
         return "No admin found with that email and password"
     else:
-        return json.dumps(data)
+        return jsonify(data)
 
 @mod_auth.route('/auth/get_test_templates')
 def get_test_templates():
     login_token = request.json['login_token']
-    test_set_id = request.json['test_set_id']
-    '''
-    if(request.json['filters']=='None'){
-        filters = 'None'
-    }else{
-        filters = request.json['filters']
-    }
-    '''
+    filters = request.json['filter']
+
     cursor = mysql.connect().cursor()
-    cursor.execute("SELECT * FROM test_sets WHERE test_set_id=test_set_id")
+    cursor.execute("SELECT * FROM test_sets_results WHERE status=filters")
     data = cursor.fetchone()
     if data is None:
         return "There are no graphs for this test_set_id"
     else:
-        return json.dumps(data)
+        return jsonify(data)
 
 
 @mod_auth.route('/auth/trial_log_in', methods=['GET', 'POST'])
 def trial_log_in():
     app_user_id = request.json['login_code']
-    test_set_id = request.json['test_set_id']
+    #test_set_id = request.json['test_set_id']
 
     user = {}
     cursor = mysql.connect().cursor()
-    cursor.execute("SELECT * from test_sets where app_user_id='" + app_user_id + "' and test_set_id='" + test_set_id + "'")
+    cursor.execute("SELECT * from test_sets where app_user_id='" + 'app_user_id ")
     data = cursor.fetchone()
     if data is None:
         return "Invalid User"
     else:
         user['app_user_id'] = app_user_id
         user['status'] = 'Success'
-    return json.dumps(user)
+    return jsonify(user)

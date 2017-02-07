@@ -40,7 +40,7 @@ function trial_login_handler(){
     var trial_data = trial_login(login_code[0].value);
 
     //toggle_trial_view();
-
+    
     // Start trial
 }
 
@@ -205,9 +205,3 @@ function set_trial_selection(trial_name){
     $("#" + selected_trial).children().children().first().toggleClass("w3-green");
 
 }
-
-
-
-
-
-
