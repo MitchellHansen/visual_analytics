@@ -5,9 +5,9 @@ var selected_trial = "";
 var selected_template = "";
 
 window.onload = function(e){
-    admin_login_handler();
-    selected_trial = "test1";
-    view_trial_handler();
+    //admin_login_handler();
+    //selected_trial = "test1";
+    //view_trial_handler();
 
 };
 
