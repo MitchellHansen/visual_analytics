@@ -105,6 +105,7 @@ function build(){
     }
 
 
+
     //$(svg_base).click(function() {
         //alert( "Handler for .click() called." );
     //});
@@ -114,6 +115,7 @@ function build(){
 
     graph_arr[graph_arr.length-1].push(svg_base);
     $("#svg-row").append(svg_base);
+
 
 }
 

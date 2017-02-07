@@ -108,9 +108,3 @@ function set_trial_selection(trial_name){
     $("#" + selected_trial).children().children().first().toggleClass("w3-green");
 
 }
-
-
-
-
-
-

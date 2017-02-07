@@ -30,13 +30,21 @@
   text-align: center;
   display: inline-block;
   position: relative;
-  margin-top: 15px;
+  left: 15px;
 }
 
-.button-placement-for-practice {
+.button-placement-2 {
   border: none;
   text-align: center;
   display: inline-block;
-  position: static;
+  position: relative;
   margin-top: 15px;
+}
+.result-framing {
+    margin-left: 80px;
+    margin-right: 80px;
+    border-top: 5px solid #334477;
+    border-left: 5px solid #334477;
+    border-right: 5px solid #334477;
+    border-bottom: 15px solid #141b2f;
 }
