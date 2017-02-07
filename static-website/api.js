@@ -72,37 +72,31 @@ function get_test_set_statuses(){
     // {0, ANY} {1, RUNNING} {2, COMPLETE} {3, PARKED}
     var filter = $("#test-status-list-filter-select").val();
 
-//    $.ajax({
-//
-//        url: "/auth/get_test_set_statuses",
-//        contentType: "application/json; charset=utf-8",
-//        type: "POST",
-//        async: false,
-//
-//        data :{
-//            admin_token  : token,
-//            list_filter  : filter
-//        },
-//
-//        success: function(result){
-//
-//            console.log(result);
-//
-//        }
-//    });
+   $.ajax({
 
-    var dummy_data = {"test1":"RUNNING", "test2":"RUNNING", "test3":"COMPLETE", "test4":"PARKED", "test5":"COMPLETE"};
+       url: "http://68.186.100.115/auth/get_test_set_statuses",
+       contentType: "application/json;charset=UTF-8",
+       type: "POST",
+       async: true,
 
-    // Lets just pretend that returns success
-    var result = "success";
+       data :JSON.stringify({
+           "login_token":"asdfioajsdfoi",
+           "filters": "0"
+       }),
+       dataType: "json",
+       success: function(result){
 
-    if (result == "success"){
-        populate_admin_page_active_tests(dummy_data);
-        //populate_admin_page_active_tests(result.test_statuses);
-    }
-    else{
-        // Show help message
-    }
+           console.log(result);
+
+           populate_admin_page_active_tests(result);
+
+       },
+         error: function(e) {
+    console.log(e);
+    },
+   });
+
+
 }
 
 

@@ -1,16 +1,21 @@
- .hover_group:hover {
+.hover_group:hover {
     opacity: 0.5;
-    fill: red;
+    fill: green;
 }
 
 .hover_group {
-    fill: white;
+    fill: transparent;
     stroke: black;
+    stroke-opacity:0.3;
+}
+
+.svg_color {
+    fill: white;
+    stroke:black;
 }
 
 .hidden {
     display: none;
-
 }
 
 .hide-scrollbar {
