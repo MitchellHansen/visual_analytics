@@ -53,7 +53,7 @@ Visual Analytics requires the following.
 Download and extract the latest release.
 
 ####Flask 
-This project requires Flask 0.12 +
+This project requires [Flask 0.12 +](https://www.fullstackpython.com/flask.html)
 
 If you are on Mac OS X or Linux, chances are that the following command will work for you:
 
@@ -87,7 +87,7 @@ $ sudo pip install Flask
 
 
 ####Phython 
-This project requires Phython 2.7.12+
+This project requires [Phython 2.7.12+](https://www.python.org/downloads/)
 *ubuntu comes with phython pre installed 
 
 check version 
@@ -108,7 +108,7 @@ $ sudo apt-get install -y python3-pip
 This project requires [Ubuntu 16.04.1+](https://www.ubuntu.com/download/desktop/install-ubuntu-desktop) 
 
 ####MySQL
-This project requires MySQL 5.7.17+
+This project requires [MySQL 5.7.17+](https://dev.mysql.com/downloads/)
 
 The short version of the installation 
 ```sh
