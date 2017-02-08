@@ -3,9 +3,9 @@ USE `visual`;
 
 DROP TABLE IF EXISTS `graph_type`;
 
-CREATE TABLE `graph_type` (
-  `graph_type_id` int(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`graph_type_id`)
+CREATE TABLE graph_type (
+  graph_type_id int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (graph_type_id)
 /*Add data points*/
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

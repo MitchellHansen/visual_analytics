@@ -39,20 +39,22 @@ def get_test_set_statuses():
     login_token = None
     filters = None
     login_token = request.json['login_token']
-    filters = request.json['filters']
-    #cursor = mysql.connect().cursor()
-    #cursor.execute("SELECT * from test_set_results where status='" + filters + "'")
-    #data = cursor.fetchone()
-    #if data is None:
-    #    return "No tests found"
-    test_set_statuses = {}
-    test_set_statuses['test1'] = 1
-    test_set_statuses['test2'] = 2
-    test_set_statuses['test3'] = 3
+    #filters = request.json['filters']
+    filters = 3
+    cursor = mysql.connect().cursor()
+    cursor.execute("SELECT * from test_set_result where status='" + filters + "'")
+    data = cursor.fetchone()
+    if data is None:
+        return "No tests found"
+    #test_set_statuses = {}
+    #test_set_statuses['test1'] = 1
+    #test_set_statuses['test2'] = 2
+    #test_set_statuses['test3'] = 3
+
     if(login_token==None or filters==None):
-	return 'Broken dog'
+	    return 'Broken dog'
     else:
-	return json.dumps(test_set_statuses)
+	return json.dumps(data)
 
 @mod_auth.route('/get_test_templates')
 def get_test_templates():
@@ -60,7 +62,7 @@ def get_test_templates():
     filters = request.json['filter']
 
     cursor = mysql.connect().cursor()
-    cursor.execute("SELECT * FROM test_sets_results WHERE status=filters")
+    cursor.execute("SELECT * FROM test_set_result WHERE status=filters")
     data = cursor.fetchone()
     if data is None:
         return "There are no graphs for this test_set_id"
@@ -72,15 +74,15 @@ def get_test_templates():
 def trial_log_in():
     app_user_id = None
     app_user_id = request.json['login_code']
-    #test_set_id = request.json['test_set_id']
 
     user = {}
     cursor = mysql.connect().cursor()
     cursor.execute("SELECT * from test_sets where app_user_id='" + app_user_id +"'")
     data = cursor.fetchone()
     if data is None:
-        return "Invalid User"
+        return json.dumps("Invalid User")
     else:
         user['app_user_id'] = app_user_id
         user['status'] = 'Success'
     return json.dumps(user)
+
