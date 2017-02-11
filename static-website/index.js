@@ -1,6 +1,6 @@
 
 var logged_in = false;
-var token = "asdofijwer";
+var token = "";
 var selected_trial = "";
 var selected_template = "";
 
@@ -120,27 +120,25 @@ function populate_admin_page_active_tests(test_statuses){
     $("#test-status-list").empty();
 
     // For each of the tests the we received back
+    for (let index = 0; index < test_statuses.length; index += 2){
 
-    for (var key in test_statuses) {
-        if (test_statuses.hasOwnProperty(key)) {
-
-            var id = "test-" + key;
+            var test_set_id = test_statuses[index];
 
             // Clone the template element
             var elem = $("#test-status-list-element-template").clone();
-            $(elem).attr("id", id);
+            $(elem).attr("id", test_set_id);
 
             // Get it's status
-            if (test_statuses[key] == 1){
+            if (test_statuses[index+1] == 1){
 
                 // Set the right hand symbol text & the left hand test name text
                 $(elem).children().children().last().text("⏲");
             }
-            else  if (test_statuses[key] == 3){
+            else  if (test_statuses[index+1] == 3){
 
                 $(elem).children().children().last().text("✔");
             }
-            else  if (test_statuses[key] == 2){
+            else  if (test_statuses[index+1] == 2){
 
                 $(elem).children().children().last().text("🛑");
             }
@@ -149,18 +147,18 @@ function populate_admin_page_active_tests(test_statuses){
             }
 
             // Set the button text
-            $(elem).children().children().first().text(key);
+            $(elem).children().children().first().text(test_set_id);
 
             // Set the onclick for the button
-             $(elem).children().children().first().attr("onclick", "set_trial_selection(\"" + id + "\")");
+             $(elem).children().children().first().attr("onclick", "set_trial_selection(\"" + test_set_id + "\")");
 
             // Append our cloned element to the scroll box
             $("#test-status-list").append(elem);
 
             // Make sure that we un-hid it
-            $("#" + id).show();
-        }
+            $("#" + test_set_id).show();
     }
+
 }
 
 function populate_admin_page_test_templates(test_templates){

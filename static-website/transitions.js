@@ -130,7 +130,7 @@ function toggle_template_edit(){
         screen = screen_enum.TEMPLATE_EDIT;
 }
 
-function toggle_admin_view(){
+function toggle_admin_view() {
     $("#home-row").slideToggle();
     $("#navbar-row").toggleClass("hidden");
     //$("#slider-container").slideToggle();
@@ -138,15 +138,15 @@ function toggle_admin_view(){
 
     if (screen == screen_enum.ADMIN_HOME)
         screen = screen_enum.HOME;
-    else
+    else {
         screen = screen_enum.ADMIN_HOME;
-
-    // Try and get the test-set names and statuses
-    if (!get_test_set_statuses()){
-        // error
-    }
-    if (!get_test_template_data()){
-        // error
+        // Try and get the test-set names and statuses
+        if (!get_test_set_statuses()){
+            // error
+        }
+        if (!get_test_template_data()){
+            // error
+        }
     }
 }
 
