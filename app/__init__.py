@@ -13,7 +13,7 @@ mysql = MySQL()
 
 app.config['MYSQL_DATABASE_USER'] = 'root'
 app.config['MYSQL_DATABASE_PASSWORD'] = 'kat'
-app.config['MYSQL_DATABASE_DB'] = 'va'
+app.config['MYSQL_DATABASE_DB'] = 'visual_db'
 mysql.init_app(app)
 
 # Configurations
