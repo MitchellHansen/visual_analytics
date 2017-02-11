@@ -23,8 +23,9 @@ def get_test_set_statuses():
     login_token = None
     filters = None
     login_token = request.json['login_token']
+    if(check_token(login_token) is False):
+        return json.dumps({'Status': "Invalid Token"})
     filters = request.json['filters']
-    print("FITLERS:", filters)
     cursor = mysql.connect().cursor()
     if(filters==0 or filters=="0"):
         cursor.execute("SELECT test_set_id, status from test_set_result")
@@ -42,17 +43,14 @@ def get_test_set_details():
     login_token = None
     filters = None
     login_token = request.json['login_token']
+    if(check_token(login_token) is False):
+        return json.dumps({'Status': "Invalid Token"})
     filters = request.json['filters']
     cursor = mysql.connect().cursor()
     cursor.execute("SELECT * from test_set_result where status={0}".format(filters))
     data = cursor.fetchone()
     if data is None:
         return "No tests found"
-    #test_set_statuses = {}
-    #test_set_statuses['test1'] = 1
-    #test_set_statuses['test2'] = 2
-    #test_set_statuses['test3'] = 3
-
     if(login_token==None or filters==None):
         return 'Broken dog'
     else:
@@ -61,8 +59,11 @@ def get_test_set_details():
 @mod_auth.route('/get_test_templates')
 def get_test_templates():
     filters = request.json['filters']
+    login_token = request.json['login_token']
+    if(check_token(login_token) is False):
+        return json.dumps({'Status': "Invalid Token"})
     cursor = mysql.connect().cursor()
-    cursor.execute("SELECT * FROM test_set_result WHERE status=filters")
+    cursor.execute("SELECT * FROM test_set_result WHERE status={0}".format(filters))
     data = cursor.fetchone()
     if data is None:
         return "There are no graphs for this test_set_id"
@@ -77,7 +78,7 @@ def trial_log_in():
 
     user = {}
     cursor = mysql.connect().cursor()
-    cursor.execute("SELECT * from test_sets where app_user_id='" + app_user_id +"'")
+    cursor.execute("SELECT * from test_sets where app_user_id={0}".format(app_user_id))
     data = cursor.fetchone()
     if data is None:
         return json.dumps("Invalid User")
@@ -85,6 +86,16 @@ def trial_log_in():
         user['app_user_id'] = app_user_id
         user['status'] = 'Success'
     return json.dumps(user)
+
+def check_token(token):
+    token = token
+    cursor = mysql.connect().cursor()
+    cursor.execute("SELECT * FROM admin where uuid=\'{0}\'".format(token))
+    data = cursor.fetchone()
+    if (data is None):
+        return False
+    else:
+	return True
 
 @mod_auth.route('/admin_login', methods=['GET','POST'])
 def admin_login():
