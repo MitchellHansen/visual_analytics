@@ -4,63 +4,39 @@
 // RECEIVES     : Unique login token
 // ============================================================================================================
 
-function admin_login(username, password){
+function admin_login(email, password){
 
-//    $.ajax({
-//
-//        url: "/auth/admin_login",
-//        contentType: "application/json; charset=utf-8",
-//        type: "POST",
-//        async: false,
-//
-//        data :{
-//            email : $('emailInput').val(),
-//            password : $('passwordInput').val()
-//        },
-//
-//        // We are going to need a way to verify our logged in status, while
-//        // disallowing users the access to a "logged_in=true" variable.
-//        // We could return a "one time code" when one logs in
-//        success: function(result){
-//
-//            // auth_token = result.key;
-//            // From that we could then interact with the api using this token
-//
-//            console.log(result);
-//
-//            if (result == "success"){
-//                logged_in = true;
-//                show_admin_window();
-//            }
-//            else{
-//                // Show help message
-//            }
-//        }
-//
-//        // The only difficulty here is that we will need to cache these codes for a time period.
-//        // Perhaps we can have another table which contains all the generated codes and their expiration
-//        // stamp along with the admin ID for which they were generated for.
-//
-//    });
+    $.ajax({
 
-    // Lets just pretend that returns success
-    var result = "success";
-    var token = "abcdefg";
+        url: "http://68.186.100.115/auth/admin_login",
+        contentType: "application/json;charset=UTF-8",
+        type: "POST",
+        async: true,
 
-    if (result == "success"){
-        return token;
-    }
-    else{
-        // Show help message
-    }
+        data :JSON.stringify({
+            "email": email,
+            "password": password
+        }),
 
+        dataType: "json",
+        success: function(result){
+
+            console.log(result);
+        },
+
+        error: function(e) {
+
+            alert("Api call failed");
+            console.log(e);
+        },
+    });
 }
 
 
 //  API CALL TO :  "/auth/get_test_set_statuses"
 //  SENDS       : Login Token, Optional filter
-//  RECEIVES    : JSON list of test set names and their statuses
-//  dummy_data = {"test1":"RUNNING", "test2":"RUNNING", "test3":"COMPLETE", "test4":"PARKED", "test5":"COMPLETE"};
+//  RECEIVES    : JSON list of test set id and their statuses
+//  dummy_data = {"test1":"0", "test2":"1", "test3":"2", "test4":"3", "test5":"2"};
 // ============================================================================================================
 
 function get_test_set_statuses(){
@@ -72,32 +48,35 @@ function get_test_set_statuses(){
     // {0, ANY} {1, RUNNING} {2, COMPLETE} {3, PARKED}
     var filter = $("#test-status-list-filter-select").val();
 
-   $.ajax({
+    $.ajax({
 
-       url: "http://68.186.100.115/auth/get_test_set_statuses",
-       contentType: "application/json;charset=UTF-8",
-       type: "POST",
-       async: true,
+        url: "http://68.186.100.115/auth/get_test_set_statuses",
+        contentType: "application/json;charset=UTF-8",
+        type: "POST",
+        async: true,
 
-       data :JSON.stringify({
-           "login_token":"asdfioajsdfoi",
-           "filters": "0"
-       }),
-       dataType: "json",
-       success: function(result){
+        data :JSON.stringify({
+        "login_token":"asdfioajsdfoi",
+        "filters": filter
+        }),
 
-           console.log(result);
+        dataType: "json",
+        success: function(result){
 
-           populate_admin_page_active_tests(result);
+            console.log(result);
 
-       },
-         error: function(e) {
-    console.log(e);
-    },
-   });
+            populate_admin_page_active_tests(result);
 
+        },
+
+        error: function(e) {
+            alert("Api call failed");
+            console.log(e);
+        },
+    });
 
 }
+
 
 
 //  API CALL TO : "/auth/get_test_templates"
@@ -149,7 +128,7 @@ function get_test_template_data(){
 }
 
 
-//  API CALL TO : "/auth/trial_log_in"
+//  API CALL TO : "/auth/get_test_set_details"
 //  SENDS       : Log in code
 //  RECEIVES    : JSON object with the trial info
 //  dummy_data = {"trial_name":"trial-1",
@@ -159,24 +138,37 @@ function get_test_template_data(){
 //                "close-time":"timestamp of some sort"
 //                }
 // ============================================================================================================
-function trial_login(login_code){
+function get_test_set_details(login_code){
 
+    if (!logged_in || token == ""){
+        // Not logged in
+    }
 
-//    $.ajax({
-//
-//        url: "/auth/trial_log_in",
-//        contentType: "application/json; charset=utf-8",
-//        type: "POST",
-//        async: false,
-//
-//        data :{
-//            token : token
-//        },
-//
-//        success: function(result){
-//            console.log(result);
-//        }
-//    });
+    $.ajax({
+
+        url: "http://68.186.100.115/auth/get_test_set_details",
+        contentType: "application/json;charset=UTF-8",
+        type: "POST",
+        async: true,
+
+        data :JSON.stringify({
+            "login_token":token,
+            "test_id": selected_trial
+        }),
+
+        dataType: "json",
+        success: function(result){
+
+            console.log(result);
+        },
+
+        error: function(e) {
+
+            alert("Api call failed");
+            console.log(e);
+
+        },
+    });
 
   dummy_data = {"trial_name":"trial-1",
                 "total_tests":"5",
