@@ -1,3 +1,7 @@
+.selected {
+    fill: green !important;
+}
+
 .hover_group:hover {
     opacity: 0.5;
     fill: green;

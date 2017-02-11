@@ -1,10 +1,4 @@
 
-var graph_arr = [];
-
-function set_click(graph, data_point){
-    graph_arr[graph]
-}
-
 $(document).ready(function() {
     build();
     build();
@@ -20,109 +14,126 @@ $(document).ready(function() {
     build();
 });
 
+
+
+var graph_arr = [];
+
+// Holds the currently loaded graphs & their jquery DOM object
+var training_graph_arr = [];
+var testing_graph_arr = [];
+
+let previous_testing_graph_slice;
+let previous_training_graph_slice;
+
+let selected_training_graph_slice = {};
+
+function testing_graph_click(graph_index, data_index){
+    console.log(graph_index + ", " + data_index);
+
+}
+
+function training_graph_click(graph_index, data_index){
+    console.log(graph_index + ", " + data_index);
+
+    if (selected_training_graph_slice[graph_index] != null){
+        selected_training_graph_slice[graph_index].toggleClass("selected");
+    }
+
+    let point_count = training_graph_arr[0].data.length;
+
+    selected_training_graph_slice[graph_index] = $($($("#svg-row").children()[graph_index]).children()[point_count + data_index]);
+
+    previous_training_graph_slice.toggleClass("selected");
+}
+
 function build(){
 
-    var svg_base = $(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200">`);
+    let graph_data = {}
 
-    var string = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"></svg>`;
+    let svg_base = $(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"></svg>`);
 
-    var data = [];
-    for (var i = 0; i < 20; i++){
-        data.push(Math.floor((Math.random() * 100) + 1));
+    let data_points = [];
+    for (let i = 0; i < 20; i++){
+        data_points.push(Math.floor((Math.random() * 100) + 1));
     }
+    graph_data.data = data_points;
 
-    graph_arr.push(data);
 
-    var point_list = "";
-    var data_points = data.length;
-    var center_point = [100, 100];
-    var rectangle = {width:200, height:200};
+    let data_point_count = data_points.length;
+    let center    = {x:100, y:100};
+    let rectangle = {width:200, height:200};
 
-    for (var i = 0; i < data_points; i++){
+    for (let i = 0; i < data_point_count; i++){
 
-        var base_vector1 = [data[i], 0];
+        // Initial vector that we'll rotate
+        let base_vector1 = {x:data_points[i], y:0};
+        let base_vector2 = {x:0, y:0};
 
-        if (i == data_points - 1)
-            var base_vector2 = [data[0], 0];
+        // On the last point wrap around
+        if (i == data_point_count - 1)
+            base_vector2 = {x:data_points[0], y:0};
         else
-            var base_vector2 = [data[i+1], 0];
+            base_vector2 = {x:data_points[i+1], y:0};
 
-        var theta1 = (2 * Math.PI / data_points) * i;
-        var theta2 = (2 * Math.PI / data_points) * (i + 1);
+        let theta1 = (2 * Math.PI / data_point_count) * i;
+        let theta2 = (2 * Math.PI / data_point_count) * (i + 1);
 
-        var x1 = base_vector1[0] * Math.cos(theta1) - base_vector1[1] * Math.sin(theta1);
-        var y1 = base_vector1[1] * Math.cos(theta1) + base_vector1[0] * Math.sin(theta1);
+        let x1 = base_vector1.x * Math.cos(theta1) - base_vector1.y * Math.sin(theta1);
+        let y1 = base_vector1.y * Math.cos(theta1) + base_vector1.x * Math.sin(theta1);
 
-        var x2 = base_vector2[0] * Math.cos(theta2) - base_vector2[1] * Math.sin(theta2);
-        var y2 = base_vector2[1] * Math.cos(theta2) + base_vector2[0] * Math.sin(theta2);
+        let x2 = base_vector2.x * Math.cos(theta2) - base_vector2.y * Math.sin(theta2);
+        let y2 = base_vector2.y * Math.cos(theta2) + base_vector2.x * Math.sin(theta2);
 
-        var g = "";
-        g += `<g class="svg_color"><polygon points="`;
-        g += center_point[0] + "," + center_point[1] + " ";
-        g += (x1 + center_point[0]) + "," + (y1 + center_point[1]) + " ";
-        g += (x2 + center_point[0]) + "," + (y2 + center_point[1]) + " ";
-        g += `" style="stroke-width:1"/></g>`;
+        let dom_object = $("<g class=\"svg_color\"><polygon points=\"\" style=\"stroke-width:1\"/></g>");
 
-        var jquery_g = $(g);
+        // The SVG polygon vertex coordinates
+        let coordinates = center.x + "," + center.y + " " +
+                          (x1 + center.x) + "," + (y1 + center.y) + " " +
+                          (x2 + center.x) + "," + (y2 + center.y) + " ";
 
-        svg_base.append(jquery_g);
-        svg_base.children()[svg_base.children().length-1].onclick = function() {
-           alert("asdasdfasfasfdf");
-        };
+        dom_object.children().first().attr("points", coordinates);
+
+        svg_base.append(dom_object);
     }
 
-    for (var i = 0; i < data_points; i++) {
+    for (let i = 0; i < data_point_count; i++) {
 
-        var theta1 = (2 * Math.PI / data_points) * i;
-        var theta2 = (2 * Math.PI / data_points) * (i + 1);
+        let theta1 = (2 * Math.PI / data_point_count) * i;
+        let theta2 = (2 * Math.PI / data_point_count) * (i + 1);
 
-        var onclick_string = "onclick=\"set_click(" + graph_arr.length + "," + i + ")\"";
+        let dom_object = $(`<g class="hover_group"><polygon points=\"\" style=\"stroke-width:1\"/></polygon></g>`);
 
-        var g = $(`<g class="hover_group"></g>`);
+        let coordinates = center.x + "," + center.y + " " +
+                          (edgeOfView(rectangle, theta1).x) + "," + (edgeOfView(rectangle, theta1).y) + " " +
+                          (edgeOfView(rectangle, theta2).x) + "," + (edgeOfView(rectangle, theta2).y) + " ";
 
-        var polygon = "";
-        polygon += `<polygon points="`;
-        polygon += center_point[0] + "," + center_point[1] + " ";
-        polygon += (edgeOfView(rectangle, theta1).x) + "," + (edgeOfView(rectangle, theta1).y) + " ";
-        polygon += (edgeOfView(rectangle, theta2).x) + "," + (edgeOfView(rectangle, theta2).y) + " ";
-        polygon += `" style="stroke-width:1"/></polygon>`;
+        dom_object.children().first().attr("points", coordinates);
 
-        var jquery_polygon = $(polygon);
+        let onclick_string = "training_graph_click(" + training_graph_arr.length + "," + i + ")";
 
+        dom_object.children().first().attr("onclick", onclick_string);
 
-        //$(jquery_polygon).click(
-
-        g.append(jquery_polygon);
-
-        //var jquery_g = $(g);
-        // $(g).onclick = function() {
-        //    alert("asdf");
-        // };
-        svg_base.append(g);
-        svg_base.children()[svg_base.children().length-1].onclick = function() {
-           alert("asdf");
-        };
+        dom_object.html(function(){return this.innerHTML});
+        svg_base.append(dom_object);
     }
 
 
-
-    //$(svg_base).click(function() {
-        //alert( "Handler for .click() called." );
-    //});
+    graph_data.svg_g = svg_base;
 
     // Fun little hack because Jquery sucks
     svg_base.html(function(){return this.innerHTML});
 
-    graph_arr[graph_arr.length-1].push(svg_base);
+    training_graph_arr.push(graph_data);
+
     $("#svg-row").append(svg_base);
 
 
 }
 
-// Thanks stackoverflow
+// Thanks stack overflow
 function edgeOfView(rect, deg) {
-    var twoPI = Math.PI*2;
-    var theta = deg;//deg * Math.PI / 180;
+    let twoPI = Math.PI*2;
+    let theta = deg;//deg * Math.PI / 180;
 
     while (theta < -Math.PI) {
         theta += twoPI;
@@ -132,9 +143,9 @@ function edgeOfView(rect, deg) {
         theta -= twoPI;
     }
 
-    var rectAtan = Math.atan2(rect.height, rect.width);
-    var tanTheta = Math.tan(theta);
-    var region;
+    let rectAtan = Math.atan2(rect.height, rect.width);
+    let tanTheta = Math.tan(theta);
+    let region;
 
     if ((theta > -rectAtan) && (theta <= rectAtan)) {
         region = 1;
@@ -146,9 +157,9 @@ function edgeOfView(rect, deg) {
         region = 4;
     }
 
-    var edgePoint = {x: rect.width/2, y: rect.height/2};
-    var xFactor = 1;
-    var yFactor = 1;
+    let edgePoint = {x: rect.width/2, y: rect.height/2};
+    let xFactor = 1;
+    let yFactor = 1;
 
     switch (region) {
         case 1: yFactor = -1; break;

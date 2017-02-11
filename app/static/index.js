@@ -1,6 +1,6 @@
 
 var logged_in = false;
-var token = "asdofijwer";
+var token = "";
 var selected_trial = "";
 var selected_template = "";
 
