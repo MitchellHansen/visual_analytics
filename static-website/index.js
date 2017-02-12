@@ -24,7 +24,7 @@ function admin_login_handler(){
 
     // Get the creds from the input, and pass them to the api
     var admin_credentials_combo = $("#admin-login-form").serializeArray();
-    token = admin_login(admin_credentials_combo[0].value, admin_credentials_combo[1].value);
+    admin_login(admin_credentials_combo[0].value, admin_credentials_combo[1].value);
 
     if (token){
         // Sign in invalid
@@ -37,7 +37,9 @@ function trial_login_handler(){
 
     // Get the login token from the user and get the trial data associated with that login
     var login_code = $("#trial-login-form").serializeArray();
-    var trial_data = trial_login(login_code[0].value);
+    //var trial_data = trial_login(login_code[0].value);
+
+    trial_login(login_code[0].value);
 
     //toggle_trial_view();
     
@@ -60,7 +62,7 @@ function view_trial_handler(){
         // error
     }
     else {
-        var details = get_trial_details();
+        var details = get_test_set_details();
         populate_view_test_page(details);
         toggle_test_view();
     }

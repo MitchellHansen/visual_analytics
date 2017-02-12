@@ -11,7 +11,7 @@ function admin_login(email, password){
         url: "http://68.186.100.115/auth/admin_login",
         contentType: "application/json;charset=UTF-8",
         type: "POST",
-        async: true,
+        async: false,
 
         data :JSON.stringify({
             "email": email,
@@ -22,6 +22,7 @@ function admin_login(email, password){
         success: function(result){
 
             console.log(result);
+            token = result[0];
         },
 
         error: function(e) {
@@ -31,6 +32,41 @@ function admin_login(email, password){
         },
     });
 }
+
+
+// API call to  : "/auth/trial_login"
+// SENDS        : Username, Password
+// RECEIVES     : Unique login token
+// ============================================================================================================
+
+function trial_login(login_uuid){
+
+    $.ajax({
+
+        url: "http://68.186.100.115/auth/trial_login",
+        contentType: "application/json;charset=UTF-8",
+        type: "POST",
+        async: false,
+
+        data :JSON.stringify({
+            "login_uuid": login_uuid
+        }),
+
+        dataType: "json",
+        success: function(result){
+
+            console.log(result);
+            token = result[0];
+        },
+
+        error: function(e) {
+
+            alert("Api call failed");
+            console.log(e);
+        },
+    });
+}
+
 
 
 //  API CALL TO :  "/auth/get_test_set_statuses"
@@ -56,7 +92,7 @@ function get_test_set_statuses(){
         async: true,
 
         data :JSON.stringify({
-        "login_token":"asdfioajsdfoi",
+        "login_token":token,
         "filters": filter
         }),
 
@@ -132,7 +168,7 @@ function get_test_template_data(){
 //  SENDS       : Log in code
 //  RECEIVES    : JSON object with the trial info
 //  dummy_data = {"trial_name":"trial-1",
-//                "total-tests":"5",
+//                "test-list": [1, 2, 3, 4, 5],
 //                "tests-complete":"3",
 //                "wait-time":"60",
 //                "close-time":"timestamp of some sort"
@@ -144,16 +180,16 @@ function get_test_set_details(login_code){
         // Not logged in
     }
 
-    $.ajax({
+    return $.ajax({
 
         url: "http://68.186.100.115/auth/get_test_set_details",
         contentType: "application/json;charset=UTF-8",
         type: "POST",
-        async: true,
+        async: false,
 
         data :JSON.stringify({
-            "login_token":token,
-            "test_id": selected_trial
+            "login_token": token,
+            "test_set_id": "Test1"
         }),
 
         dataType: "json",
@@ -166,80 +202,10 @@ function get_test_set_details(login_code){
 
             alert("Api call failed");
             console.log(e);
-
+            return "asdf";
         },
     });
 
-  dummy_data = {"trial_name":"trial-1",
-                "total_tests":"5",
-                "tests_complete":"3",
-                "wait_time":"60",
-                "time_left":"timestamp of some sort",
-                "status": "PARKED"
-                };
-
-    // Lets just pretend that returns success
-    var result = "success";
-
-    if (result == "success"){
-        return dummy_data;
-        //return result;
-    }
-    else{
-        console.log("Something went wrong");
-        console.log(result);
-    }
-}
-
-
-//  API CALL TO : "/auth/get_trial_details"
-//  SENDS       : auth_token, trial_id
-//  RECEIVES    : JSON object with the trial info
-//  dummy_data = {"trial_name":"trial-1",
-//                "total-tests":"5",
-//                "test_ids":"3",
-//                "wait-time":"60",
-//                "close-time":"timestamp of some sort"
-//                }
-// ============================================================================================================
-function get_trial_details(auth_token, trial_id){
-
-
-//    $.ajax({
-//
-//        url: "/auth/get_trial_details",
-//        contentType: "application/json; charset=utf-8",
-//        type: "POST",
-//        async: false,
-//
-//        data :{
-//            token : token
-//        },
-//
-//        success: function(result){
-//            console.log(result);
-//        }
-//    });
-
- dummy_data = {"trial_name":"trial-1",
-               "total_tests":"5",
-               "template_ids": [1, 2, 3, 4],
-               "user_ids" : ["asdf", "qwer", "zxcv", "rtg"],
-               "wait_time":"60",
-               "close_time":"timestamp of some sort"
-               }
-
-    // Lets just pretend that returns success
-    var result = "success";
-
-    if (result == "success"){
-        return dummy_data;
-        //return result;
-    }
-    else{
-        console.log("Something went wrong");
-        console.log(result);
-    }
 }
 
 
