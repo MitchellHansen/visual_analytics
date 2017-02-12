@@ -28,9 +28,9 @@ def get_test_set_statuses():
     filters = request.json['filters']
     cursor = mysql.connect().cursor()
     if(filters==0 or filters=="0"):
-        cursor.execute("SELECT test_set_id, status from test_set_result")
+        cursor.execute("SELECT test_set_id, status from test_set_details")
     else:
-        cursor.execute("SELECT test_set_id, status from test_set_result where status={0}".format(filters))
+        cursor.execute("SELECT test_set_id, status from test_set_details where status={0}".format(filters))
     data = cursor.fetchone()
     if data is None:
         return "No tests found"
@@ -41,20 +41,27 @@ def get_test_set_statuses():
 @mod_auth.route('/get_test_set_details', methods=['GET', 'POST'])
 def get_test_set_details():
     login_token = None
-    filters = None
+    test_set_id = None
     login_token = request.json['login_token']
     if(check_token(login_token) is False):
         return json.dumps({'Status': "Invalid Token"})
-    filters = request.json['filters']
-    cursor = mysql.connect().cursor()
-    cursor.execute("SELECT * from test_set_result where status={0}".format(filters))
-    data = cursor.fetchone()
-    if data is None:
-        return "No tests found"
-    if(login_token==None or filters==None):
-        return 'Broken dog'
-    else:
-        return json.dumps(data)
+    test_set_id = request.json['test_set_id']
+    print(test_set_id)
+    test_set_details={}
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * from test_set_details where test_set_id=\'{0}\'".format(test_set_id))
+    test_details = cursor.fetchall()
+    cursor.execute("SELECT login_uuid from test_set_user_login_id where test_set_id=\'{0}\'".format(test_set_id))
+    users = cursor.fetchall()
+    cursor.execute("SELECT template_id from test_set_template_list where test_set_id=\'{0}\'".format(test_set_id))
+    template_list = cursor.fetchall()
+    test_set_details ={
+        'test_details':test_details,
+	'users':users,
+        'template_list':template_list
+    }
+    return json.dumps(test_set_details)
 
 @mod_auth.route('/get_test_templates')
 def get_test_templates():
@@ -71,19 +78,18 @@ def get_test_templates():
         return json.dumps(data)
 
 
-@mod_auth.route('/trial_log_in', methods=['GET', 'POST'])
-def trial_log_in():
-    app_user_id = None
-    app_user_id = request.json['login_code']
+@mod_auth.route('/trial_login', methods=['GET', 'POST'])
+def trial_login():
+    login_uuid = None
+    login_uuid = request.json['login_uuid']
 
     user = {}
     cursor = mysql.connect().cursor()
-    cursor.execute("SELECT * from test_sets where app_user_id={0}".format(app_user_id))
+    cursor.execute("SELECT * from test_set_user_login_id where login_uuid=\'{0}\'".format(login_uuid))
     data = cursor.fetchone()
     if data is None:
         return json.dumps("Invalid User")
     else:
-        user['app_user_id'] = app_user_id
         user['status'] = 'Success'
     return json.dumps(user)
 
