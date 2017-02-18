@@ -1,6 +1,6 @@
 # Import flask dependencies
 from flask import Blueprint, request, render_template, \
-                  flash, g, session, redirect, url_for,jsonify, json
+                  flash, g, session, redirect, url_for,jsonify, json, make_response
 # Import password / encryption helper tools
 from werkzeug import check_password_hash, generate_password_hash
 # Import the database object from the main app module
@@ -11,6 +11,8 @@ from app.mod_auth.forms import LoginForm
 from app.mod_auth.models import User
 from app import mysql
 import uuid
+import csv
+import StringIO 
 # Define the blueprint: 'auth', set its url prefix: app.url/auth
 mod_auth = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -133,3 +135,53 @@ def admin_login():
         
 	cursor.execute("SELECT uuid FROM admin where email={0} and password={1}".format(email, password))
         return json.dumps(cursor.fetchone())
+
+@mod_auth.route('/submit_user_trial_results', methods=['GET', 'POST'])
+def submit_user_trial_results():
+    results = None
+    token = None
+    result = None
+    time = None
+    #result = request.json['results']
+    #time = request.json['time']
+    results = request.json['results']
+    token = request.json['login_uuid']
+    class_choice = []
+    selected_point = [] 
+    data_points = []
+    
+    for i in results:
+	class_choice.append(i['class'])
+	selected_point.append(i['selected_point'])
+	data_points.append(i['data'])
+    
+    class_choice = str(class_choice)
+    selected_point = str(selected_point)
+    data_points = str(data_points)
+
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    cursor.execute("UPDATE test_set_result SET result=\'{0}\', time=\'{1}\', selected_point=\'{2}\', class=\'{3}\', data_points=\'{4}\' WHERE login_uuid=\'{5}\' and class IS NULL".format('94', '45', selected_point, class_choice, data_points, token)) 
+    conn.commit()
+    return json.dumps("SUCCESS")
+
+@mod_auth.route('/export_csv', methods=['GET', 'POST'])
+def export_csv():
+    token = None
+    test_set_id = None
+    test_set_id = request.json['test_set_id']
+    token = request.json['login_token']
+    si = StringIO.StringIO()
+    cw = csv.writer(si)
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM  test_set_result INNER JOIN test_set_user_login_id on test_set_result.login_uuid = test_set_user_login_id.login_uuid WHERE test_set_id=\'{0}\''.format(test_set_id))
+    data = cursor.fetchall()
+    cw.writerow([i[0] for i in cursor.description])
+    cw.writerows(data)
+    response = make_response(si.getvalue())
+    response.headers['Content-Disposition'] = 'attachment; filename=report.csv'
+    response.headers["Content-type"] = "text/csv"
+    return response
+    
+
