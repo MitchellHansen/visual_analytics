@@ -190,6 +190,10 @@ function toggle_training_selection_view() {
 
 }
 function toggle_training_practice_view() {
+    training_graph_arr.push(build($("#svg-row")));
+    training_graph_arr.push(build($("#svg-row")));
+    training_graph_arr.push(build($("#svg-row")));
+    training_graph_arr.push(build($("#svg-row")));
     $("#training-selection").toggleClass("hidden");
     $("#training-practice").toggleClass("hidden");
 }

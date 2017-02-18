@@ -1,15 +1,26 @@
 
-var logged_in = false;
-var token = "";
+let credentials = {
+    "logged_in" : false,
+    "auth_token": ""
+};
+
+let login_uuid = "345634563-erth3--dfgsdfg";
+
 var selected_trial = "";
 var selected_template = "";
 
 window.onload = function(e){
-    //admin_login_handler();
-    //selected_trial = "test1";
-    //view_trial_handler();
+
+    $("#test-status-list-filter-select").change(function(){
+        get_test_set_statuses();
+    });
+
+    $("#test-template-filter").change(function(){
+        //();
+    });
 
 };
+
 
 function download(text, name, type) {
   var a = document.getElementById("download-button");
@@ -24,13 +35,17 @@ function admin_login_handler(){
 
     // Get the creds from the input, and pass them to the api
     var admin_credentials_combo = $("#admin-login-form").serializeArray();
-    admin_login(admin_credentials_combo[0].value, admin_credentials_combo[1].value);
 
-    if (token){
-        // Sign in invalid
-    }
+    admin_login(admin_credentials_combo[0].value, admin_credentials_combo[1].value).done(function() {
 
-    toggle_admin_view();
+        if (credentials.logged_in) {
+            toggle_admin_view();
+        }
+        else{
+            alert("Log in failed");
+        }
+    });
+
 
 }
 function trial_login_handler(){
@@ -62,9 +77,12 @@ function view_trial_handler(){
         // error
     }
     else {
-        var details = get_test_set_details();
-        populate_view_test_page(details);
-        toggle_test_view();
+
+        get_test_set_details(credentials.auth_token).done(function(value) {
+            populate_view_test_page(value);
+            toggle_test_view();
+        });
+
     }
 }
 
@@ -99,8 +117,8 @@ function populate_view_test_page(test_details){
     $("#trial-view-admin-panel-id-list").empty();
 
     var html = "";
-    for (var i in test_details.user_ids){
-        html += test_details.user_ids[i] + "<br>";
+    for (var i in test_details.users){
+        html += test_details.users[i][0] + "<br>";
     }
 
     $("#trial-view-admin-panel-id-list").append(html);
@@ -109,10 +127,10 @@ function populate_view_test_page(test_details){
     $("#trial-view-admin-panel-details").empty();
 
     // Now fill in the other details
-    $("#trial-view-admin-panel-details").append("<p>Trial Name  : " + test_details.trial_name + "<p>");
-    $("#trial-view-admin-panel-details").append("<p>Total tests : " + test_details.total_tests + "<p>");
-    $("#trial-view-admin-panel-details").append("<p>Wait time   : " + test_details.wait_time + "<p>");
-    $("#trial-view-admin-panel-details").append("<p>Close time  : " + test_details.close_time + "<p>");
+    $("#trial-view-admin-panel-details").append("<p>Trial Name  : " + test_details.test_details[0][0] + "<p>");
+    $("#trial-view-admin-panel-details").append("<p>Wait time   : " + test_details.test_details[0][1] + "<p>");
+    $("#trial-view-admin-panel-details").append("<p>Close time  : " + test_details.test_details[0][2] + "<p>");
+    $("#trial-view-admin-panel-details").append("<p>Total tests : " + test_details.test_details[0][3] + "<p>");
 
 }
 
@@ -120,6 +138,10 @@ function populate_admin_page_active_tests(test_statuses){
 
     // Remove all the old data
     $("#test-status-list").empty();
+
+    // If we got blank data back
+    if (test_statuses == undefined)
+        return;
 
     // For each of the tests the we received back
     for (let index = 0; index < test_statuses.length; index += 2){
