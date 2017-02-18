@@ -1,54 +1,58 @@
 
 $(document).ready(function() {
-    build();
-    build();
-    build();
-    build();
-    build();
-    build();
-    build();
-    build();
-    build();
-    build();
-    build();
-    build();
 });
 
-
-
-var graph_arr = [];
 
 // Holds the currently loaded graphs & their jquery DOM object
 var training_graph_arr = [];
 var testing_graph_arr = [];
 
-let previous_testing_graph_slice;
-let previous_training_graph_slice;
-
-let selected_training_graph_slice = {};
-
 function testing_graph_click(graph_index, data_index){
     console.log(graph_index + ", " + data_index);
-
 }
 
 function training_graph_click(graph_index, data_index){
+
     console.log(graph_index + ", " + data_index);
 
-    if (selected_training_graph_slice[graph_index] != null){
-        selected_training_graph_slice[graph_index].toggleClass("selected");
+    let graph = training_graph_arr[graph_index];
+
+    if (graph.selected_point == data_index) {
+
+        if (graph.class == 2) {
+            graph.class = 1;
+            $(graph.svg_g.children()[data_index + graph.data.length]).toggleClass("selected-class-1")
+            $(graph.svg_g.children()[data_index + graph.data.length]).toggleClass("selected-class-2")
+        }
+        else if (graph.class == 1) {
+            graph.class = 2;
+            $(graph.svg_g.children()[data_index + graph.data.length]).toggleClass("selected-class-1")
+            $(graph.svg_g.children()[data_index + graph.data.length]).toggleClass("selected-class-2")
+        }
+    }
+    else {
+
+        if (graph.selected_point != -1){
+            $(graph.svg_g.children()[graph.selected_point + graph.data.length]).removeClass("selected-class-2")
+            $(graph.svg_g.children()[graph.selected_point + graph.data.length]).removeClass("selected-class-1")
+        }
+
+        graph.selected_point = data_index;
+        graph.class = 1;
+
+        $(graph.svg_g.children()[data_index + graph.data.length]).toggleClass("selected-class-1")
     }
 
-    let point_count = training_graph_arr[0].data.length;
-
-    selected_training_graph_slice[graph_index] = $($($("#svg-row").children()[graph_index]).children()[point_count + data_index]);
-
-    previous_training_graph_slice.toggleClass("selected");
+    ($($("#svg-row").children()[graph_index]).children()[data_index + graph.data.length]);
 }
 
-function build(){
 
-    let graph_data = {}
+// Container = the $() jquery object which to append the svg's
+// Returns the graph data container which the click methods interact with
+
+function build(container){
+
+    let graph_data = {};
 
     let svg_base = $(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"></svg>`);
 
@@ -119,14 +123,15 @@ function build(){
 
 
     graph_data.svg_g = svg_base;
+    graph_data.selected_point = -1;
+    graph_data.class = -1;
 
-    // Fun little hack because Jquery sucks
+    // Fun little hack to show the svg's because Jquery sucks
     svg_base.html(function(){return this.innerHTML});
 
-    training_graph_arr.push(graph_data);
+    $(container).append(svg_base);
 
-    $("#svg-row").append(svg_base);
-
+    return graph_data;
 
 }
 

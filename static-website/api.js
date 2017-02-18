@@ -6,12 +6,12 @@
 
 function admin_login(email, password){
 
-    $.ajax({
+    return $.ajax({
 
         url: "http://68.186.100.115/auth/admin_login",
         contentType: "application/json;charset=UTF-8",
         type: "POST",
-        async: false,
+        async: true,
 
         data :JSON.stringify({
             "email": email,
@@ -21,8 +21,12 @@ function admin_login(email, password){
         dataType: "json",
         success: function(result){
 
-            console.log(result);
-            token = result[0];
+            if (result[0] != "Invalid Token"){
+                credentials.logged_in = true;
+                credentials.auth_token = result[0];
+            } else {
+                // log in failed
+            }
         },
 
         error: function(e) {
@@ -77,14 +81,11 @@ function trial_login(login_uuid){
 
 function get_test_set_statuses(){
 
-    if (!logged_in || token == ""){
-        // Not logged in
-    }
 
     // {0, ANY} {1, RUNNING} {2, COMPLETE} {3, PARKED}
     var filter = $("#test-status-list-filter-select").val();
 
-    $.ajax({
+    return $.ajax({
 
         url: "http://68.186.100.115/auth/get_test_set_statuses",
         contentType: "application/json;charset=UTF-8",
@@ -92,8 +93,8 @@ function get_test_set_statuses(){
         async: true,
 
         data :JSON.stringify({
-        "login_token":token,
-        "filters": filter
+            "login_token":credentials.auth_token,
+            "filters": filter
         }),
 
         dataType: "json",
@@ -106,6 +107,49 @@ function get_test_set_statuses(){
         },
 
         error: function(e) {
+
+            if (e.responseText == "No tests found"){
+                populate_admin_page_active_tests();
+            }else{
+                alert("Api call failed");
+                console.log(e);
+            }
+        },
+    });
+
+}
+
+//  API CALL TO : "/auth/get_test_set_details"
+//  SENDS       : Log in code
+//  RECEIVES    : JSON object with the trial info
+//  dummy_data = {"trial_name":"trial-1",
+//                "test-list": [1, 2, 3, 4, 5],
+//                "tests-complete":"3",
+//                "wait-time":"60",
+//                "close-time":"timestamp of some sort"
+//                }
+// ============================================================================================================
+function get_test_set_details(login_code){
+
+    return $.ajax({
+
+        url: "http://68.186.100.115/auth/get_test_set_details",
+        contentType: "application/json;charset=UTF-8",
+        type: "POST",
+        async: true,
+
+        data :JSON.stringify({
+            "login_token": credentials.auth_token,
+            "test_set_id": "Test1"
+        }),
+
+        dataType: "json",
+        success: function(result){
+            return result;
+        },
+
+        error: function(e) {
+
             alert("Api call failed");
             console.log(e);
         },
@@ -123,9 +167,6 @@ function get_test_set_statuses(){
 
 function get_test_template_data(){
 
-    if (!logged_in || token == ""){
-        // Not logged in
-    }
 
     // Get from the filter selection the type of test templates we want to see
     var test_type = $("#test-template-filter").val();
@@ -163,50 +204,6 @@ function get_test_template_data(){
     }
 }
 
-
-//  API CALL TO : "/auth/get_test_set_details"
-//  SENDS       : Log in code
-//  RECEIVES    : JSON object with the trial info
-//  dummy_data = {"trial_name":"trial-1",
-//                "test-list": [1, 2, 3, 4, 5],
-//                "tests-complete":"3",
-//                "wait-time":"60",
-//                "close-time":"timestamp of some sort"
-//                }
-// ============================================================================================================
-function get_test_set_details(login_code){
-
-    if (!logged_in || token == ""){
-        // Not logged in
-    }
-
-    return $.ajax({
-
-        url: "http://68.186.100.115/auth/get_test_set_details",
-        contentType: "application/json;charset=UTF-8",
-        type: "POST",
-        async: false,
-
-        data :JSON.stringify({
-            "login_token": token,
-            "test_set_id": "Test1"
-        }),
-
-        dataType: "json",
-        success: function(result){
-
-            console.log(result);
-        },
-
-        error: function(e) {
-
-            alert("Api call failed");
-            console.log(e);
-            return "asdf";
-        },
-    });
-
-}
 
 
 //  API CALL TO : "/auth/export_trial"
@@ -248,9 +245,82 @@ function exported_trial_details(auth_token, trial_id){
     }
 }
 
+//  API CALL TO :  "/auth/submit_user_trial_results"
+//  SENDS       : The results of the trial
+//  RECEIVES    : Success or fail
+// ============================================================================================================
+
+function submit_user_trial_results(){
+
+    return $.ajax({
+
+        url: "http://68.186.100.115/auth/submit_user_trial_results",
+        contentType: "application/json;charset=UTF-8",
+        type: "POST",
+        async: true,
+
+        data : JSON.stringify({
+            "login_uuid": login_uuid,
+            "results" : training_graph_arr
+        }),
+
+        dataType: "json",
+        success: function(result){
+
+            console.log(result);
+        },
+
+        error: function(e) {
+
+            if (e.responseText == ""){
+
+            } else {
+                alert("Api call failed");
+                console.log(e);
+            }
+        },
+    });
+
+}
 
 
+//  API CALL TO :  "/auth/export_csv"
+//  SENDS       : Exports the results of the trial
+//  RECEIVES    : CSV
+// ============================================================================================================
 
+function export_csv(){
+
+    return $.ajax({
+
+        url: "http://68.186.100.115/auth/export_csv",
+        contentType: "application/json;charset=UTF-8",
+        type: "POST",
+        async: true,
+
+        data : JSON.stringify({
+            "login_token": credentials.auth_token,
+            "test_set_id" : selected_trial
+        }),
+
+        dataType: "text json",
+        success: function(result){
+
+            console.log(result);
+        },
+
+        error: function(e) {
+
+            if (e.responseText == ""){
+
+            } else {
+                alert("Api call failed");
+                console.log(e);
+            }
+        },
+    });
+
+}
 
 
 

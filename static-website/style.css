@@ -1,5 +1,11 @@
-.selected {
+.selected-class-1 {
     fill: green !important;
+    opacity: 0.4;
+}
+
+.selected-class-2 {
+    fill: red !important;
+    opacity: 0.4;
 }
 
 .hover_group:hover {
