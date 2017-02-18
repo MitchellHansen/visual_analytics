@@ -93,10 +93,12 @@ function export_trial_handler(){
     }
     else {
 
-        var csv = exported_trial_details(token, selected_trial);
-        download(csv, selected_trial + ".csv", 'text/plain');
+        var csv;
+        export_csv().done(function(value) {
+            csv = value;
+            download(csv, selected_trial + ".csv", 'text/plain');
+        });
     }
-
 }
 
 function begin_training_handler(){

@@ -303,9 +303,8 @@ function export_csv(){
             "test_set_id" : selected_trial
         }),
 
-        dataType: "text json",
+        dataType: "text",
         success: function(result){
-
             console.log(result);
         },
 
