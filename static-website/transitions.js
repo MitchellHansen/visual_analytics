@@ -1,7 +1,7 @@
 
 
 // To do a back button I think I'm just gonna do this jank jumplist
-var screen_enum = { HOME: 1, TEST_EDIT:2, TEST_VIEW:3, TEMPLATE_EDIT:4, ADMIN_HOME:5, TRAINING_INFO:6, TRAINING_HOW_WORK:7,TRAINING_PRAC:8 ,TRAINING_RESULTS:9  };
+var screen_enum = { HOME: 1, TEST_EDIT:2, TEST_VIEW:3, TEMPLATE_EDIT:4, ADMIN_HOME:5, TRAINING_INFO:6, TRAINING_HOW_WORK:7,TRAINING_PRAC:8 ,TRAINING_RESULTS:9, TEST_NEW:10  };
 var screen = screen_enum.HOME;
 
 function transfer_back(){
@@ -31,6 +31,10 @@ function transfer_back(){
     }
     else if (screen == screen_enum.TEST_VIEW) {
         toggle_test_view();
+        screen = screen_enum.ADMIN_HOME;
+    }
+    else if (screen == screen_enum.TEST_NEW) {
+        toggle_test_new();
         screen = screen_enum.ADMIN_HOME;
     }
     else if (screen == screen_enum.TEMPLATE_EDIT) {
@@ -114,6 +118,17 @@ function toggle_test_view(){
         screen = screen_enum.TEST_VIEW;
 }
 
+function toggle_test_new(){
+
+    $("#main-admin-panel").slideToggle();
+    $("#trial-new-admin-panel").slideToggle();
+
+    if (screen == screen_enum.TEST_NEW)
+        screen = screen_enum.ADMIN_HOME;
+    else
+        screen = screen_enum.TEST_NEW;
+}
+
 function toggle_test_edit(){
     $("#main-admin-panel").slideToggle();
     $("#admin-test-edit-panel").slideToggle();
@@ -131,9 +146,9 @@ function toggle_template_edit(){
 }
 
 function toggle_admin_view() {
+
     $("#home-row").slideToggle();
     $("#navbar-row").toggleClass("hidden");
-    //$("#slider-container").slideToggle();
     $("#main-admin-panel").slideToggle();
 
     if (screen == screen_enum.ADMIN_HOME)
@@ -144,7 +159,7 @@ function toggle_admin_view() {
         if (!get_test_set_statuses()){
             // error
         }
-        if (!get_test_template_data()){
+        if (!get_template_ids()){
             // error
         }
     }

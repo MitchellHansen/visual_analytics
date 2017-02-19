@@ -4,7 +4,9 @@
     <list default="true" id="c066c289-9a38-4396-973f-3832f3ec13ff" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static-website/api.js" afterPath="$PROJECT_DIR$/static-website/api.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static-website/index.html" afterPath="$PROJECT_DIR$/static-website/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static-website/index.js" afterPath="$PROJECT_DIR$/static-website/index.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static-website/transitions.js" afterPath="$PROJECT_DIR$/static-website/transitions.js" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -33,8 +35,8 @@
       <file leaf-file-name="api.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static-website/api.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="501">
-              <caret line="306" column="34" lean-forward="false" selection-start-line="306" selection-start-column="34" selection-end-line="306" selection-end-column="34" />
+            <state relative-caret-position="439">
+              <caret line="104" column="35" lean-forward="false" selection-start-line="104" selection-start-column="35" selection-end-line="104" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -43,8 +45,8 @@
       <file leaf-file-name="transitions.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static-website/transitions.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3315">
-              <caret line="195" column="50" lean-forward="false" selection-start-line="195" selection-start-column="50" selection-end-line="195" selection-end-column="50" />
+            <state relative-caret-position="470">
+              <caret line="148" column="0" lean-forward="false" selection-start-line="148" selection-start-column="0" selection-end-line="148" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -73,22 +75,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static-website/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-9">
-              <caret line="67" column="5" lean-forward="true" selection-start-line="67" selection-start-column="5" selection-end-line="67" selection-end-column="5" />
+            <state relative-caret-position="3555">
+              <caret line="214" column="37" lean-forward="false" selection-start-line="214" selection-start-column="37" selection-end-line="214" selection-end-column="37" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/static-website/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="284">
-              <caret line="409" column="41" lean-forward="false" selection-start-line="409" selection-start-column="37" selection-end-line="409" selection-end-column="41" />
-              <folding />
+            <state relative-caret-position="-1501">
+              <caret line="403" column="127" lean-forward="false" selection-start-line="403" selection-start-column="119" selection-end-line="403" selection-end-column="127" />
+              <folding>
+                <element signature="n#style#0;n#div#3;n#div#3;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -104,6 +108,11 @@
       <find>build</find>
       <find>export</find>
       <find>expo</find>
+      <find>filter</find>
+      <find>trial-view-admin-panel</find>
+      <find>new tri</find>
+      <find>new test</find>
+      <find>edit tem</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -120,10 +129,10 @@
         <option value="$PROJECT_DIR$/app/mod_auth/controllers.py" />
         <option value="$PROJECT_DIR$/static-website/style.css" />
         <option value="$PROJECT_DIR$/static-website/graph_rendering.js" />
-        <option value="$PROJECT_DIR$/static-website/transitions.js" />
-        <option value="$PROJECT_DIR$/static-website/index.html" />
         <option value="$PROJECT_DIR$/static-website/api.js" />
         <option value="$PROJECT_DIR$/static-website/index.js" />
+        <option value="$PROJECT_DIR$/static-website/index.html" />
+        <option value="$PROJECT_DIR$/static-website/transitions.js" />
       </list>
     </option>
   </component>
@@ -134,8 +143,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="916" />
-    <option name="y" value="49" />
+    <option name="x" value="844" />
+    <option name="y" value="213" />
     <option name="width" value="1417" />
     <option name="height" value="1047" />
   </component>
@@ -323,12 +332,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1486586538928</updated>
-      <workItem from="1487429655320" duration="15759000" />
+      <workItem from="1487429655320" duration="24217000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15759000" />
+    <option name="totallyTimeSpent" value="24217000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -340,7 +349,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="916" y="49" width="1417" height="1047" extended-state="0" />
+    <frame x="844" y="213" width="1417" height="1047" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1598858" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -457,18 +466,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static-website/index.html">
+    <entry file="file://$PROJECT_DIR$/static-website/api.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="284">
-          <caret line="409" column="41" lean-forward="false" selection-start-line="409" selection-start-column="37" selection-end-line="409" selection-end-column="41" />
+        <state relative-caret-position="439">
+          <caret line="104" column="35" lean-forward="false" selection-start-line="104" selection-start-column="35" selection-end-line="104" selection-end-column="35" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static-website/transitions.js">
+    <entry file="file://$PROJECT_DIR$/static-website/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3315">
-          <caret line="195" column="50" lean-forward="false" selection-start-line="195" selection-start-column="50" selection-end-line="195" selection-end-column="50" />
+        <state relative-caret-position="3555">
+          <caret line="214" column="37" lean-forward="false" selection-start-line="214" selection-start-column="37" selection-end-line="214" selection-end-column="37" />
           <folding />
         </state>
       </provider>
@@ -484,19 +493,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static-website/api.js">
+    <entry file="file://$PROJECT_DIR$/static-website/transitions.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="501">
-          <caret line="306" column="34" lean-forward="false" selection-start-line="306" selection-start-column="34" selection-end-line="306" selection-end-column="34" />
+        <state relative-caret-position="470">
+          <caret line="148" column="0" lean-forward="false" selection-start-line="148" selection-start-column="0" selection-end-line="148" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static-website/index.js">
+    <entry file="file://$PROJECT_DIR$/static-website/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-9">
-          <caret line="67" column="5" lean-forward="true" selection-start-line="67" selection-start-column="5" selection-end-line="67" selection-end-column="5" />
-          <folding />
+        <state relative-caret-position="-1501">
+          <caret line="403" column="127" lean-forward="false" selection-start-line="403" selection-start-column="119" selection-end-line="403" selection-end-column="127" />
+          <folding>
+            <element signature="n#style#0;n#div#3;n#div#3;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

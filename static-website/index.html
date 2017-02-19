@@ -318,35 +318,17 @@
         </div>
      </div>
     </div>
+
     <!-- End of Training code-->
-
-    <div class="w3-light-grey w3-center hidden" style="height:800px" id="admin-test-view-panel">
-
-        <div class="w3-dark-grey w3-center w3-quarter hide-scrollbar" style="height:800px;">
-
-            <select class="w3-select" name="option" id="test-template-adsf">
-                <option value="0">No Filter</option>
-                <option value="1">Running</option>
-                <option value="2">Complete</option>
-                <option value="3">Parked</option>
-            </select>
-
-            <nav>
-                <ul class="w3-ul" style="border-bottom: 0px solid #ddd;" id="test-template-asdf"></ul>
-            </nav>
-
-        </div>
-    </div>
-
     <div class="w3-light-grey w3-center hidden" style="height:800px" id="main-admin-panel">
 
         <div class="w3-dark-grey w3-center w3-quarter hide-scrollbar" style="height:800px">
 
             <select class="w3-select" name="option" id="test-template-filter">
-                <option value="0">No Filter</option>
-                <option value="1">Running</option>
-                <option value="2">Complete</option>
-                <option value="3">Parked</option>
+                <option value="0">Any</option>
+                <option value="1">1 - Star</option>
+                <option value="2">2 - Line</option>
+                <option value="3">3 - Polar</option>
             </select>
 
             <nav>
@@ -376,7 +358,7 @@
 
             <div class="w3-row">
                 <div class="w3-col w3-padding">
-                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="">
+                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="delete_template()">
                         Delete Template
                     </button>
                 </div>
@@ -419,7 +401,7 @@
 
             <div class="w3-row">
                 <div class="w3-col w3-padding">
-                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="">New Test</button>
+                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="new_trial_handler()">New Test</button>
                 </div>
             </div>
 
@@ -544,7 +526,7 @@
 
     <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="trial-view-admin-panel">
 
-        <div class="w3-half w3-dark-gray w3-center w3-padding-64 w3-padding-jumbo" style="height: 800px;" id="">
+        <div class="w3-half w3-dark-gray w3-center w3-padding-64 w3-padding-jumbo" style="height: 800px;" >
             <div class="w3-white w3-padding-large w3-padding-64 w3-center" style="" id="trial-view-admin-panel-id-list">
 
             </div>
@@ -556,6 +538,20 @@
         </div>
 
     </div>
+
+    <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="trial-new-admin-panel">
+
+        <div class="w3-half w3-dark-gray w3-center w3-padding-64 w3-padding-jumbo" style="height: 800px;" >
+
+        </div>
+
+        <div class="w3-half w3-dark-gray w3-left-align w3-padding-64" style="height: 800px;"
+             id="trial-new-admin-panel-details">
+
+        </div>
+    </div>
+
+</div>
 
 </div>
 

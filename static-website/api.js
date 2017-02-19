@@ -159,91 +159,44 @@ function get_test_set_details(login_code){
 
 
 
-//  API CALL TO : "/auth/get_test_templates"
-//  SENDS       : Login Token, Optional filter for test type i.e {1, 2, 3, 4}
-//  RECEIVES    : JSON list of test template names and their test types
+//  API CALL TO : "/auth/get_template_ids"
+//  SENDS       : Login Token
+//  RECEIVES    : JSON list template-ids combined with their test type
 //  dummy_data = {"star-graph-1":"1", "star-graph-2":"1", "line-graph-2":"2", "polar-graph":"3", "line-graph-4":"2"};
 // ============================================================================================================
 
-function get_test_template_data(){
-
+function get_template_ids() {
 
     // Get from the filter selection the type of test templates we want to see
-    var test_type = $("#test-template-filter").val();
+    let filter = $("#test-template-filter").val();
 
-//    $.ajax({
-//
-//        url: "/auth/get_test_templates",
-//        contentType: "application/json; charset=utf-8",
-//        type: "POST",
-//        async: false,
-//
-//        data :{
-//            token     : token,
-//            test_type : // an integer for test type, maybe could be a string if we wanted
-//        },
-//
-//        success: function(result){
-//
-//            console.log(result);
-//
-//        }
-//    });
+    return $.ajax({
 
-    var dummy_data = {"star-graph-1":"1", "star-graph-2":"1", "line-graph-2":"2", "polar-graph":"3", "line-graph-4":"2"};
+        url: "http://68.186.100.115/auth/get_template_ids",
+        contentType: "application/json;charset=UTF-8",
+        type: "POST",
+        async: true,
 
-    // Lets just pretend that returns success
-    var result = "success";
+        data: JSON.stringify({
+            "login_token": credentials.auth_token,
+            "filters": filter
+        }),
 
-    if (result == "success"){
-        populate_admin_page_test_templates(dummy_data);
-        //populate_admin_page_active_tests(result.test_statuses);
-    }
-    else{
-        // Show help message
-    }
+        dataType: "json",
+        success: function (result) {
+
+            populate_admin_page_test_templates(result);
+
+        },
+
+        error: function (e) {
+
+            alert("Api call failed");
+            console.log(e);
+        },
+    });
 }
 
-
-
-//  API CALL TO : "/auth/export_trial"
-//  SENDS       : auth_token, trial_id
-//  RECEIVES    : JSON object with the trial info
-//  dummy_data = straight up csv text;
-// ============================================================================================================
-function exported_trial_details(auth_token, trial_id){
-
-
-//    $.ajax({
-//
-//        url: "/auth/get_trial_details",
-//        contentType: "application/json; charset=utf-8",
-//        type: "POST",
-//        async: false,
-//
-//        data :{
-//            token : token
-//        },
-//
-//        success: function(result){
-//            console.log(result);
-//        }
-//    });
-
- dummy_data = "column1, column2, column3\nrow1, row1, row1\nrow2, row2, row2";
-
-    // Lets just pretend that returns success
-    var result = "success";
-
-    if (result == "success"){
-        return dummy_data;
-        //return result;
-    }
-    else{
-        console.log("Something went wrong");
-        console.log(result);
-    }
-}
 
 //  API CALL TO :  "/auth/submit_user_trial_results"
 //  SENDS       : The results of the trial
@@ -318,11 +271,82 @@ function export_csv(){
             }
         },
     });
-
 }
 
 
+//  API CALL TO :  "/auth/delete_test_set"
+//  SENDS       : The results of the trial
+//  RECEIVES    : Success or fail
+// ============================================================================================================
 
+function delete_test_set(){
+
+    return $.ajax({
+
+        url: "http://68.186.100.115/auth/delete_test_set",
+        contentType: "application/json;charset=UTF-8",
+        type: "POST",
+        async: true,
+
+        data : JSON.stringify({
+            "login_token": credentials.auth_token,
+            "test_set_id" : selected_trial
+        }),
+
+        dataType: "json",
+        success: function(result){
+
+            console.log(result);
+        },
+
+        error: function(e) {
+
+            if (e.responseText == ""){
+
+            } else {
+                alert("Api call failed");
+                console.log(e);
+            }
+        },
+    });
+}
+
+//  API CALL TO :  "/auth/delete_template"
+//  SENDS       : The results of the trial
+//  RECEIVES    : Success or fail
+// ============================================================================================================
+
+function delete_template(){
+
+    return $.ajax({
+
+        url: "http://68.186.100.115/auth/delete_template",
+        contentType: "application/json;charset=UTF-8",
+        type: "POST",
+        async: true,
+
+        data : JSON.stringify({
+            "login_token": credentials.auth_token,
+            "template_id" : selected_template
+        }),
+
+        dataType: "json",
+        success: function(result){
+
+            console.log(result);
+        },
+
+        error: function(e) {
+
+            if (e.responseText == ""){
+
+            } else {
+                alert("Api call failed");
+                console.log(e);
+            }
+        },
+    });
+}
 
 
 

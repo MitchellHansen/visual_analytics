@@ -16,7 +16,7 @@ window.onload = function(e){
     });
 
     $("#test-template-filter").change(function(){
-        //();
+        get_template_ids();
     });
 
 };
@@ -72,6 +72,21 @@ function view_template_handler(){
 }
 
 function view_trial_handler(){
+
+    if (selected_trial == ""){
+        // error
+    }
+    else {
+
+        get_test_set_details(credentials.auth_token).done(function(value) {
+            populate_view_test_page(value);
+            toggle_test_view();
+        });
+
+    }
+}
+
+function new_trial_handler(){
 
     if (selected_trial == ""){
         // error
@@ -146,70 +161,78 @@ function populate_admin_page_active_tests(test_statuses){
         return;
 
     // For each of the tests the we received back
-    for (let index = 0; index < test_statuses.length; index += 2){
+    for (let index = 0; index < test_statuses.length; index++){
 
-            var test_set_id = test_statuses[index];
+        var test_set_id = test_statuses[index][0];
+        var test_set_status = test_statuses[index][1];
 
-            // Clone the template element
-            var elem = $("#test-status-list-element-template").clone();
-            $(elem).attr("id", test_set_id);
+        // Clone the template element
+        var elem = $("#test-status-list-element-template").clone();
+        $(elem).attr("id", test_set_id);
 
-            // Get it's status
-            if (test_statuses[index+1] == 1){
+        // Get it's status
+        if (test_set_status == 1){
 
-                // Set the right hand symbol text & the left hand test name text
-                $(elem).children().children().last().text("⏲");
-            }
-            else  if (test_statuses[index+1] == 3){
+            // Set the right hand symbol text & the left hand test name text
+            $(elem).children().children().last().text("⏲");
+        }
+        else  if (test_set_status == 3){
 
-                $(elem).children().children().last().text("✔");
-            }
-            else  if (test_statuses[index+1] == 2){
+            $(elem).children().children().last().text("✔");
+        }
+        else  if (test_set_status == 2){
 
-                $(elem).children().children().last().text("🛑");
-            }
-            else {
-                $(elem).children().children().last().text("ERROR");
-            }
+            $(elem).children().children().last().text("🛑");
+        }
+        else {
+            $(elem).children().children().last().text("ERROR");
+        }
 
-            // Set the button text
-            $(elem).children().children().first().text(test_set_id);
+        // Set the button text
+        $(elem).children().children().first().text(test_set_id);
 
-            // Set the onclick for the button
-             $(elem).children().children().first().attr("onclick", "set_trial_selection(\"" + test_set_id + "\")");
+        // Set the onclick for the button
+        $(elem).children().children().first().attr("onclick", "set_trial_selection(\"" + test_set_id + "\")");
 
-            // Append our cloned element to the scroll box
-            $("#test-status-list").append(elem);
+        // Append our cloned element to the scroll box
+        $("#test-status-list").append(elem);
 
-            // Make sure that we un-hid it
-            $("#" + test_set_id).show();
+        // Make sure that we un-hid it
+        $("#" + test_set_id).show();
     }
 
 }
 
 function populate_admin_page_test_templates(test_templates){
 
-    for (var key in test_templates) {
-        if (test_templates.hasOwnProperty(key)) {
+    // Remove all the old data
+    $("#test-template-list").empty();
 
-            var id = "template-" + key;
+    // If we got blank data back
+    if (test_templates == undefined)
+        return;
 
-            // clone the element, set it's id to be the name of the template
-            var elem = $("#test-status-list-element-template").clone();
-            $(elem).attr("id", id);
+    // For each of the tests the we received back
+    for (let index = 0; index < test_templates.length; index++){
 
-            // Set the onclick to select that name when clicked
-            // I hate web
-            $(elem).children().children().first().attr("onclick", "set_template_selection(\"" + id + "\")");
+        var template_id = test_templates[index][0];
+        var template_type = test_templates[index][1];
 
-            // set the button text and graph type text
-            $(elem).children().children().last().text(test_templates[key]);
-            $(elem).children().children().first().text(key);
+        // clone the element, set it's id to be the name of the template
+        var elem = $("#test-status-list-element-template").clone();
+        $(elem).attr("id", template_id);
 
-            // Add it to the list and show it
-            $("#test-template-list").append(elem);
-            $("#" + id).show();
-        }
+        // Set the onclick to select that name when clicked
+        // I hate web
+        $(elem).children().children().first().attr("onclick", "set_template_selection(\"" + template_id + "\")");
+
+        // set the button text and graph type text
+        $(elem).children().children().last().text(template_type);
+        $(elem).children().children().first().text(template_id);
+
+        // Add it to the list and show it
+        $("#test-template-list").append(elem);
+        $("#" + template_id).show();
     }
 }
 
