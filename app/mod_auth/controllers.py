@@ -115,7 +115,7 @@ def delete_template():
 	conn.commit()
         cursor.execute('DELETE FROM templates WHERE template_id=\'{0}\''.format(template_id))
 	conn.commit()
-        return json.dumps("Shits gone nigga")
+        return json.dumps("Template removed")
     else:
         return json.dumps("Sorry, template_id is being used")
 
