@@ -179,9 +179,7 @@ def admin_login():
 def submit_user_trial_results():
     results = None
     token = None
-    result = None
     time = None
-    #result = request.json['results']
     #time = request.json['time']
     results = request.json['results']
     token = request.json['login_uuid']
