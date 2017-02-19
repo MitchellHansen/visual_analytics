@@ -33,7 +33,7 @@ def get_test_set_statuses():
         cursor.execute("SELECT test_set_id, status from test_set_details")
     else:
         cursor.execute("SELECT test_set_id, status from test_set_details where status={0}".format(filters))
-    data = cursor.fetchone()
+    data = cursor.fetchall()
     if data is None:
         return "No tests found"
     else:
@@ -65,20 +65,59 @@ def get_test_set_details():
     }
     return json.dumps(test_set_details)
 
-@mod_auth.route('/get_test_templates')
-def get_test_templates():
+@mod_auth.route('/get_template_ids', methods=['GET', 'POST'])
+def get_template_ids():
+    login_token = None
+    filters = None
     filters = request.json['filters']
     login_token = request.json['login_token']
-    if(check_token(login_token) is False):
-        return json.dumps({'Status': "Invalid Token"})
-    cursor = mysql.connect().cursor()
-    cursor.execute("SELECT * FROM test_set_result WHERE status={0}".format(filters))
-    data = cursor.fetchone()
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    if(filters==0 or filters=="0"):
+        cursor.execute("SELECT template_id, graph_type from templates")
+    else:
+        cursor.execute("SELECT template_id, graph_type from templates where graph_type={0}".format(filters))
+    data = cursor.fetchall()
     if data is None:
-        return "There are no graphs for this test_set_id"
+        return "No tests found"
     else:
         return json.dumps(data)
+    
+@mod_auth.route('/delete_test_set', methods=['GET', 'POST'])
+def delete_test_set():
+    token = None
+    test_set_id = None
+    token = request.json['login_token']
+    test_set_id = request.json['test_set_id']
 
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    cursor.execute('DELETE test_set_result FROM  test_set_result INNER JOIN test_set_user_login_id on test_set_result.login_uuid = test_set_user_login_id.login_uuid WHERE test_set_id= \'{0}\''.format(test_set_id))
+    conn.commit()
+    cursor.execute('DELETE FROM test_set_details WHERE test_set_id=\'{0}\''.format(test_set_id))
+    conn.commit()
+    cursor.execute('DELETE FROM test_set_template_list WHERE test_set_id=\'{0}\''.format(test_set_id))
+    conn.commit()
+    return json.dumps("Your test set has been deleted")
+
+@mod_auth.route('/delete_template', methods=['GET', 'POST'])
+def delete_template():
+    token = None
+    test_set_id = None
+    token = request.json['login_token']
+    template_id = request.json['template_id']
+
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    row_count = cursor.execute('SELECT test_set_id FROM test_set_template_list WHERE template_id=\'{0}\''.format(template_id))
+    if row_count== 0:
+        cursor.execute('DELETE FROM test_set_result WHERE template_id=\'{0}\''.format(template_id))
+	conn.commit()
+        cursor.execute('DELETE FROM templates WHERE template_id=\'{0}\''.format(template_id))
+	conn.commit()
+        return json.dumps("Shits gone nigga")
+    else:
+        return json.dumps("Sorry, template_id is being used")
 
 @mod_auth.route('/trial_login', methods=['GET', 'POST'])
 def trial_login():
