@@ -4,6 +4,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="svg_builder.js"></script>
 <script src="graph_rendering.js"></script>
+<script src="template_graph_rendering.js"></script>
 <script src="index.js"></script>
 <script src="transitions.js"></script>
 <script src="api.js"></script>
@@ -465,54 +466,62 @@
 
     <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="template-edit-admin-panel">
         <div class="w3-dark-grey w3-center w3-threequarter hide-scrollbar" style="height:800px;">
+            <!-- ////////////////////////////////////////////////////////////////////////////    -->
+            <!--Form to pass the values for the test-->
+            <form id="template_form" onsubmit="serialize_n_Pass()">
+                <div class="w3-blue-grey w3-row w3-padding-16 w3-margin">
+                    <div class="w3-col">
+                        Test ID(Name):
+                    </div>
+                    <div class="w3-col">
+                        <input type="text" name="fname" id="fname"><br>
+                    </div>
+                </div>
+                <div class="w3-blue-grey w3-row w3-padding-16 w3-margin">
+                    <div class="w3-col" id="template_Section_Length">
+                        Amount Of Datapoints :
+                    </div>
+                    <div class="w3-col">
+                        <input id="rangeinput1" name="rangeinput1" style="width:60%;" type="range" min="0" max="100" value="20"
+                               oninput="amount_o_Dpts.value = value; reBuild_DatapointsLen(amount_o_Dpts.value, $('#template-graph-row')) "></input> <!--reBuild_DatapointsLen passed num of
+                                                                                                                                                         points and the id to refresh the graph for the user  -->
+                        <output id="amount_o_Dpts">20</output>
+                    </div>
+                </div>
+                <!--WHEN BACKEND FIXES GRAPH CREATION NEED TO ADD TEMPLATE MSM AND WND MANIPULATION FUNCTIONALITY-->
+                <div class="w3-blue-grey w3-row w3-padding-16 w3-margin">
+                    <div class="w3-col">
+                        Amount Of Major Section Manipulation:
+                    </div>
+                    <div class="w3-col">
+                        <input id="rangeinput2" name="rangeinput2" style="width:60%;" type="range" min="0" max="100" value="50"
+                               oninput="amount_o_MSM.value = value"></input>
+                        <output id="amount_o_MSM">50</output>
+                    </div>
+                </div>
 
-            <div class="w3-blue-grey w3-row w3-padding-16 w3-margin">
-                <div class="w3-col">
-                    Test ID:
+                <div class="w3-blue-grey w3-row w3-padding-16 w3-margin">
+                    <div class="w3-col">
+                        Amount Of White Noise Data:
+                    </div>
+                    <div class="w3-col">
+                        <input id="rangeinput3" name="rangeinput3" style="width:60%;" type="range" min="0" max="100" value="50"
+                               oninput="amount_o_WNData.value = value"></input>
+                        <output id="amount_o_WNData">50</output>
+                    </div>
                 </div>
-                <div class="w3-col">
-                    <input type="text" name="fname"><br>
+                <!--WHEN BACKEND FIXES GRAPH CREATION NEED TO ADD TEMPLATE MSM AND WND MANIPULATION FUNCTIONALITY-->
+                <div class="w3-dark-grey w3-row">
+                    <input type="submit" class="w3-btn" value="Create Exam"></input>
                 </div>
-            </div>
-
-            <div class="w3-blue-grey w3-row w3-padding-16 w3-margin">
-                <div class="w3-col">
-                    Input 1:
-                </div>
-                <div class="w3-col">
-                    <input id="rangeinput1" style="width:60%;" type="range" min="0" max="100" value="50"
-                           onchange="rangevalue1.value=value"></input>
-                    <output id="rangevalue1">50</output>
-                </div>
-            </div>
-
-            <div class="w3-blue-grey w3-row w3-padding-16 w3-margin">
-                <div class="w3-col">
-                    Input 2:
-                </div>
-                <div class="w3-col">
-                    <input id="rangeinput2" style="width:60%;" type="range" min="0" max="100" value="50"
-                           onchange="rangevalue2.value=value"></input>
-                    <output id="rangevalue2">50</output>
-                </div>
-            </div>
-
-            <div class="w3-blue-grey w3-row w3-padding-16 w3-margin">
-                <div class="w3-col">
-                    Input 3:
-                </div>
-                <div class="w3-col">
-                    <input id="rangeinput3" style="width:60%;" type="range" min="0" max="100" value="50"
-                           onchange="rangevalue3.value=value"></input>
-                    <output id="rangevalue3">50</output>
-                </div>
-            </div>
-
-            <div class="w3-dark-grey w3-row">
-                <button class="w3-btn" style="" onclick="">Button 1</button>
-            </div>
+            </form>
         </div>
-
+        <!-- The Template Graph is generated here-->
+        <div id="template-graph-row">
+             <script>
+                training_graph_arr.push(build($("#template-graph-row")));
+            </script> 
+        </div>
         <div class="w3-dark-grey w3-center w3-quarter hide-scrollbar" style="height:800px;">
 
         </div>
