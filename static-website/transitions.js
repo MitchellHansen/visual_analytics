@@ -41,6 +41,10 @@ function transfer_back(){
         toggle_template_edit();
         screen = screen_enum.ADMIN_HOME;
     }
+    else if (screen == screen_enum.TEMPLATE_VIEW) {
+        toggle_template_view();
+        screen = screen_enum.ADMIN_HOME;
+    }
     else if (screen == screen_enum.ADMIN_HOME){
         toggle_admin_view();
         screen == screen_enum.HOME;

@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c066c289-9a38-4396-973f-3832f3ec13ff" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static-website/index.html" afterPath="$PROJECT_DIR$/static-website/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static-website/index.js" afterPath="$PROJECT_DIR$/static-website/index.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static-website/transitions.js" afterPath="$PROJECT_DIR$/static-website/transitions.js" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -40,11 +38,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="transitions.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="transitions.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/static-website/transitions.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="18" column="5" lean-forward="true" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
+            <state relative-caret-position="102">
+              <caret line="6" column="25" lean-forward="true" selection-start-line="6" selection-start-column="25" selection-end-line="6" selection-end-column="25" />
               <folding />
             </state>
           </provider>
@@ -70,11 +68,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static-website/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="431">
-              <caret line="64" column="0" lean-forward="true" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
+            <state relative-caret-position="1105">
+              <caret line="65" column="33" lean-forward="true" selection-start-line="65" selection-start-column="33" selection-end-line="65" selection-end-column="33" />
               <folding />
             </state>
           </provider>
@@ -128,8 +126,8 @@
         <option value="$PROJECT_DIR$/static-website/graph_rendering.js" />
         <option value="$PROJECT_DIR$/static-website/api.js" />
         <option value="$PROJECT_DIR$/static-website/index.html" />
-        <option value="$PROJECT_DIR$/static-website/transitions.js" />
         <option value="$PROJECT_DIR$/static-website/index.js" />
+        <option value="$PROJECT_DIR$/static-website/transitions.js" />
       </list>
     </option>
   </component>
@@ -322,12 +320,12 @@
       <option name="presentableId" value="Default" />
       <updated>1486586538928</updated>
       <workItem from="1487429655320" duration="24217000" />
-      <workItem from="1487725398774" duration="836000" />
+      <workItem from="1487725398774" duration="1156000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="25053000" />
+    <option name="totallyTimeSpent" value="25373000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -498,18 +496,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static-website/transitions.js">
+    <entry file="file://$PROJECT_DIR$/static-website/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="5" lean-forward="true" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
+        <state relative-caret-position="1105">
+          <caret line="65" column="33" lean-forward="true" selection-start-line="65" selection-start-column="33" selection-end-line="65" selection-end-column="33" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static-website/index.js">
+    <entry file="file://$PROJECT_DIR$/static-website/transitions.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="431">
-          <caret line="64" column="0" lean-forward="true" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
+        <state relative-caret-position="102">
+          <caret line="6" column="25" lean-forward="true" selection-start-line="6" selection-start-column="25" selection-end-line="6" selection-end-column="25" />
           <folding />
         </state>
       </provider>
