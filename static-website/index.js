@@ -67,7 +67,7 @@ function view_template_handler(){
         // do nothing
     }
     else {
-
+        toggle_template_view();
     }
 }
 

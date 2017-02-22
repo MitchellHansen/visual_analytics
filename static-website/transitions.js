@@ -1,7 +1,7 @@
 
 
 // To do a back button I think I'm just gonna do this jank jumplist
-var screen_enum = { HOME: 1, TEST_EDIT:2, TEST_VIEW:3, TEMPLATE_EDIT:4, ADMIN_HOME:5, TRAINING_INFO:6, TRAINING_HOW_WORK:7,TRAINING_PRAC:8 ,TRAINING_RESULTS:9, TEST_NEW:10  };
+var screen_enum = { HOME: 1, TEST_EDIT:2, TEST_VIEW:3, TEMPLATE_EDIT:4, ADMIN_HOME:5, TRAINING_INFO:6, TRAINING_HOW_WORK:7,TRAINING_PRAC:8 ,TRAINING_RESULTS:9, TEST_NEW:10, TEMPLATE_VIEW:11  };
 var screen = screen_enum.HOME;
 
 function transfer_back(){
@@ -143,6 +143,16 @@ function toggle_template_edit(){
         screen = screen_enum.HOME;
     else
         screen = screen_enum.TEMPLATE_EDIT;
+}
+
+function toggle_template_view(){
+    $("#main-admin-panel").slideToggle();
+    $("#template-view-admin-panel").slideToggle();
+
+    if (screen == screen_enum.TEMPLATE_VIEW)
+        screen = screen_enum.HOME;
+    else
+        screen = screen_enum.TEMPLATE_VIEW;
 }
 
 function toggle_admin_view() {
