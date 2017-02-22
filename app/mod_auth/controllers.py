@@ -39,6 +39,12 @@ def get_test_set_statuses():
     else:
         return json.dumps(data)
 
+@mod_auth.route('/get_template_details', methods=['GET', 'POST'])
+def get_template_details():
+    return json.dumps("SHITS WORKING")
+
+
+
 
 @mod_auth.route('/get_test_set_details', methods=['GET', 'POST'])
 def get_test_set_details():
@@ -118,6 +124,23 @@ def delete_template():
         return json.dumps("Template removed")
     else:
         return json.dumps("Sorry, template_id is being used")
+
+@mod_auth.route('/open_test', methods=['GET', 'POST'])
+def open_test():
+    token = None
+    test_set_id = None
+    token = request.json['login_token']
+    test_set_id = request.json['test_set_id']
+    return json.dumps("SUCCESS")
+
+
+@mod_auth.route('/close_test', methods=['GET', 'POST'])
+def close_test():
+    token = None
+    test_set_id = None
+    token = request.json['login_token']
+    test_set_id = request.json['test_set_id']
+    return json.dumps("SUCCESS")
 
 @mod_auth.route('/trial_login', methods=['GET', 'POST'])
 def trial_login():
