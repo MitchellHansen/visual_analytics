@@ -1,7 +1,7 @@
 
 
 // To do a back button I think I'm just gonna do this jank jumplist
-var screen_enum = { HOME: 1, TEST_EDIT:2, TEST_VIEW:3, TEMPLATE_EDIT:4, ADMIN_HOME:5, TRAINING_INFO:6, TRAINING_HOW_WORK:7,TRAINING_PRAC:8 ,TRAINING_RESULTS:9, TEST_NEW:10, TEMPLATE_VIEW:11  };
+var screen_enum = { HOME: 1, TEST_EDIT:2, TEST_VIEW:3, TEMPLATE_NEW:4, ADMIN_HOME:5, TRAINING_INFO:6, TRAINING_HOW_WORK:7,TRAINING_PRAC:8 ,TRAINING_RESULTS:9, TEST_NEW:10, TEMPLATE_VIEW:11  };
 var screen = screen_enum.HOME;
 
 function transfer_back(){
@@ -37,8 +37,8 @@ function transfer_back(){
         toggle_test_new();
         screen = screen_enum.ADMIN_HOME;
     }
-    else if (screen == screen_enum.TEMPLATE_EDIT) {
-        toggle_template_edit();
+    else if (screen == screen_enum.TEMPLATE_NEW) {
+        toggle_template_new();
         screen = screen_enum.ADMIN_HOME;
     }
     else if (screen == screen_enum.TEMPLATE_VIEW) {
@@ -139,14 +139,14 @@ function toggle_test_edit(){
     screen = screen_enum.TEST_EDIT;
 }
 
-function toggle_template_edit(){
+function toggle_template_new(){
     $("#main-admin-panel").slideToggle();
-    $("#template-edit-admin-panel").slideToggle();
+    $("#template-new-admin-panel").slideToggle();
 
-    if (screen == screen_enum.TEMPLATE_EDIT)
+    if (screen == screen_enum.TEMPLATE_NEW)
         screen = screen_enum.HOME;
     else
-        screen = screen_enum.TEMPLATE_EDIT;
+        screen = screen_enum.TEMPLATE_NEW;
 }
 
 function toggle_template_view(){

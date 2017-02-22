@@ -71,6 +71,16 @@ function view_template_handler(){
     }
 }
 
+function new_template_handler(){
+
+    if (selected_template == ""){
+        // do nothing
+    }
+    else {
+        toggle_template_new();
+    }
+}
+
 function view_trial_handler(){
 
     if (selected_trial == ""){
