@@ -348,9 +348,88 @@ function delete_template(){
     });
 }
 
+//  API CALL TO :  "/auth/generate_uuid_list"
+//  SENDS       : The results of the trial
+//  RECEIVES    : Success or fail
+// ============================================================================================================
+
+function generate_uuid_list(num_uuid){
+
+    return $.ajax({
+
+        url: "http://68.186.100.115/auth/generate_uuid_list",
+        contentType: "application/json;charset=UTF-8",
+        type: "POST",
+        async: true,
+
+        data : JSON.stringify({
+            "login_token": credentials.auth_token,
+            "test_set_id" : selected_trial,
+	    "num_uuid" : num_uuid
+        }),
+
+        dataType: "json",
+        success: function(result){
+
+            console.log(result);
+        },
+
+        error: function(e) {
+
+            if (e.responseText == ""){
+
+            } else {
+                alert("Api call failed");
+                console.log(e);
+            }
+        },
+    });
+}
 
 
+//  API CALL TO :  "/auth/new_test_set"
+//  SENDS       : JSON list {
+//                "test_set_id":"trial-1",
+//                "template_ids": [1, 2, 3, 4, 5],
+//                "wait_time":"60",
+//                "close-time":"timestamp of some sort"
+//                }
+//  RECEIVES    : Success or fail
+// ============================================================================================================
 
+function new_test_set(test_set_id){
 
+    return $.ajax({
+
+        url: "http://68.186.100.115/auth/generate_uuid_list",
+        contentType: "application/json;charset=UTF-8",
+        type: "POST",
+        async: true,
+
+        data : JSON.stringify({
+            "login_token" : credentials.auth_token,
+            "test_set_id" : test_set_id,
+            "template_ids": ["Template1", "Template2"],
+            "wait_time"   : "60",
+            "close_time"  : "1234:12:12:1234:1234"
+        }),
+
+        dataType: "json",
+        success: function(result){
+
+            console.log(result);
+        },
+
+        error: function(e) {
+
+            if (e.responseText == ""){
+
+            } else {
+                alert("Api call failed");
+                console.log(e);
+            }
+        },
+    });
+}
 
 

@@ -29,16 +29,6 @@
                     onclick="get_test_set_statuses()">Refresh
             </button>
         </li>
-        <li>
-            <button id="save-button" type="button" class="w3-btn w3-btn-block w3-hover-dark-grey w3-padding-16"
-                    onclick="">Save
-            </button>
-        </li>
-        <li>
-            <button id="cancel-button" type="button" class="w3-btn w3-btn-block w3-hover-brown w3-padding-16"
-                    onclick="">Cancel
-            </button>
-        </li>
     </ul>
 </div>
 
@@ -296,7 +286,7 @@
 
             <div class="w3-row w3-container w3-justify w3-indigo" id="results_section">
                 <p style="color:yellow;">OVERALL RESULT: </p>
-                <p style="color:yellow;"> OVERALL TIME </p>
+                <p style="color:yellow;">OVERALL TIME </p>
                 <p style="color:yellow;">AVERAGE TIME SPENT ON A GRAPH: </p>
                 <p style="color:yellow;">MOST MISSED GRAPH TYPE: </p>
                 <p style="color:yellow;">KEY SECTIONS SELECTED: </p>
@@ -342,16 +332,7 @@
 
             <div class="w3-row">
                 <div class="w3-col w3-padding">
-                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey"
-                            onclick="toggle_template_edit()">
-                        Edit Template
-                    </button>
-                </div>
-            </div>
-
-            <div class="w3-row">
-                <div class="w3-col w3-padding">
-                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="">
+                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="toggle_template_new()">
                         New Template
                     </button>
                 </div>
@@ -382,7 +363,7 @@
                 <div class="w3-col w3-padding">
                     <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey"
                             onclick="view_trial_handler()">
-                        View Test
+                        View Test Set
                     </button>
                 </div>
             </div>
@@ -402,31 +383,25 @@
 
             <div class="w3-row">
                 <div class="w3-col w3-padding">
-                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="new_trial_handler()">New Test</button>
+                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="new_trial_handler()">New Test Set</button>
                 </div>
             </div>
 
             <div class="w3-row">
                 <div class="w3-col w3-padding">
-                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="">Edit Test</button>
+                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="">Delete Test Set</button>
                 </div>
             </div>
 
             <div class="w3-row">
                 <div class="w3-col w3-padding">
-                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="">Delete Test</button>
+                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="">Start Test Set</button>
                 </div>
             </div>
 
             <div class="w3-row">
                 <div class="w3-col w3-padding">
-                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="">Start Test</button>
-                </div>
-            </div>
-
-            <div class="w3-row">
-                <div class="w3-col w3-padding">
-                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="">End Test</button>
+                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="">End Test Set</button>
                 </div>
             </div>
 
@@ -448,10 +423,10 @@
                             <button type="button"
                                     class="w3-btn w3-left w3-threequarter w3-btn-block w3-hover-blue-grey w3-padding-16"
                                     onclick="">
-                                button 3
+                                
                             </button>
                             <div class="w3-card w3-right w3-quarter">
-                                <p>⏲</p>
+                                <p></p>
                             </div>
                         </div>
                     </li>
@@ -564,10 +539,10 @@
 <li id="test-status-list-element-template" class="hidden">
     <div style="display:flex;">
         <button type="button" class="w3-btn w3-left w3-threequarter w3-btn-block w3-hover-blue-grey w3-padding-16"
-                onclick="">button 3
+                onclick="">
         </button>
         <div class="w3-card w3-right w3-quarter w3-padding-16">
-            <p>⏲</p>
+            <p></p>
         </div>
     </div>
 </li>

@@ -1,7 +1,28 @@
-
+// Transitions.js handles the various transitions and flows of the application.
+// We have two main sections. The flow section which contains the transfer functions.
+// And the toggle functions which open and close certain pages.
+//
+// The flow section relies on keeping track of what page the user is currently on
+// and handling the possible options the user has to navigate forward and backwards.
+// 
+// The toggle section handles each individual page toggle. We have used toggle functions
+// to allow esay single function hiding and showing of pages. It's recommended that this
+// is continued to remove the extra code needed to determine if the page is opening or closing
 
 // To do a back button I think I'm just gonna do this jank jumplist
-var screen_enum = { HOME: 1, TEST_EDIT:2, TEST_VIEW:3, TEMPLATE_EDIT:4, ADMIN_HOME:5, TRAINING_INFO:6, TRAINING_HOW_WORK:7,TRAINING_PRAC:8 ,TRAINING_RESULTS:9, TEST_NEW:10  };
+var screen_enum = { 
+	            HOME: 1, 
+		    ADMIN_HOME:2, 
+	            TEST_NEW:3, 
+		    TEST_VIEW:4, 
+		    TEMPLATE_NEW:5,
+		    TEMPLATE_VIEW:6, 
+		    TRAINING_INFO:7, 
+		    TRAINING_HOW_WORK:8,
+		    TRAINING_PRAC:9,
+		    TRAINING_RESULTS:10
+                  };
+
 var screen = screen_enum.HOME;
 
 function transfer_back(){
@@ -9,6 +30,8 @@ function transfer_back(){
     if (screen == screen_enum.HOME){
         // Do nothing
     }
+
+    // ============= TRAINING ====================
     else if (screen == screen_enum.TRAINING_INFO) {
         toggle_home_from_training();
         screen = screen_enum.HOME;
@@ -25,20 +48,18 @@ function transfer_back(){
         toggle_practice_from_results();
         screen = screen_enum.TRAINING_PRAC;
     }
-    else if (screen == screen_enum.TEST_EDIT) {
-        toggle_test_edit();
+
+    // ============== ADMIN PAGE ===================
+    else if (screen == screen_enum.TEST_NEW) {
+        toggle_test_new();
         screen = screen_enum.ADMIN_HOME;
     }
     else if (screen == screen_enum.TEST_VIEW) {
         toggle_test_view();
         screen = screen_enum.ADMIN_HOME;
     }
-    else if (screen == screen_enum.TEST_NEW) {
-        toggle_test_new();
-        screen = screen_enum.ADMIN_HOME;
-    }
-    else if (screen == screen_enum.TEMPLATE_EDIT) {
-        toggle_template_edit();
+    else if (screen == screen_enum.TEMPLATE_NEW) {
+        toggle_template_new();
         screen = screen_enum.ADMIN_HOME;
     }
     else if (screen == screen_enum.ADMIN_HOME){
@@ -49,6 +70,7 @@ function transfer_back(){
     }
 
 }
+
 //I am going to try something similar to the back functionality Mitchell implimented with the transfer_back back button
 //but this is for moving forward in the training
 function transfer_through_training() {
@@ -129,13 +151,7 @@ function toggle_test_new(){
         screen = screen_enum.TEST_NEW;
 }
 
-function toggle_test_edit(){
-    $("#main-admin-panel").slideToggle();
-    $("#admin-test-edit-panel").slideToggle();
-    screen = screen_enum.TEST_EDIT;
-}
-
-function toggle_template_edit(){
+function toggle_template_new(){
     $("#main-admin-panel").slideToggle();
     $("#template-edit-admin-panel").slideToggle();
 

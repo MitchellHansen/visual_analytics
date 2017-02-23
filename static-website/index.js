@@ -44,6 +44,7 @@ function admin_login_handler(){
         else{
             alert("Log in failed");
         }
+
     });
 
 
@@ -52,11 +53,8 @@ function trial_login_handler(){
 
     // Get the login token from the user and get the trial data associated with that login
     var login_code = $("#trial-login-form").serializeArray();
-    //var trial_data = trial_login(login_code[0].value);
 
     trial_login(login_code[0].value);
-
-    //toggle_trial_view();
     
     // Start trial
 }
