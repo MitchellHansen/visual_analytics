@@ -50,7 +50,112 @@ function training_graph_click(graph_index, data_index){
 // Container = the $() jquery object which to append the svg's
 // Returns the graph data container which the click methods interact with
 
-function build(container){
+graph_context = {TRAINING:0, TESTING:1, NOP:2};
+graph_type = {STAR:0, LINEAR:1};
+
+function build(container, context, type){
+	
+	if (type == graph_type.STAR){
+		build_star(container, context);
+	} else if (type == graph_type.LINEAR){
+		build_linear(container, context);
+	} else {
+		console.log("Graph type (" + type + ") not supported");
+	}
+}
+
+function build_linear(container, context){
+
+    let graph_data = {};
+
+    let svg_base = $(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"></svg>`);
+
+    // Random data points, this will hit the server in
+    // the future
+    
+    let data_points = [];
+    for (let i = 0; i < 20; i++){
+        data_points.push(Math.floor((Math.random() * 100) + 1));
+    }
+    graph_data.data = data_points;
+
+
+    let data_point_count = data_points.length;
+    let rectangle = {width:200, height:200};
+    let spacing = rectangle.width / data_point_count;
+
+    for (let i = 0; i < data_point_count - 1; i++){
+        
+        let dom_object = $("<g class=\"svg_color\"><polygon points=\"\" style=\"stroke-width:1\"/></g>");
+
+        let coordinates = spacing * i + "," + // Bottom Left 
+                          rectangle.height + " " +
+                          
+                          spacing * i + "," + // Top Left
+			  (rectangle.height - data_points[i]) + " " +
+
+			  spacing * (i+1) + "," + // Top Right
+			  (rectangle.height - data_points[i+1]) + " " +
+
+			  spacing * (i+1) + "," + // Bottom Right
+			  rectangle.height + " ";
+			  
+        dom_object.children().first().attr("points", coordinates);
+
+        svg_base.append(dom_object);
+    }
+
+    for (let i = 0; i < data_point_count-1; i++) {
+
+
+        let dom_object = $(`<g class="hover_group"><polygon points=\"\" style=\"stroke-width:1\"/></polygon></g>`);
+
+        let coordinates = spacing * i + "," + // Bottom Left 
+                          rectangle.height + " " +
+                          
+                          spacing * i + "," + // Top Left
+			  0 + " " +
+
+			  spacing * (i+1) + "," + // Top Right
+			  0 + " " +
+
+			  spacing * (i+1) + "," + // Bottom Right
+			  rectangle.height + " ";
+
+        dom_object.children().first().attr("points", coordinates);
+
+        let onclick_string = "";
+
+	if (context == graph_context.TRAINING){
+		onclick_string += "training_graph_click(" + training_graph_arr.length-1 + "," + i + ")";
+	} else if (context == graph_context.TESTING){
+		onclick_string += "testing_graph_click(" + training_graph_arr.length-1 + "," + i + ")";
+	} else if (context == graph_contxt.NOP){
+		onclick_string += "console.log(" + training_graph_arr.length-1 + "," + i + ")";
+	}
+
+        dom_object.children().first().attr("onclick", onclick_string);
+
+        dom_object.html(function(){return this.innerHTML});
+        svg_base.append(dom_object);
+    }
+
+
+    graph_data.svg_g = svg_base;
+    graph_data.selected_point = -1;
+    graph_data.class = -1;
+
+    training_graph_arr.push(graph_data);
+
+    // Fun little hack to show the svg's because Jquery sucks
+    svg_base.html(function(){return this.innerHTML});
+
+    $(container).append(svg_base);
+
+    return graph_data;
+}
+
+function build_star(container, context){
 
     let graph_data = {};
 
@@ -113,7 +218,15 @@ function build(container){
 
         dom_object.children().first().attr("points", coordinates);
 
-        let onclick_string = "training_graph_click(" + training_graph_arr.length + "," + i + ")";
+        let onclick_string = "";
+
+	if (context == graph_context.TRAINING){
+		onclick_string += "training_graph_click(" + training_graph_arr.length + "," + i + ")";
+	} else if (context == graph_context.TESTING){
+		onclick_string += "testing_graph_click(" + training_graph_arr.length + "," + i + ")";
+	} else if (context == graph_context.NOP){
+		onclick_string += "console.log(" + training_graph_arr.length + "," + i + ")";
+	}
 
         dom_object.children().first().attr("onclick", onclick_string);
 
@@ -126,6 +239,8 @@ function build(container){
     graph_data.selected_point = -1;
     graph_data.class = -1;
 
+    training_graph_arr.push(graph_data);
+    
     // Fun little hack to show the svg's because Jquery sucks
     svg_base.html(function(){return this.innerHTML});
 

@@ -205,10 +205,15 @@ function toggle_training_selection_view() {
 
 }
 function toggle_training_practice_view() {
-    training_graph_arr.push(build($("#svg-row")));
-    training_graph_arr.push(build($("#svg-row")));
-    training_graph_arr.push(build($("#svg-row")));
-    training_graph_arr.push(build($("#svg-row")));
+    
+    for (let i = 0; i < 10; i++){
+        build($("#svg-row"), graph_context.TRAINING, graph_type.LINEAR)
+    }
+  
+    for (let i = 0; i < 10; i++){
+        build($("#svg-row"), graph_context.TRAINING, graph_type.STAR)
+    }
+  
     $("#training-selection").toggleClass("hidden");
     $("#training-practice").toggleClass("hidden");
 }
