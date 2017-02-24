@@ -220,10 +220,7 @@ function toggle_practice_from_results() {
 //This is the function which brings the training screen to the front
 function toggle_training_intro_view() {
     $("#home-row").slideToggle();
-    //$("#navbar-row").toggleClass("hidden");
-    //$("#training-panel").slideToggle();
     $("#training-panel").toggleClass("hidden");
-   // $("#training-panel").slideToggle();
 
     screen = screen_enum.TRAINING_INFO;
 }
