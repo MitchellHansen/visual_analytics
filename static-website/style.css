@@ -16,12 +16,13 @@
 .hover_group {
     fill: transparent;
     stroke: black;
-    stroke-opacity:0.3;
+    stroke-opacity:0.1;
 }
 
 .svg_color {
     fill: white;
     stroke:black;
+    stroke-opacity: 0.4;
 }
 
 .hidden {

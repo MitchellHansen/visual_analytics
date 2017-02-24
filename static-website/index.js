@@ -126,6 +126,45 @@ function export_trial_handler(){
     }
 }
 
+function delete_test_set_handler(){
+
+    if (selected_trial == ""){
+
+    }
+    else {
+
+        delete_test_set(credentials.auth_token).done(function(value) {
+
+        });
+    }
+}
+
+function open_test_handler(){
+
+    if (selected_trial == ""){
+
+    }
+    else {
+
+        open_test(credentials.auth_token).done(function(value) {
+
+        });
+    }
+}
+
+function close_test_handler(){
+
+    if (selected_trial == ""){
+
+    }
+    else {
+
+        close_test(credentials.auth_token).done(function(value) {
+
+        });
+    }
+}
+
 function begin_training_handler(){
     toggle_training_intro_view();
 }

@@ -348,8 +348,79 @@ function delete_template(){
     });
 }
 
+//  API CALL TO :  "/auth/open_test"
+//  SENDS       : Auth creds and the id of the test to open
+//  RECEIVES    : Success or fail
+// ============================================================================================================
 
+function open_test(){
 
+    return $.ajax({
+
+        url: "http://68.186.100.115/auth/open_test",
+        contentType: "application/json;charset=UTF-8",
+        type: "POST",
+        async: true,
+
+        data : JSON.stringify({
+            "login_token": credentials.auth_token,
+            "test_set_id" : selected_trial
+        }),
+
+        dataType: "json",
+        success: function(result){
+
+            console.log(result);
+        },
+
+        error: function(e) {
+
+            if (e.responseText == ""){
+
+            } else {
+                alert("Api call failed");
+                console.log(e);
+            }
+        },
+    });
+}
+
+//  API CALL TO :  "/auth/close_test"
+//  SENDS       : Auth creds and the id of the test to close
+//  RECEIVES    : Success or fail
+// ============================================================================================================
+
+function close_test(){
+
+    return $.ajax({
+
+        url: "http://68.186.100.115/auth/close_test",
+        contentType: "application/json;charset=UTF-8",
+        type: "POST",
+        async: true,
+
+        data : JSON.stringify({
+            "login_token": credentials.auth_token,
+            "test_set_id" : selected_trial
+        }),
+
+        dataType: "json",
+        success: function(result){
+
+            console.log(result);
+        },
+
+        error: function(e) {
+
+            if (e.responseText == ""){
+
+            } else {
+                alert("Api call failed");
+                console.log(e);
+            }
+        },
+    });
+}
 
 
 
