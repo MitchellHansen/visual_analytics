@@ -408,7 +408,7 @@ function new_test_set(test_set_id, template_list, wait_time, close_time){
 //                };
 // ============================================================================================================
 
-function get_next_test(test_set_id){
+function get_next_test(){
 
     return $.ajax({
 
@@ -418,8 +418,7 @@ function get_next_test(test_set_id){
         async: true,
 
         data : JSON.stringify({
-            "login_token" : credentials.auth_token,
-            "test_set_id" : template_id,
+            "login_token" : login_uuid,
         }),
 
         dataType: "json",

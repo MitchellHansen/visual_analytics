@@ -20,9 +20,7 @@ window.onload = function(e){
     $("#test-template-filter").change(function(){
         get_template_ids();
     });
-
 };
-
 
 // ======================================================================
 // =  Handlers take a buttons event and tie them to middle or api code  =
@@ -32,7 +30,7 @@ window.onload = function(e){
 function admin_login_handler(){
 
     // Get the creds from the input, and pass them to the api
-    var admin_credentials_combo = $("#admin-login-form").serializeArray();
+    let admin_credentials_combo = $("#admin-login-form").serializeArray();
 
     // API call to the admin_login endpoint
     admin_login(admin_credentials_combo[0].value, admin_credentials_combo[1].value).done(function() {
@@ -50,7 +48,7 @@ function admin_login_handler(){
 function trial_login_handler(){
 
     // Get the login token from the user and get the trial data associated with that login
-    var login_code = $("#trial-login-form").serializeArray();
+    let login_code = $("#trial-login-form").serializeArray();
 
     if (login_code == ""){
         // do nothing
@@ -118,16 +116,16 @@ function new_test_set_handler(){
     }
 }
 
+function download(text, name, type) {
+
+    let a = document.getElementById("download-button");
+    let file = new Blob([text], {type: type});
+    a.href = URL.createObjectURL(file);
+    a.download = name;
+}
+
 // When the user clicks the [Export] button on the [admin home page]
 function export_test_set_handler(){
-
-
-    function download(text, name, type) {
-      let a = document.getElementById("download-button");
-      let file = new Blob([text], {type: type});
-      a.href = URL.createObjectURL(file);
-      a.download = name;
-    }
 
     if (selected_trial == ""){
         // error
@@ -158,30 +156,39 @@ function training_fwd_movement() {
 // = and populate the page which the data is intended for        =
 // ===============================================================
 
-
-function populate_view_test_page(test_details){
-
-    // list all the id's
-    $("#trial-view-admin-panel-id-list").empty();
-
-    var html = "";
-    for (var i in test_details.users){
-        html += test_details.users[i][0] + "<br>";
-    }
-
-    $("#trial-view-admin-panel-id-list").append(html);
-
-
-    $("#trial-view-admin-panel-details").empty();
-
-    // Now fill in the other details
-    $("#trial-view-admin-panel-details").append("<p>Trial Name  : " + test_details.test_details[0][0] + "<p>");
-    $("#trial-view-admin-panel-details").append("<p>Wait time   : " + test_details.test_details[0][1] + "<p>");
-    $("#trial-view-admin-panel-details").append("<p>Close time  : " + test_details.test_details[0][2] + "<p>");
-    $("#trial-view-admin-panel-details").append("<p>Total tests : " + test_details.test_details[0][3] + "<p>");
+function populate_view_template_page(template_details){
 
 }
 
+// Takes the response from the [get_test_set_statuses] API call and parses it into the
+// trial-view-admin-panel-id-list, which is in need of a rename
+function populate_view_test_page(test_details){
+
+    let id_list_handle = $("#trial-view-admin-panel-id-list");
+
+    // list all the id's
+    id_list_handle.empty();
+
+    let html = "";
+    for (let i in test_details.users){
+        html += test_details.users[i][0] + "<br>";
+    }
+
+    id_list_handle.append(html);
+
+
+    id_list_handle.empty();
+
+    // Now fill in the other details
+    id_list_handle.append("<p>Trial Name  : " + test_details.test_details[0][0] + "<p>");
+    id_list_handle.append("<p>Wait time   : " + test_details.test_details[0][1] + "<p>");
+    id_list_handle.append("<p>Close time  : " + test_details.test_details[0][2] + "<p>");
+    id_list_handle.append("<p>Total tests : " + test_details.test_details[0][3] + "<p>");
+
+}
+
+// Takes the response from the [get_template_ids] API call and parses it into the
+// test-status-list
 function populate_admin_page_active_tests(test_statuses){
 
     // Remove all the old data
@@ -194,28 +201,30 @@ function populate_admin_page_active_tests(test_statuses){
     // For each of the tests the we received back
     for (let index = 0; index < test_statuses.length; index++){
 
-        var test_set_id = test_statuses[index][0];
-        var test_set_status = test_statuses[index][1];
+        let test_set_id = test_statuses[index][0];
+        let test_set_status = test_statuses[index][1];
 
-        // Clone the template element
-        var elem = $("#test-status-list-element-template").clone();
+        // We have a sort of template thing in the bottom of the index.html
+        // which we clone and then set to not hidden
+        let elem = $("#test-status-list-element-template").clone();
         $(elem).attr("id", test_set_id);
 
         // Get it's status
         if (test_set_status == 1){
 
             // Set the right hand symbol text & the left hand test name text
-            $(elem).children().children().last().text("⏲");
+            $(elem).children().children().last().text("ACTIVE");
         }
         else  if (test_set_status == 3){
 
-            $(elem).children().children().last().text("✔");
+            $(elem).children().children().last().text("WAITING");
         }
         else  if (test_set_status == 2){
 
-            $(elem).children().children().last().text("🛑");
+            $(elem).children().children().last().text("STOPPED");
         }
         else {
+
             $(elem).children().children().last().text("ERROR");
         }
 
