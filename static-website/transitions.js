@@ -10,6 +10,7 @@
 // is continued to remove the extra code needed to determine if the page is opening or closing
 
 // To do a back button I think I'm just gonna do this jank jumplist
+
 var screen_enum = { 
                     HOME: 1,
                     ADMIN_HOME:2,
@@ -162,6 +163,7 @@ function toggle_new_template(){
     else
         screen = screen_enum.TEMPLATE_NEW;
 }
+
 
 // Open and close the new template page
 function toggle_view_template(){

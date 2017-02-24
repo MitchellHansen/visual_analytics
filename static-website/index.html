@@ -92,7 +92,7 @@
                     <p>Group Members</p>
                 </div>
                 <div class="w3-left-align w3-half w3-right">
-                    <p>Mitchell Hansen<br>Anthony Armatas<br>Elliott Barcoe-Walsh<br>Puskin Feleke</p>
+                    <p>Mitchell Hansen<br>Anthony Armatas<br>Elliott Barcoe-Walsh</p>
                 </div>
             </div>
 
@@ -306,7 +306,6 @@
      </div>
     </div>
 
-    <!-- End of Training code-->
     <div class="w3-light-grey w3-center hidden" style="height:800px" id="main-admin-panel">
 
         <div class="w3-dark-grey w3-center w3-quarter hide-scrollbar" style="height:800px">
@@ -385,19 +384,19 @@
 
             <div class="w3-row">
                 <div class="w3-col w3-padding">
-                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="">Delete Test Set</button>
+                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="delete_test_set_handler()">Delete Test</button>
                 </div>
             </div>
 
             <div class="w3-row">
                 <div class="w3-col w3-padding">
-                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="">Start Test Set</button>
+                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="open_test_handler()">Open Test</button>
                 </div>
             </div>
 
             <div class="w3-row">
                 <div class="w3-col w3-padding">
-                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="">End Test Set</button>
+                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="close_test_handler()">Close Test</button>
                 </div>
             </div>
 
@@ -426,13 +425,9 @@
                             </div>
                         </div>
                     </li>
-
-
                 </ul>
             </nav>
         </div>
-
-
     </div>
 
     <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="view-template-admin-panel">
@@ -451,7 +446,6 @@
     </div>
 
     <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="new-template-admin-panel">
-
         <div class="w3-dark-grey w3-center w3-threequarter hide-scrollbar" style="height:800px;">
 
             <!--Form to pass the values for the test-->
@@ -520,7 +514,6 @@
 
         </div>
 
-
     </div>
 
     <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="view-test-set-admin-panel">
@@ -566,7 +559,7 @@
 <!-- Footer -->
 <footer class="w3-container w3-black w3-padding-16">
     <p>Powered by <a href="http://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
-    <p>Created by Elliott, Mitchell, Anthony, and Puskin</p>
+    <p>Created by Elliott, Mitchell, Anthony</p>
 </footer>
 
 </body>
