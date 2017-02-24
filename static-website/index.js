@@ -11,10 +11,12 @@ var selected_template = "";
 
 window.onload = function(e){
 
+    // Set the onchange function for the admin page test filter
     $("#test-status-list-filter-select").change(function(){
         get_test_set_statuses();
     });
 
+    // Set the onchange functions for the admin page template filter
     $("#test-template-filter").change(function(){
         get_template_ids();
     });
@@ -22,91 +24,117 @@ window.onload = function(e){
 };
 
 
-function download(text, name, type) {
-  var a = document.getElementById("download-button");
-  var file = new Blob([text], {type: type});
-  a.href = URL.createObjectURL(file);
-  a.download = name;
-}
+// ======================================================================
+// =  Handlers take a buttons event and tie them to middle or api code  =
+// ======================================================================
 
-// Handlers take a buttons event and tie them to middle or api code
-
+// When the admin clicks the [Login] button on the [admin sign in page]
 function admin_login_handler(){
 
     // Get the creds from the input, and pass them to the api
     var admin_credentials_combo = $("#admin-login-form").serializeArray();
 
+    // API call to the admin_login endpoint
     admin_login(admin_credentials_combo[0].value, admin_credentials_combo[1].value).done(function() {
 
         if (credentials.logged_in) {
-            toggle_admin_view();
+            toggle_admin_panel();
         }
         else{
             alert("Log in failed");
         }
-
     });
-
-
 }
+
+// When the user clicks [Login] on the [testing login page]
 function trial_login_handler(){
 
     // Get the login token from the user and get the trial data associated with that login
     var login_code = $("#trial-login-form").serializeArray();
 
-    trial_login(login_code[0].value);
-    
-    // Start trial
+    if (login_code == ""){
+        // do nothing
+
+    } else {
+
+        trial_login(login_code[0].value).done(function(value) {
+            // Toggle view trial, or maybe start trial function
+        });
+    }
 }
 
+// When the user clicks the [View Template] button on the [admin home page]
 function view_template_handler(){
 
     if (selected_template == ""){
         // do nothing
-    }
-    else {
+
+    } else {
+
+        toggle_view_template();
 
     }
 }
 
-function view_trial_handler(){
+// When the user clicks the [View Template] button on the [admin home page]
+function new_template_handler(){
+
+    if (credentials.logged_in == false){
+        alert("You are not logged in. Try logging in again");
+
+    } else {
+
+        toggle_new_template();
+
+    }
+}
+
+// When the user clicks the [View Test Set] button on the [admin home page]
+function view_test_set_handler(){
 
     if (selected_trial == ""){
-        // error
+        // do nothing
     }
     else {
 
         get_test_set_details(credentials.auth_token).done(function(value) {
             populate_view_test_page(value);
-            toggle_test_view();
+            toggle_view_test_set();
         });
 
     }
 }
 
-function new_trial_handler(){
+// When the user clicks the [New Test Set] button on the [admin home page]
+function new_test_set_handler(){
+
+    if (credentials.logged_in == false){
+
+        alert("You are not logged in. Try logging in again");
+    }
+    else {
+
+        toggle_new_test_set();
+    }
+}
+
+// When the user clicks the [Export] button on the [admin home page]
+function export_test_set_handler(){
+
+
+    function download(text, name, type) {
+      let a = document.getElementById("download-button");
+      let file = new Blob([text], {type: type});
+      a.href = URL.createObjectURL(file);
+      a.download = name;
+    }
 
     if (selected_trial == ""){
         // error
     }
     else {
 
-        get_test_set_details(credentials.auth_token).done(function(value) {
-            populate_view_test_page(value);
-            toggle_test_view();
-        });
-
-    }
-}
-
-function export_trial_handler(){
-
-    if (selected_trial == ""){
-        // error
-    }
-    else {
-
-        var csv;
+        let csv;
         export_csv().done(function(value) {
             csv = value;
             download(csv, selected_trial + ".csv", 'text/plain');
@@ -114,6 +142,7 @@ function export_trial_handler(){
     }
 }
 
+//
 function begin_training_handler(){
     toggle_training_intro_view();
 }
@@ -122,9 +151,13 @@ function training_fwd_movement() {
     transfer_through_training();
 }
 
-function begin_trial(trial_data){
 
-}
+
+// ===============================================================
+// = Populate functions take the *RAW* response from an API call =
+// = and populate the page which the data is intended for        =
+// ===============================================================
+
 
 function populate_view_test_page(test_details){
 

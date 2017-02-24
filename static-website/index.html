@@ -119,26 +119,18 @@
 
             <div class="w3-row">
                 <div class="w3-left-align">
-                    <!--<p>
-                        Did you read the about page? If you did then you would know that Visual Analytics is the
-                        practice of viewing data through different representations e.g. line graphs, scatter plots, etc.
-                    </p>
+
                     <p>
-                        Your Job is to view these data representations and look for data that is non-uniform. Since
-                        each representation is different, selecting non-uniform data is slightly different between
-                        representations. Move your mouse cursor over the graphs and it will immediately become apparent
-                        how to select data for that particular representation.
-                    </p>
-                    <p>
-                        You can only select one area per graph, so choose wisely!
-                    </p>-->
-                    <p>
-                    Unsure about how to complete a visual analytics test?
-                    <br>Want to try them out to see how exactly the test will function?
-                    Just want to practice a little?
+                        Unsure about how to complete a visual analytics test?
+                    <br>
+                        Want to try them out to see how exactly the test will function?
+                        Just want to practice a little?
                     </p>
 
-                <p>Just click on the Begin Training button below and it will show you all you need to know!</p>
+                    <p>
+                        Just click on the Begin Training button below and it will show you all you need to know!
+                    </p>
+
                 </div>
             </div>
 
@@ -185,10 +177,12 @@
     <!-- First Training Window-->
     <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="training-panel">
         <h1>How Visual Analytics Tests Work</h1>
-        <p>The two classes below Cls 1 (red) and Cls 2 (green) are multidemensional data representations
+        <p>
+            The two classes below Cls 1 (red) and Cls 2 (green) are multidemensional data representations
             of some previously generated data points. The other graphs that fill the screen are distorted versions
             of either Cls 1 or Cls 2. Your Job is to view these data representations and determine which class they
-            belong to.</p>
+            belong to.
+        </p>
         <img src="training_pics/full_graphic_test.jpg" alt="The full data representation test!"
              style="width:600px;height:600px;">
         <!-- buttons under picture-->
@@ -215,9 +209,11 @@
             <img src="training_pics/graph_class2.jpg" alt="The full data representation test!"
                  style="width:100px;height:100px;">
         </div>
-        <p>Each distorted graph is divided up into sections sections. Some sections are clearer representations of the
+        <p>
+            Each distorted graph is divided up into sections sections. Some sections are clearer representations of the
             classes than others.
-            You need to find the section which, to you, best signifies either Cls 1 or 2</p>
+            You need to find the section which, to you, best signifies either Cls 1 or 2
+        </p>
         <img src="training_pics/graph_sections.jpg" alt="The full data representation test!"
              style="width:100px;height:100px;">
         <p>
@@ -332,7 +328,7 @@
 
             <div class="w3-row">
                 <div class="w3-col w3-padding">
-                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="toggle_template_new()">
+                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="new_template_handler()">
                         New Template
                     </button>
                 </div>
@@ -362,7 +358,7 @@
             <div class="w3-row">
                 <div class="w3-col w3-padding">
                     <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey"
-                            onclick="view_trial_handler()">
+                            onclick="view_test_set_handler()">
                         View Test Set
                     </button>
                 </div>
@@ -371,7 +367,7 @@
             <div class="w3-row">
                 <div class="w3-col w3-padding">
                     <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey"
-                            onclick="export_trial_handler()">Export
+                            onclick="export_test_set_handler()">Export
                     </button>
                 </div>
                 <div class="w3-col w3-padding">
@@ -383,7 +379,7 @@
 
             <div class="w3-row">
                 <div class="w3-col w3-padding">
-                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="new_trial_handler()">New Test Set</button>
+                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="new_test_set_handler()">New Test Set</button>
                 </div>
             </div>
 
@@ -439,73 +435,7 @@
 
     </div>
 
-    <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="template-edit-admin-panel">
-        <div class="w3-dark-grey w3-center w3-threequarter hide-scrollbar" style="height:800px;">
-            <!-- ////////////////////////////////////////////////////////////////////////////    -->
-            <!--Form to pass the values for the test-->
-            <form id="template_form" onsubmit="serialize_n_Pass()">
-                <div class="w3-blue-grey w3-row w3-padding-16 w3-margin">
-                    <div class="w3-col">
-                        Test ID(Name):
-                    </div>
-                    <div class="w3-col">
-                        <input type="text" name="fname" id="fname"><br>
-                    </div>
-                </div>
-                <div class="w3-blue-grey w3-row w3-padding-16 w3-margin">
-                    <div class="w3-col" id="template_Section_Length">
-                        Amount Of Datapoints :
-                    </div>
-                    <div class="w3-col">
-                        <input id="rangeinput1" name="rangeinput1" style="width:60%;" type="range" min="0" max="100" value="20"
-                               oninput="amount_o_Dpts.value = value; reBuild_DatapointsLen(amount_o_Dpts.value, $('#template-graph-row')) "></input> <!--reBuild_DatapointsLen passed num of
-                                                                                                                                                         points and the id to refresh the graph for the user  -->
-                        <output id="amount_o_Dpts">20</output>
-                    </div>
-                </div>
-                <!--WHEN BACKEND FIXES GRAPH CREATION NEED TO ADD TEMPLATE MSM AND WND MANIPULATION FUNCTIONALITY-->
-                <div class="w3-blue-grey w3-row w3-padding-16 w3-margin">
-                    <div class="w3-col">
-                        Amount Of Major Section Manipulation:
-                    </div>
-                    <div class="w3-col">
-                        <input id="rangeinput2" name="rangeinput2" style="width:60%;" type="range" min="0" max="100" value="50"
-                               oninput="amount_o_MSM.value = value"></input>
-                        <output id="amount_o_MSM">50</output>
-                    </div>
-                </div>
-
-                <div class="w3-blue-grey w3-row w3-padding-16 w3-margin">
-                    <div class="w3-col">
-                        Amount Of White Noise Data:
-                    </div>
-                    <div class="w3-col">
-                        <input id="rangeinput3" name="rangeinput3" style="width:60%;" type="range" min="0" max="100" value="50"
-                               oninput="amount_o_WNData.value = value"></input>
-                        <output id="amount_o_WNData">50</output>
-                    </div>
-                </div>
-                <!--WHEN BACKEND FIXES GRAPH CREATION NEED TO ADD TEMPLATE MSM AND WND MANIPULATION FUNCTIONALITY-->
-                <div class="w3-dark-grey w3-row">
-                    <input type="submit" class="w3-btn" value="Create Exam"></input>
-                </div>
-            </form>
-        </div>
-        <!-- The Template Graph is generated here-->
-        <div id="template-graph-row">
-        </div>
-        <div class="w3-dark-grey w3-center w3-quarter hide-scrollbar" style="height:800px;">
-
-        </div>
-
-
-    </div>
-
-    <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="trial-edit-admin-panel">
-
-    </div>
-
-    <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="trial-view-admin-panel">
+    <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="view-template-admin-panel">
 
         <div class="w3-half w3-dark-gray w3-center w3-padding-64 w3-padding-jumbo" style="height: 800px;" >
             <div class="w3-white w3-padding-large w3-padding-64 w3-center" style="" id="trial-view-admin-panel-id-list">
@@ -520,19 +450,105 @@
 
     </div>
 
-    <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="trial-new-admin-panel">
+    <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="new-template-admin-panel">
+
+        <div class="w3-dark-grey w3-center w3-threequarter hide-scrollbar" style="height:800px;">
+
+            <!--Form to pass the values for the test-->
+            <form id="template_form" onsubmit="serialize_and_pass()">
+
+                <div class="w3-blue-grey w3-row w3-padding-16 w3-margin">
+                    <div class="w3-col">
+                        Test ID(Name):
+                    </div>
+                    <div class="w3-col">
+                        <input type="text" name="fname" id="fname"><br>
+                    </div>
+                </div>
+
+                <div class="w3-blue-grey w3-row w3-padding-16 w3-margin">
+                    <div class="w3-col" id="template_Section_Length">
+                        Amount Of Datapoints :
+                    </div>
+                    <div class="w3-col">
+                        <input id="rangeinput1" name="rangeinput1" style="width:60%;" type="range" min="0" max="100" value="20"
+                               oninput="
+                               amt_of_data_points.value = value;
+                               reBuild_DatapointsLen(amt_of_data_points.value, $('#template-graph-row'))">
+                        <!--reBuild_DatapointsLen passed num of points and the id to refresh the graph for the user  -->
+                        <output id="amt_of_data_points">20</output>
+                    </div>
+                </div>
+
+                <!--WHEN BACKEND FIXES GRAPH CREATION NEED TO ADD TEMPLATE MSM AND WND MANIPULATION FUNCTIONALITY-->
+                <div class="w3-blue-grey w3-row w3-padding-16 w3-margin">
+                    <div class="w3-col">
+                        Amount Of Major Section Manipulation:
+                    </div>
+                    <div class="w3-col">
+                        <input id="rangeinput2" name="rangeinput2" style="width:60%;" type="range" min="0" max="100" value="50"
+                               oninput="amt_of_mjr_sections.value = value">
+                        <output id="amt_of_mjr_sections">50</output>
+                    </div>
+                </div>
+
+                <div class="w3-blue-grey w3-row w3-padding-16 w3-margin">
+                    <div class="w3-col">
+                        Amount Of White Noise Data:
+                    </div>
+                    <div class="w3-col">
+                        <input id="rangeinput3" name="rangeinput3" style="width:60%;" type="range" min="0" max="100" value="50"
+                               oninput="amt_of_white_noise.value = value">
+                        <output id="amt_of_white_noise">50</output>
+                    </div>
+                </div>
+
+                <!--WHEN BACKEND FIXES GRAPH CREATION NEED TO ADD TEMPLATE MSM AND WND MANIPULATION FUNCTIONALITY-->
+                <div class="w3-dark-grey w3-row">
+                    <input type="submit" class="w3-btn" value="Create Exam">
+                </div>
+
+            </form>
+        </div>
+
+        <!-- The Template Graph is generated here-->
+        <div id="template-graph-row">
+
+        </div>
+
+        <div class="w3-dark-grey w3-center w3-quarter hide-scrollbar" style="height:800px;">
+
+        </div>
+
+
+    </div>
+
+    <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="view-test-set-admin-panel">
+
+        <div class="w3-half w3-dark-gray w3-center w3-padding-64 w3-padding-jumbo" style="height: 800px;" >
+            <div class="w3-white w3-padding-large w3-padding-64 w3-center" style="" id="trial-view-admin-panel-id-list">
+
+            </div>
+        </div>
+
+        <div class="w3-half w3-dark-gray w3-left-align w3-padding-64" style="height: 800px;"
+             id="trial-view-admin-panel-details">
+
+        </div>
+
+    </div>
+
+    <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="new-test-set-admin-panel">
 
         <div class="w3-half w3-dark-gray w3-center w3-padding-64 w3-padding-jumbo" style="height: 800px;" >
 
         </div>
 
-        <div class="w3-half w3-dark-gray w3-left-align w3-padding-64" style="height: 800px;"
-             id="trial-new-admin-panel-details">
+        <div class="w3-half w3-dark-gray w3-left-align w3-padding-64" style="height: 800px;">
 
         </div>
-    </div>
 
-</div>
+    </div>
 
 </div>
 
