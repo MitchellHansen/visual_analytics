@@ -1,7 +1,29 @@
-
+// Transitions.js handles the various transitions and flows of the application.
+// We have two main sections. The flow section which contains the transfer functions.
+// And the toggle functions which open and close certain pages.
+//
+// The flow section relies on keeping track of what page the user is currently on
+// and handling the possible options the user has to navigate forward and backwards.
+// 
+// The toggle section handles each individual page toggle. We have used toggle functions
+// to allow esay single function hiding and showing of pages. It's recommended that this
+// is continued to remove the extra code needed to determine if the page is opening or closing
 
 // To do a back button I think I'm just gonna do this jank jumplist
-var screen_enum = { HOME: 1, TEST_EDIT:2, TEST_VIEW:3, TEMPLATE_NEW:4, ADMIN_HOME:5, TRAINING_INFO:6, TRAINING_HOW_WORK:7,TRAINING_PRAC:8 ,TRAINING_RESULTS:9, TEST_NEW:10, TEMPLATE_VIEW:11  };
+
+var screen_enum = { 
+                    HOME: 1,
+                    ADMIN_HOME:2,
+                    TEST_NEW:3,
+                    TEST_VIEW:4,
+                    TEMPLATE_NEW:5,
+                    TEMPLATE_VIEW:6,
+                    TRAINING_INFO:7,
+                    TRAINING_HOW_WORK:8,
+                    TRAINING_PRAC:9,
+                    TRAINING_RESULTS:10
+                  };
+
 var screen = screen_enum.HOME;
 
 function transfer_back(){
@@ -9,6 +31,8 @@ function transfer_back(){
     if (screen == screen_enum.HOME){
         // Do nothing
     }
+
+    // ============= TRAINING ====================
     else if (screen == screen_enum.TRAINING_INFO) {
         toggle_home_from_training();
         screen = screen_enum.HOME;
@@ -25,34 +49,33 @@ function transfer_back(){
         toggle_practice_from_results();
         screen = screen_enum.TRAINING_PRAC;
     }
-    else if (screen == screen_enum.TEST_EDIT) {
-        toggle_test_edit();
+
+    // ============== ADMIN PAGE ===================
+    else if (screen == screen_enum.TEST_NEW) {
+        toggle_new_test_set();
         screen = screen_enum.ADMIN_HOME;
     }
     else if (screen == screen_enum.TEST_VIEW) {
-        toggle_test_view();
-        screen = screen_enum.ADMIN_HOME;
-    }
-    else if (screen == screen_enum.TEST_NEW) {
-        toggle_test_new();
+        toggle_view_test_set();
         screen = screen_enum.ADMIN_HOME;
     }
     else if (screen == screen_enum.TEMPLATE_NEW) {
-        toggle_template_new();
+        toggle_new_template();
         screen = screen_enum.ADMIN_HOME;
     }
     else if (screen == screen_enum.TEMPLATE_VIEW) {
-        toggle_template_view();
+        toggle_view_template();
         screen = screen_enum.ADMIN_HOME;
     }
     else if (screen == screen_enum.ADMIN_HOME){
-        toggle_admin_view();
-        screen == screen_enum.HOME;
+        toggle_admin_panel();
+        screen = screen_enum.HOME;
         selected_template = "";
         selected_trial = "";
     }
 
 }
+
 //I am going to try something similar to the back functionality Mitchell implimented with the transfer_back back button
 //but this is for moving forward in the training
 function transfer_through_training() {
@@ -77,8 +100,9 @@ function transfer_through_training() {
     }
 
 }
-// =================================
-// These functions all have to do with the right panel on the home screen
+// ===========================================================================
+// = These functions all have to do with the right panel on the home screen  =
+// ==========================================================================
 
 function show_trial_login(){
     $("#right-hand-container").children().hide();
@@ -100,21 +124,15 @@ function show_admin_login(){
     $("#admin-login-div").show();
 }
 
-// =================================
-// =================================
+// ========================================================================
+// =           Toggle functions for opening and closing pages             =
+// ========================================================================
 
-
-function transfer_to_test_view(){
-    $("#main-admin-panel").slideToggle();
-    $("#admin-test-view-panel").slideToggle();
-    screen = screen_enum.TEST_VIEW;
-}
-
-function toggle_test_view(){
+// Open and close the view test set page
+function toggle_view_test_set(){
 
     $("#main-admin-panel").slideToggle();
-    //$("#admin-test-view-panel").slideToggle();
-    $("#trial-view-admin-panel").slideToggle();
+    $("#view-test-set-admin-panel").slideToggle();
 
     if (screen == screen_enum.TEST_VIEW)
         screen = screen_enum.ADMIN_HOME;
@@ -122,10 +140,11 @@ function toggle_test_view(){
         screen = screen_enum.TEST_VIEW;
 }
 
-function toggle_test_new(){
+// Open and close the new test set page
+function toggle_new_test_set(){
 
     $("#main-admin-panel").slideToggle();
-    $("#trial-new-admin-panel").slideToggle();
+    $("#new-test-set-admin-panel").slideToggle();
 
     if (screen == screen_enum.TEST_NEW)
         screen = screen_enum.ADMIN_HOME;
@@ -133,15 +152,11 @@ function toggle_test_new(){
         screen = screen_enum.TEST_NEW;
 }
 
-function toggle_test_edit(){
-    $("#main-admin-panel").slideToggle();
-    $("#admin-test-edit-panel").slideToggle();
-    screen = screen_enum.TEST_EDIT;
-}
+// Open and close the new template page
+function toggle_new_template(){
 
-function toggle_template_new(){
     $("#main-admin-panel").slideToggle();
-    $("#template-new-admin-panel").slideToggle();
+    $("#new-template-admin-panel").slideToggle();
 
     if (screen == screen_enum.TEMPLATE_NEW)
         screen = screen_enum.HOME;
@@ -149,9 +164,12 @@ function toggle_template_new(){
         screen = screen_enum.TEMPLATE_NEW;
 }
 
-function toggle_template_view(){
+
+// Open and close the new template page
+function toggle_view_template(){
+
     $("#main-admin-panel").slideToggle();
-    $("#template-view-admin-panel").slideToggle();
+    $("#view-template-admin-panel").slideToggle();
 
     if (screen == screen_enum.TEMPLATE_VIEW)
         screen = screen_enum.HOME;
@@ -159,7 +177,7 @@ function toggle_template_view(){
         screen = screen_enum.TEMPLATE_VIEW;
 }
 
-function toggle_admin_view() {
+function toggle_admin_panel() {
 
     $("#home-row").slideToggle();
     $("#navbar-row").toggleClass("hidden");
@@ -168,6 +186,7 @@ function toggle_admin_view() {
     if (screen == screen_enum.ADMIN_HOME)
         screen = screen_enum.HOME;
     else {
+
         screen = screen_enum.ADMIN_HOME;
         // Try and get the test-set names and statuses
         if (!get_test_set_statuses()){
@@ -203,10 +222,7 @@ function toggle_practice_from_results() {
 //This is the function which brings the training screen to the front
 function toggle_training_intro_view() {
     $("#home-row").slideToggle();
-    //$("#navbar-row").toggleClass("hidden");
-    //$("#training-panel").slideToggle();
     $("#training-panel").toggleClass("hidden");
-   // $("#training-panel").slideToggle();
 
     screen = screen_enum.TRAINING_INFO;
 }
@@ -219,10 +235,15 @@ function toggle_training_selection_view() {
 
 }
 function toggle_training_practice_view() {
-    training_graph_arr.push(build($("#svg-row")));
-    training_graph_arr.push(build($("#svg-row")));
-    training_graph_arr.push(build($("#svg-row")));
-    training_graph_arr.push(build($("#svg-row")));
+    
+    for (let i = 0; i < 10; i++){
+        build($("#svg-row"), graph_context.TRAINING, graph_type.LINEAR)
+    }
+  
+    for (let i = 0; i < 10; i++){
+        build($("#svg-row"), graph_context.TRAINING, graph_type.STAR)
+    }
+  
     $("#training-selection").toggleClass("hidden");
     $("#training-practice").toggleClass("hidden");
 }
@@ -236,21 +257,10 @@ function toggle_back_to_home() {
 }
 
 
-function transfer_to_test_edit(){
-}
-
-function transfer_to_test_new(){
-}
-
-function transfer_to_test_template_edit(){
-}
-
 function show_admin_window(){
 
     // Roll up the navbar and open the content container
     toggle_admin_view();
-
-
 }
 
 

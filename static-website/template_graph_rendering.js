@@ -93,7 +93,7 @@ function oninput_pass(input){
     document.getElementById("template_Section_Length").innerHTML = input;
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-function serialize_n_Pass(){
+function serialize_and_pass(){
     var str = $("#template_form").serializeArray();   
     var graphData;
     var name1, name2, name3, value1,value2,value3;
