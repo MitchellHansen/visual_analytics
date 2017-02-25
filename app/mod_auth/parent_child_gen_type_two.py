@@ -10,11 +10,11 @@ class gen_two:
     def gen_Parents_And_Children_type_two(amountOfDP):
         #Python Dictionary to be returned
         the_return_dict = {}
-
+	amountOfDP = int(amountOfDP)
         parentA = [None] * amountOfDP
         parentB = [None] * amountOfDP
-        genList(parentA,amountOfDP)
-        genList(parentB,amountOfDP)
+        gen_two.genList(parentA,amountOfDP)
+        gen_two.genList(parentB,amountOfDP)
         listOParents = []
         #Added these lists to separate the children graphs from each other for the databases
         listOClass1Childern = []
@@ -66,10 +66,10 @@ class gen_two:
         noisePercentFactor = .10
         for i in range(len(listOChildren)):
             if evenOddCounter == 1:
-                whiteNoise(listOChildren[i], amountOfDP, noisePercentFactor)
+                gen_two.whiteNoise(listOChildren[i], amountOfDP, noisePercentFactor)
                 evenOddCounter += 1
             else:
-                whiteNoise(listOChildren[i], amountOfDP, noisePercentFactor)
+                gen_two.whiteNoise(listOChildren[i], amountOfDP, noisePercentFactor)
                 evenOddCounter -= 1
                 noisePercentFactor += .10
 
@@ -100,7 +100,7 @@ class gen_two:
         return dLst
 
 
-
+    @staticmethod
     def whiteNoise (childList,amountOfDP, noisePercentFactor):
         classVectorPercent = 1 - noisePercentFactor
         for i in range(amountOfDP):
