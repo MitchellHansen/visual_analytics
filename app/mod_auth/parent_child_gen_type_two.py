@@ -6,6 +6,7 @@ import copy
 #will only create 20 graphs
 
 class gen_two:
+    @staticmethod
     def gen_Parents_And_Children_type_two(amountOfDP):
         #Python Dictionary to be returned
         the_return_dict = {}
@@ -91,7 +92,7 @@ class gen_two:
        # for i in range(100):
        #     print "DataNum %d: %d" % (i, parentB[i])
 
-
+    @staticmethod
     def genList(dLst,amountOfDP):
         for i in range(amountOfDP):
             dataPnt = randint(0, amountOfDP)
