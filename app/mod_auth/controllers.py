@@ -41,10 +41,25 @@ def get_test_set_statuses():
 
 @mod_auth.route('/get_template_details', methods=['GET', 'POST'])
 def get_template_details():
-    return json.dumps("SHITS WORKING")
+    login_token = None
+    template_id = None
+    login_token = request.json['login_token']
+    if(check_token(login_token) is False):
+        return json.dumps({'Status': "Invalid Token"})
+    template_id = request.json['template_id']
+    template_details={}
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    cursor.execute("SELECT total_data_points from templates where template_id=\'{0}\'".format(template_id))
+    total_data_points = cursor.fetchall()
+    cursor.execute("SELECT graph_type from templates where template_id=\'{0}\'".format(template_id))
+    graph_type = cursor.fetchall()
+    template_details={
+        'total_data_points':total_data_points,
+        'graph_type': graph_type
+    }
 
-
-
+    return json.dumps(template_details)
 
 @mod_auth.route('/get_test_set_details', methods=['GET', 'POST'])
 def get_test_set_details():
@@ -104,7 +119,7 @@ def delete_test_set():
     conn.commit()
     cursor.execute('DELETE FROM test_set_template_list WHERE test_set_id=\'{0}\''.format(test_set_id))
     conn.commit()
-    return json.dumps("Your test set has been deleted")
+    return json.dumps("SUCCESS")
 
 @mod_auth.route('/delete_template', methods=['GET', 'POST'])
 def delete_template():
@@ -131,6 +146,10 @@ def open_test():
     test_set_id = None
     token = request.json['login_token']
     test_set_id = request.json['test_set_id']
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    cursor.execute('UPDATE test_set_details SET status=\'1\' WHERE test_set_id=\'{0}\''.format(test_set_id))
+    conn.commit()
     return json.dumps("SUCCESS")
 
 
@@ -140,6 +159,10 @@ def close_test():
     test_set_id = None
     token = request.json['login_token']
     test_set_id = request.json['test_set_id']
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    cursor.execute('UPDATE test_set_details SET status=\'2\' WHERE test_set_id=\'{0}\''.format(test_set_id))
+    conn.commit()
     return json.dumps("SUCCESS")
 
 @mod_auth.route('/trial_login', methods=['GET', 'POST'])
@@ -244,4 +267,80 @@ def export_csv():
     response.headers["Content-type"] = "text/csv"
     return response
     
+@mod_auth.route('/new_test_set', methods=['GET', 'POST'])
+def new_test_set():
+    test_set_id = None
+    template_id = None
+    wait_time = None
+    close_time = None
+    uuid_count = None
+    test_set_id = request.json['test_set_id']
+    template_id = request.json['template_ids']
+    wait_time = request.json['wait_time']
+    close_time = request.json['close_time']
+    uuid_count = request.json['uuid_count']
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM test_set_details WHERE test_set_id=\'{}\''.format(test_set_id))
+    data = cursor.fetchall()
+    if data is None:    
+	for i in template_id:
+ 	    cursor.execute('INSERT INTO test_set_details VALUES(\'{0}\',\'{1}\',\'{2}\',\'{3}\')'.format(test_set_id,i,wait_time,close_time))
+            conn.commit()
+            cursor.execute('INSERT INTO test_set_template_list VALUES(\'{0}\',\'{1}\',NULL,NULL,NULL,NULL)'.format(test_set_id, i))
+	    conn.commit()
+            
+
+        for x in range(uuid_count):     
+            new_UUID = str(uuid.uuid4())
+            new_uuid = "\'"+str(new_UUID)+"\'"
+            cursor.execute('INSERT INTO test_set_user_login_id VALUES({\'0\'}, {1})'.format(test_set_id, new_uuid))
+            conn.commit()
+
+
+	return json.dumps("Success")	
+    else:
+	return json.dumps("Failed: test_set already exists")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
