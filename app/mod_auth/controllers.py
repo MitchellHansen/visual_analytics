@@ -1,6 +1,7 @@
 # Import flask dependencies
 from flask import Blueprint, request, render_template, \
                   flash, g, session, redirect, url_for,jsonify, json, make_response
+from parent_child_gen_type_two import gen_two
 # Import password / encryption helper tools
 from werkzeug import check_password_hash, generate_password_hash
 # Import the database object from the main app module
@@ -12,7 +13,7 @@ from app.mod_auth.models import User
 from app import mysql
 import uuid
 import csv
-import StringIO 
+import StringIO
 # Define the blueprint: 'auth', set its url prefix: app.url/auth
 mod_auth = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -92,8 +93,6 @@ def get_template_ids():
     filters = None
     filters = request.json['filters']
     login_token = request.json['login_token']
-    if(check_token(login_token) is False):
-        return json.dumps({'Status': "Invalid Token"})
     conn = mysql.connect()
     cursor = conn.cursor()
     if(filters==0 or filters=="0"):
@@ -111,8 +110,6 @@ def delete_test_set():
     token = None
     test_set_id = None
     token = request.json['login_token']
-    if(check_token(token) is False):
-        return json.dumps({'Status': "Invalid Token"})
     test_set_id = request.json['test_set_id']
 
     conn = mysql.connect()
@@ -127,11 +124,9 @@ def delete_test_set():
 
 @mod_auth.route('/delete_template', methods=['GET', 'POST'])
 def delete_template():
-    login_token = None
+    token = None
     test_set_id = None
-    login_token = request.json['login_token']
-    if(check_token(login_token) is False):
-        return json.dumps({'Status': "Invalid Token"})
+    token = request.json['login_token']
     template_id = request.json['template_id']
 
     conn = mysql.connect()
@@ -148,11 +143,10 @@ def delete_template():
 
 @mod_auth.route('/open_test', methods=['GET', 'POST'])
 def open_test():
-    login_token = None
+    token = None
     test_set_id = None
-    login_token = request.json['login_token']
-    if(check_token(login_token) is False):
-        return json.dumps({'Status': "Invalid Token"})    test_set_id = request.json['test_set_id']
+    token = request.json['login_token']
+    test_set_id = request.json['test_set_id']
     conn = mysql.connect()
     cursor = conn.cursor()
     cursor.execute('UPDATE test_set_details SET status=\'1\' WHERE test_set_id=\'{0}\''.format(test_set_id))
@@ -162,11 +156,10 @@ def open_test():
 
 @mod_auth.route('/close_test', methods=['GET', 'POST'])
 def close_test():
-    login_token = None
+    token = None
     test_set_id = None
-    login_token = request.json['login_token']
-    if(check_token(login_token) is False):
-        return json.dumps({'Status': "Invalid Token"})    test_set_id = request.json['test_set_id']
+    token = request.json['login_token']
+    test_set_id = request.json['test_set_id']
     conn = mysql.connect()
     cursor = conn.cursor()
     cursor.execute('UPDATE test_set_details SET status=\'2\' WHERE test_set_id=\'{0}\''.format(test_set_id))
@@ -177,6 +170,7 @@ def close_test():
 def trial_login():
     login_uuid = None
     login_uuid = request.json['login_uuid']
+
     user = {}
     cursor = mysql.connect().cursor()
     cursor.execute("SELECT * from test_set_user_login_id where login_uuid=\'{0}\'".format(login_uuid))
@@ -231,13 +225,12 @@ def admin_login():
 @mod_auth.route('/submit_user_trial_results', methods=['GET', 'POST'])
 def submit_user_trial_results():
     results = None
-    login_token = None
+    token = None
     time = None
     #time = request.json['time']
     results = request.json['results']
-    login_token = request.json['login_token']
-    if(check_token(login_token) is False):
-        return json.dumps({'Status': "Invalid Token"})    class_choice = []
+    token = request.json['login_uuid']
+    class_choice = []
     selected_point = [] 
     data_points = []
     
@@ -258,12 +251,11 @@ def submit_user_trial_results():
 
 @mod_auth.route('/export_csv', methods=['GET', 'POST'])
 def export_csv():
-    login_token = None
+    token = None
     test_set_id = None
     test_set_id = request.json['test_set_id']
-    login_token = request.json['login_token']
-    if(check_token(login_token) is False):
-        return json.dumps({'Status': "Invalid Token"})    si = StringIO.StringIO()
+    token = request.json['login_token']
+    si = StringIO.StringIO()
     cw = csv.writer(si)
     conn = mysql.connect()
     cursor = conn.cursor()
@@ -278,6 +270,10 @@ def export_csv():
     
 @mod_auth.route('/new_test_set', methods=['GET', 'POST'])
 def new_test_set():
+    login_token = None
+    login_token = request.json['login_token']
+    if(check_token(login_token) is False):
+        return json.dumps({'Status': "Invalid Token"})
     test_set_id = None
     template_id = None
     wait_time = None
@@ -290,15 +286,20 @@ def new_test_set():
     uuid_count = request.json['uuid_count']
     conn = mysql.connect()
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM test_set_details WHERE test_set_id=\'{}\''.format(test_set_id))
-    data = cursor.fetchall()
+    cursor.execute('SELECT * FROM test_set_details WHERE test_set_id=\'{0}\''.format(test_set_id))
+    data = cursor.fetchone()
     if data is None:    
+        cursor.execute('INSERT INTO test_set_details VALUES(\'{0}\',\'{1}\',\'{2}\',3)'.format(test_set_id,wait_time,close_time))
+        conn.commit()
+
 	for i in template_id:
- 	    cursor.execute('INSERT INTO test_set_details VALUES(\'{0}\',\'{1}\',\'{2}\',\'{3}\')'.format(test_set_id,i,wait_time,close_time))
-            conn.commit()
-            cursor.execute('INSERT INTO test_set_template_list VALUES(\'{0}\',\'{1}\',NULL,NULL,NULL,NULL)'.format(test_set_id, i))
+            cursor.execute("SELECT total_data_points from templates WHERE template_id=\'{0}\'".format(i))
+            data = cursor.fetchone()[0]
+            data_point_dict = gen_two.gen_Parents_And_Children_type_two(data)
+
+            cursor.execute('INSERT INTO test_set_template_list VALUES(\'{0}\',\'{1}\',\'{2}\',\'{3}\',\'{4}\',\'{5}\',)'.format(test_set_id, i, data_point_dict['class1_parent'],data_point_dict['class2_parent'],data_point_dict['class2_children'],data_point_dict['class1_children']))
 	    conn.commit()
-            
+	    
 
         for x in range(uuid_count):     
             new_UUID = str(uuid.uuid4())
