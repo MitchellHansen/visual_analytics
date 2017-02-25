@@ -643,7 +643,81 @@
 
     <!-- Admin panel for creating new test sets -->
     <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="new-test-set-admin-panel">
+       
+        <!--/////////////////////////////////////////////////////////////////////////////////////////////////////-->
+        <form>
 
+            (In newer browsers, you can double-click the options!)
+            <br>
+            <table border=0>
+                <table border=0>
+                    <tr>
+                        <td>
+                            <select name="list1" multiple size=10 ondblclick="opt.transferRight()">
+                                <option value="Matt">Matt</option>
+                                <option value="Matt2">Matt2</option>
+                                <option value="Bill">Bill</option>
+                                <option value="Bob">Bob</option>
+                                <option value="Jane">Jane</option>
+                                <option value="Mary">Mary</option>
+                            </select>
+                        </td>
+                        <td valign=MIDDLE align=CENTER>
+                            <input type="button" name="right" value="&gt;&gt;" onclick="opt.transferRight()"><br><br>
+                            <input type="button" name="right" value="All &gt;&gt;" onclick="opt.transferAllRight()"><br><br>
+                            <input type="button" name="left" value="&lt;&lt;" onclick="opt.transferLeft()"><br><br>
+                            <input type="button" name="left" value="All &lt;&lt;" onclick="opt.transferAllLeft()">
+                        </td>
+                        <td>
+                            <select name="list2" multiple size=10 ondblclick="opt.transferLeft()">
+                                <option value="George">George</option>
+                                <option value="Fred">Fred</option>
+                                <option value="Ryan">Ryan</option>
+                                <option value="Angela">Angela</option>
+                                <option value="Jill">Jill</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+                These options are configurable in the source:
+                <br>
+                Delimiter:
+                <input type="text" name="delimiter" value="," size=2 maxlength=1 onchange="opt.setDelimiter(this.value);opt.update()">
+                <br>
+                AutoSort:
+                <select name="autosort" onchange="opt.setAutoSort(this.selectedIndex==0?true:false);opt.update()"><option value="Y">Yes<option value="N">No</select>
+                <br>
+                Options that Match this regular expression cannot be moved:
+                <input type="text" name="regex" size="15" value="^(Bill|Bob|Matt)$" onchange="opt.setStaticOptionRegex(this.value);opt.update()">
+                <br>
+                <br>
+                The fields below show the status of the list boxes as items are passed back and forth. Normally these would be hidden fields which you would then use to process the changes on the server-side. Your form doesn't have to include all the fields below - you can choose to store only the items added to the right list, for example.
+                <br>
+                <br>
+                Removed from Left:
+                <input type="text" name="removedLeft" value="" size=70>
+                <br>
+                Removed from Right:
+                <input type="text" name="removedRight" value="" size=70>
+                <br>
+                Added to Left:
+                <input type="text" name="addedLeft" value="" size=70>
+                <br>
+                Added to Right:
+                <input type="text" name="addedRight" value="" size=70>
+                <br>
+                Left list contents:
+                <input type="text" name="newLeft" value="" size=70>
+                <br>
+                Right list contents:
+                <input type="text" name="newRight" value="" size=70>
+                <br>
+
+        </form>
+
+        
+         <script>var ot = new OptionTransfer("from", "to");</script>
+        <!--////////////////////////////////////////////////////////////////////////////////////////////////////-->
         <div class="w3-half w3-dark-gray w3-center w3-padding-64 w3-padding-jumbo" style="height: 800px;" >
             <select id="template-selector"></select>
         </div>
