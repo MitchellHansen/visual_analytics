@@ -297,14 +297,14 @@ def new_test_set():
             data = cursor.fetchone()[0]
             data_point_dict = gen_two.gen_Parents_And_Children_type_two(data)
 
-            cursor.execute('INSERT INTO test_set_template_list VALUES(\'{0}\',\'{1}\',\'{2}\',\'{3}\',\'{4}\',\'{5}\',)'.format(test_set_id, i, data_point_dict['class1_parent'],data_point_dict['class2_parent'],data_point_dict['class2_children'],data_point_dict['class1_children']))
+            cursor.execute('INSERT INTO test_set_template_list VALUES(\'{0}\',\'{1}\',\'{2}\',\'{3}\',\'{4}\',\'{5}\')'.format(test_set_id, i, data_point_dict['class1_parent'],data_point_dict['class2_parent'],data_point_dict['class2_children'],data_point_dict['class1_children']))
 	    conn.commit()
 	    
 
         for x in range(uuid_count):     
             new_UUID = str(uuid.uuid4())
             new_uuid = "\'"+str(new_UUID)+"\'"
-            cursor.execute('INSERT INTO test_set_user_login_id VALUES({\'0\'}, {1})'.format(test_set_id, new_uuid))
+            cursor.execute('INSERT INTO test_set_user_login_id VALUES(\'{0}\', {1})'.format(test_set_id, new_uuid))
             conn.commit()
 
 

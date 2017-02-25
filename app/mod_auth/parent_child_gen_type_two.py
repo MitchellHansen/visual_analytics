@@ -24,7 +24,7 @@ class gen_two:
         for i in range(len(childList)):
 
             child_noise_array = [None] * amountOfDP
-            for j in range(len(childList)):
+            for j in range(amountOfDP):
                 child_noise_array[j] = (randint(3, 10)) * noisePercentFactor
                 childList[i][j] = childList[i][j] * classVectorPercent + (randint(3, 10)) * noisePercentFactor
 
