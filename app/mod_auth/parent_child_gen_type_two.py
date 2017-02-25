@@ -5,12 +5,35 @@ import copy
 #The assumtion of this file is that the admin will give the datapoints, but the test
 #will only create 20 graphs
 
+
 class gen_two:
+
+    @staticmethod
+    def genList(dLst,amountOfDP):
+        for i in range(amountOfDP):
+            dataPnt = randint(0, amountOfDP)
+            dLst[i] = dataPnt
+        return dLst
+
+
+    @staticmethod
+    def whiteNoise (childList, amountOfDP, noisePercentFactor):
+
+        classVectorPercent = 1 - noisePercentFactor
+
+        for i in range(len(childList)):
+
+            child_noise_array = [None] * amountOfDP
+            for j in range(len(childList)):
+                child_noise_array[j] = (randint(3, 10)) * noisePercentFactor
+                childList[i][j] = childList[i][j] * classVectorPercent + (randint(3, 10)) * noisePercentFactor
+
+
     @staticmethod
     def gen_Parents_And_Children_type_two(amountOfDP):
         #Python Dictionary to be returned
         the_return_dict = {}
-	amountOfDP = int(amountOfDP)
+
         parentA = [None] * amountOfDP
         parentB = [None] * amountOfDP
         gen_two.genList(parentA,amountOfDP)
@@ -74,43 +97,9 @@ class gen_two:
                 noisePercentFactor += .10
 
         #Here adds the lists to the dictionary so they can be returned and added to the database
-        the_return_dict["class1_parent"] =  listOParents[0]
-        the_return_dict["class2_parent"] =  listOParents[1]
+        the_return_dict["class1_parent"] = listOParents[0]
+        the_return_dict["class2_parent"] = listOParents[1]
         the_return_dict["class1_children"] = listOChildren[0]
         the_return_dict["class2_children"] = listOChildren[1]
 
         return  the_return_dict
-        #return containerOfPandC
-
-
-
-            # for i in range(100):
-       #     print "DataNum %d: %d" % (i, parentA[i])
-
-       # print "\nDIFF BETWEEN FIRST AND SECOND\n"
-
-       # for i in range(100):
-       #     print "DataNum %d: %d" % (i, parentB[i])
-
-    @staticmethod
-    def genList(dLst,amountOfDP):
-        for i in range(amountOfDP):
-            dataPnt = randint(0, amountOfDP)
-            dLst[i] = dataPnt
-        return dLst
-
-
-    @staticmethod
-    def whiteNoise (childList,amountOfDP, noisePercentFactor):
-        classVectorPercent = 1 - noisePercentFactor
-        for i in range(amountOfDP):
-            child_noise_array = [None] * len(childList)
-            for j in range(len(childList) ):
-                child_noise_array[j] = (randint(3, 10)) * noisePercentFactor
-
-            childList[i] = (childList[i] * classVectorPercent) + child_noise_array[i]
-
-
-
-
-    #gen_Parents_And_Children_type_two(100)
