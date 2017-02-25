@@ -40,8 +40,8 @@ function admin_login(email, password){
 
 // ============================================================================================================
 // API call to  : "/auth/trial_login"
-// SENDS        : Username, Password
-// RECEIVES     : Unique login token
+// SENDS        : UUID
+// RECEIVES     : Success or fail
 // ============================================================================================================
 
 function trial_login(login_uuid){
@@ -349,13 +349,14 @@ function delete_template(){
 //                         "login_token"  : credentials.auth_token,
 //                         "test_set_id"  : "trial-1",
 //                         "template_ids" : ["template-1" , "template-1", "template-2"],
-//                         "wait_time"    :"60",
-//                         "close_time"   :"timestamp of some sort"
+//                         "wait_time"    : "60",
+//                         "close_time"   : "timestamp of some sort",
+//                         "uuid_count"   : 30
 //                };
 //  RECEIVES    : Success or fail
 // ============================================================================================================
 
-function new_test_set(test_set_id, template_list, wait_time, close_time){
+function new_test_set(test_set_id, template_list, wait_time, close_time, uuid_count){
 
     return $.ajax({
 
@@ -369,7 +370,8 @@ function new_test_set(test_set_id, template_list, wait_time, close_time){
             "test_set_id" : test_set_id,
             "template_ids": template_list,
             "wait_time"   : wait_time,
-            "close_time"  : close_time
+            "close_time"  : close_time,
+            "uuid_count"  : uuid_count
         }),
 
         dataType: "json",
@@ -440,6 +442,7 @@ function get_next_test(){
     });
 }
 
+// ============================================================================================================
 //  API CALL TO :  "/auth/open_test"
 //  SENDS       : Auth creds and the id of the test to open
 //  RECEIVES    : Success or fail
@@ -477,6 +480,7 @@ function open_test(){
     });
 }
 
+// ============================================================================================================
 //  API CALL TO :  "/auth/close_test"
 //  SENDS       : Auth creds and the id of the test to close
 //  RECEIVES    : Success or fail
@@ -494,6 +498,44 @@ function close_test(){
         data : JSON.stringify({
             "login_token": credentials.auth_token,
             "test_set_id" : selected_trial
+        }),
+
+        dataType: "json",
+        success: function(result){
+
+            console.log(result);
+        },
+
+        error: function(e) {
+
+            if (e.responseText == ""){
+
+            } else {
+                alert("Api call failed");
+                console.log(e);
+            }
+        },
+    });
+}
+
+// ============================================================================================================
+//  API CALL TO :  "/auth/get_template_details"
+//  SENDS       : Auth token, the template id
+//  RECEIVES    : JSON object with total_data_points, graph_type
+// ============================================================================================================
+
+function get_template_details(){
+
+    return $.ajax({
+
+        url: "http://68.186.100.115/auth/get_template_details",
+        contentType: "application/json;charset=UTF-8",
+        type: "POST",
+        async: true,
+
+        data : JSON.stringify({
+            "login_token" : credentials.auth_token,
+            "template_id" : selected_template
         }),
 
         dataType: "json",
