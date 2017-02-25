@@ -9,6 +9,7 @@
 <script src="transitions.js"></script>
 <script src="api.js"></script>
 
+
 <title>Visual Analytics</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -174,6 +175,112 @@
 
 <!--  The bottom app container  -->
 <div class="w3-row" id="slider-container">
+
+    <!-- Landing page for testee's explains the test -->
+    <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="testing-start-panel">
+
+        <h1>How To Choose</h1>
+        <p><i><b>How do I choose which class each graph originated from?</b></i></p>
+        <div id="selection_first_pics" style="display: inline-block">
+            <img src="training_pics/graph_clean.jpg" alt="The full data representation test!"
+                 style="width:100px;height:100px;">
+            <img src="training_pics/graph_class1.jpg" alt="The full data representation test!"
+                 style="width:100px;height:100px;">
+            <img src="training_pics/graph_class2.jpg" alt="The full data representation test!"
+                 style="width:100px;height:100px;">
+        </div>
+        <p>
+            Each distorted graph is divided up into sections sections. Some sections are clearer representations of the
+            classes than others.
+            You need to find the section which, to you, best signifies either Cls 1 or 2
+        </p>
+        <img src="training_pics/graph_sections.jpg" alt="The full data representation test!"
+             style="width:100px;height:100px;">
+        <p>
+            By clicking on the section you believe to be the best signifier of its class,
+            the color of that section will change to reflect that.
+        </p>
+        <img src="training_pics/graph_class1_selection.jpg" alt="The full data representation test!"
+             style="width:100px;height:100px;">
+        <p>
+            After the first click, the color of the chosen selection will change red to signify it has been selected as
+            a Cls 1 graph.
+            Clicking on it a second time will change it to green, the corisponding color of the Cls 2 graph. If clicked
+            a third time
+            it will revert back to its original unaltered state.
+        </p>
+        <img src="training_pics/graph_class2_selection.jpg" alt="The full data representation test!"
+             style="width:100px;height:100px;">
+        <img src="training_pics/graph_og_state.jpg" alt="The full data representation test!"
+             style="width:100px;height:100px;">
+        <p>
+        </p>
+
+        <div class="button-placement w3-row">
+            <button class="w3-btn" style="" onclick="toggle_test_from_start()">
+                Start the Test
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Main testing panel which contains the graphs -->
+    <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="testing-test-panel">
+
+        <div class="w3-row" id="svg-row">
+
+        </div>
+
+        <h1>TESTING</h1>
+
+        <div class="w3-row" id="graph_space">
+
+        </div>
+
+        <div class="w3-row" id="practice_button_space"  style="">
+
+            <div class="button-placement">
+                <button class="w3-btn" style="" onclick="toggle_wait_from_test()">
+                    Continue
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Testing wait panel, which a timer counts down until the next test -->
+    <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="testing-wait-panel">
+
+        <div class="w3-row" id="svg-row">
+
+        </div>
+
+        <h1>TESTING WAIT</h1>
+
+    </div>
+
+    <!-- When there are no more tests, the users gets this page -->
+    <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="testing-finish-panel">
+
+        <div class="w3-row" id="svg-row">
+
+        </div>
+
+        <h1>TESTING FINISH</h1>
+        <h3>THANKS FOR PLAYING BITCHES</h3>
+
+        <div class="w3-row" id="practice_button_space"  style="">
+
+            <div class="button-placement">
+                <button class="w3-btn" style="" onclick="stop_testing()">
+                    Return Home
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
     <!-- First Training Window-->
     <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="training-panel">
         <h1>How Visual Analytics Tests Work</h1>
@@ -197,7 +304,7 @@
         </div>
     </div>
 
-    <!-- second Training Window-->
+    <!-- Second Training Window-->
     <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="training-selection">
         <h1>How To Choose</h1>
         <p><i><b>How do I choose which class each graph originated from?</b></i></p>
@@ -248,7 +355,7 @@
         </div>
     </div>
 
-    <!-- third Training Window-->
+    <!-- Third Training Window-->
     <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="training-practice">
 
         <div class="w3-row" id="svg-row">
@@ -274,7 +381,7 @@
         </div>
     </div>
 
-    <!-- fourth Training Window-->
+    <!-- Fourth Training Window-->
     <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="training-results">
         <h1>Practice Results</h1>
 
@@ -303,9 +410,9 @@
                 Return to home
             </button>
         </div>
-     </div>
     </div>
 
+    <!-- Main Admin Control Panel -->
     <div class="w3-light-grey w3-center hidden" style="height:800px" id="main-admin-panel">
 
         <div class="w3-dark-grey w3-center w3-quarter hide-scrollbar" style="height:800px">
@@ -335,7 +442,7 @@
 
             <div class="w3-row">
                 <div class="w3-col w3-padding">
-                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="delete_template()">
+                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="delete_template_handler()">
                         Delete Template
                     </button>
                 </div>
@@ -430,21 +537,23 @@
         </div>
     </div>
 
+    <!-- Admin panel for viewing template details -->
     <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="view-template-admin-panel">
 
         <div class="w3-half w3-dark-gray w3-center w3-padding-64 w3-padding-jumbo" style="height: 800px;" >
-            <div class="w3-white w3-padding-large w3-padding-64 w3-center" style="" id="trial-view-admin-panel-id-list">
+            <div class="w3-white w3-padding-large w3-padding-64 w3-center" style="" id="view-template-left">
 
             </div>
         </div>
 
         <div class="w3-half w3-dark-gray w3-left-align w3-padding-64" style="height: 800px;"
-             id="trial-view-admin-panel-details">
+             id="view-template-right">
 
         </div>
 
     </div>
 
+    <!-- Admin panel for creating new templates -->
     <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="new-template-admin-panel">
         <div class="w3-dark-grey w3-center w3-threequarter hide-scrollbar" style="height:800px;">
 
@@ -516,11 +625,12 @@
 
     </div>
 
+    <!-- Admin panel for viewing the details of a test set -->
     <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="view-test-set-admin-panel">
 
         <div class="w3-half w3-dark-gray w3-center w3-padding-64 w3-padding-jumbo" style="height: 800px;" >
-            <div class="w3-white w3-padding-large w3-padding-64 w3-center" style="" id="trial-view-admin-panel-id-list">
-
+            <div class="w3-white w3-padding-large w3-padding-64 w3-center" id="trial-view-admin-panel-id-list">
+                <p>asdfoijadsfio</p>
             </div>
         </div>
 
@@ -531,10 +641,11 @@
 
     </div>
 
+    <!-- Admin panel for creating new test sets -->
     <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="new-test-set-admin-panel">
 
         <div class="w3-half w3-dark-gray w3-center w3-padding-64 w3-padding-jumbo" style="height: 800px;" >
-
+            <select id="template-selector"></select>
         </div>
 
         <div class="w3-half w3-dark-gray w3-left-align w3-padding-64" style="height: 800px;">

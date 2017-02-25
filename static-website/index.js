@@ -56,6 +56,16 @@ function trial_login_handler(){
     } else {
 
         trial_login(login_code[0].value).done(function(value) {
+
+            if (value.status == "Success"){
+
+                start_testing();
+
+            } else {
+
+                alert("Token invalid or timestamp incorrect");
+            }
+
             // Toggle view trial, or maybe start trial function
         });
     }
@@ -70,7 +80,6 @@ function view_template_handler(){
     } else {
 
         toggle_view_template();
-
     }
 }
 
@@ -83,7 +92,24 @@ function new_template_handler(){
     } else {
       
         toggle_new_template();
-      
+    }
+}
+
+// When the user clicks the [Delete Template] button on the [admin home page]
+function delete_template_handler(){
+
+    if (credentials.logged_in == false){
+        alert("You are not logged in. Try logging in again");
+
+    } else {
+
+        delete_template(credentials.auth_token).done(function(value) {
+
+            // Refresh the template list
+            if (!get_template_ids()) {
+                // error
+            }
+        });
     }
 }
 
@@ -150,6 +176,10 @@ function delete_test_set_handler(){
 
         delete_test_set(credentials.auth_token).done(function(value) {
 
+            // Refresh the test sets
+            if (!get_test_set_statuses()){
+            // error
+            }
         });
     }
 }
@@ -163,6 +193,10 @@ function open_test_handler(){
 
         open_test(credentials.auth_token).done(function(value) {
 
+            // Refresh the test sets
+            if (!get_test_set_statuses()){
+                // error
+            }
         });
     }
 }
@@ -176,6 +210,10 @@ function close_test_handler(){
 
         close_test(credentials.auth_token).done(function(value) {
 
+            // Refresh the test sets
+            if (!get_test_set_statuses()){
+                // error
+            }
         });
     }
 }
@@ -187,8 +225,6 @@ function begin_training_handler(){
 function training_fwd_movement() {
     transfer_through_training();
 }
-
-
 
 // ===============================================================
 // = Populate functions take the *RAW* response from an API call =
@@ -206,24 +242,35 @@ function populate_view_test_page(test_details){
     let id_list_handle = $("#trial-view-admin-panel-id-list");
 
     // list all the id's
-    id_list_handle.empty();
+    $("#trial-view-admin-panel-id-list").empty();
 
-    let html = "";
+    let html = "<p>";
     for (let i in test_details.users){
         html += test_details.users[i][0] + "<br>";
     }
+    html += "</p>";
 
-    id_list_handle.append(html);
+    $("#trial-view-admin-panel-id-list").append(html);
 
 
-    id_list_handle.empty();
+    $("#trial-view-admin-panel-details").empty();
 
     // Now fill in the other details
-    id_list_handle.append("<p>Trial Name  : " + test_details.test_details[0][0] + "<p>");
-    id_list_handle.append("<p>Wait time   : " + test_details.test_details[0][1] + "<p>");
-    id_list_handle.append("<p>Close time  : " + test_details.test_details[0][2] + "<p>");
-    id_list_handle.append("<p>Total tests : " + test_details.test_details[0][3] + "<p>");
+    $("#trial-view-admin-panel-details").append("<p>Trial Name  : " + test_details.test_details[0][0] + "<p>");
+    $("#trial-view-admin-panel-details").append("<p>Wait time   : " + test_details.test_details[0][1] + "<p>");
+    $("#trial-view-admin-panel-details").append("<p>Close time  : " + test_details.test_details[0][2] + "<p>");
+    $("#trial-view-admin-panel-details").append("<p>Total tests : " + test_details.test_details[0][3] + "<p>");
 
+    $("#trial-view-admin-panel-details").append("<p>Templates used : <br>");
+
+    html = "";
+    for (let i in test_details.template_list){
+        html += test_details.template_list[i][0] + "<br>";
+    }
+
+    html += "<p>";
+
+    $("#trial-view-admin-panel-details").append(html);
 }
 
 // Takes the response from the [get_template_ids] API call and parses it into the

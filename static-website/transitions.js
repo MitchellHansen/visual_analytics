@@ -21,7 +21,11 @@ var screen_enum = {
                     TRAINING_INFO:7,
                     TRAINING_HOW_WORK:8,
                     TRAINING_PRAC:9,
-                    TRAINING_RESULTS:10
+                    TRAINING_RESULTS:10,
+                    TESTING_START:11,
+                    TESTING_TEST:12,
+                    TESTING_WAIT:13,
+                    TESTING_FINISH:14
                   };
 
 var screen = screen_enum.HOME;
@@ -32,7 +36,8 @@ function transfer_back(){
         // Do nothing
     }
 
-    // ============= TRAINING ====================
+    // ============= TRAINING ======================
+
     else if (screen == screen_enum.TRAINING_INFO) {
         toggle_home_from_training();
         screen = screen_enum.HOME;
@@ -50,7 +55,28 @@ function transfer_back(){
         screen = screen_enum.TRAINING_PRAC;
     }
 
+    // ============= TESTING =======================
+    // Should the back button even be allowed in testing?
+
+    else if (screen == screen_enum.TESTING_START) {
+        //toggle_home_from_training();
+        //screen = screen_enum.HOME;
+    }
+    else if (screen == screen_enum.TESTING_TEST) {
+        //toggle_intro_from_selection();
+        //screen = screen_enum.TRAINING_INFO;
+    }
+    else if (screen == screen_enum.TESTING_WAIT) {
+        //toggle_selection_from_practice();
+        //screen = screen_enum.TRAINING_HOW_WORK;
+    }
+    else if (screen == screen_enum.TESTING_FINISH) {
+        //toggle_practice_from_results();
+        //screen = screen_enum.TRAINING_PRAC;
+    }
+
     // ============== ADMIN PAGE ===================
+
     else if (screen == screen_enum.TEST_NEW) {
         toggle_new_test_set();
         screen = screen_enum.ADMIN_HOME;
@@ -198,6 +224,46 @@ function toggle_admin_panel() {
     }
 }
 
+function start_testing(){
+    $("#home-row").slideToggle();
+    $("#testing-start-panel").toggleClass("hidden");
+}
+
+function toggle_test_from_start(){
+    $("#testing-start-panel").toggleClass("hidden");
+    $("#testing-test-panel").toggleClass("hidden");
+
+    // Handle population logic
+    // Keep track of time
+}
+
+function toggle_wait_from_test(){
+    $("#testing-test-panel").toggleClass("hidden");
+    $("#testing-wait-panel").toggleClass("hidden");
+
+    // Keep track of time
+    // maybe display something like a game?
+}
+
+function toggle_test_from_wait(){
+    $("#testing-test-panel").toggleClass("hidden");
+    $("#testing-wait-panel").toggleClass("hidden");
+
+    // Handle population logic
+    // Keep track of time
+}
+
+function toggle_wait_from_test(){
+    $("#testing-test-panel").toggleClass("hidden");
+    $("#testing-finish-panel").toggleClass("hidden");
+
+}
+
+function stop_testing(){
+    $("#testing-finish-panel").toggleClass("hidden");
+    $("#home-row").slideToggle();
+}
+
 //Brings the user back to the main screen from the training info
 function toggle_home_from_training() {
     $("#training-panel").toggleClass("hidden");
@@ -235,7 +301,9 @@ function toggle_training_selection_view() {
 
 }
 function toggle_training_practice_view() {
-    
+
+    $("#svg-row").empty();
+
     for (let i = 0; i < 10; i++){
         build($("#svg-row"), graph_context.TRAINING, graph_type.LINEAR)
     }
@@ -247,20 +315,15 @@ function toggle_training_practice_view() {
     $("#training-selection").toggleClass("hidden");
     $("#training-practice").toggleClass("hidden");
 }
+
 function toggle_training_results_view() {
     $("#training-practice").toggleClass("hidden");
     $("#training-results").toggleClass("hidden");
 }
+
 function toggle_back_to_home() {
     $("#training-results").toggleClass("hidden");
     $("#home-row").slideToggle();
-}
-
-
-function show_admin_window(){
-
-    // Roll up the navbar and open the content container
-    toggle_admin_view();
 }
 
 
