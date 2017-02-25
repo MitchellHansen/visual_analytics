@@ -1,0 +1,31 @@
+/home/elliott/visual_analytics/app/__init__.py:6: ExtDeprecationWarning: Importing flask.ext.sqlalchemy is deprecated, use flask_sqlalchemy instead.
+  from flask.ext.sqlalchemy import SQLAlchemy
+/home/elliott/visual_analytics/env/local/lib/python2.7/site-packages/flask_sqlalchemy/__init__.py:800: UserWarning: SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future.  Set it to True to suppress this warning.
+  warnings.warn('SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future.  Set it to True to suppress this warning.')
+/home/elliott/visual_analytics/app/mod_auth/forms.py:2: ExtDeprecationWarning: Importing flask.ext.wtf is deprecated, use flask_wtf instead.
+  from flask.ext.wtf import Form # , RecaptchaField
+ * Running on http://192.168.1.17:5000/ (Press CTRL+C to quit)
+ * Restarting with stat
+/home/elliott/visual_analytics/app/__init__.py:6: ExtDeprecationWarning: Importing flask.ext.sqlalchemy is deprecated, use flask_sqlalchemy instead.
+  from flask.ext.sqlalchemy import SQLAlchemy
+/home/elliott/visual_analytics/env/local/lib/python2.7/site-packages/flask_sqlalchemy/__init__.py:800: UserWarning: SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future.  Set it to True to suppress this warning.
+  warnings.warn('SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future.  Set it to True to suppress this warning.')
+/home/elliott/visual_analytics/app/mod_auth/forms.py:2: ExtDeprecationWarning: Importing flask.ext.wtf is deprecated, use flask_wtf instead.
+  from flask.ext.wtf import Form # , RecaptchaField
+ * Debugger is active!
+ * Debugger pin code: 305-257-240
+68.186.100.115 - - [28/Jan/2017 14:40:24] "GET /auth/home HTTP/1.1" 200 -
+68.186.100.115 - - [28/Jan/2017 14:40:29] "GET /auth/home HTTP/1.1" 200 -
+68.186.100.115 - - [28/Jan/2017 14:40:31] "GET /auth/about HTTP/1.1" 200 -
+68.186.100.115 - - [28/Jan/2017 14:49:26] "GET /auth/home HTTP/1.1" 200 -
+68.186.100.115 - - [28/Jan/2017 14:49:34] "GET /auth/about HTTP/1.1" 200 -
+68.186.100.115 - - [28/Jan/2017 14:49:35] "GET /auth/about HTTP/1.1" 200 -
+68.186.100.115 - - [28/Jan/2017 14:49:36] "GET /auth/about HTTP/1.1" 200 -
+68.186.100.115 - - [28/Jan/2017 14:49:36] "GET /auth/about HTTP/1.1" 200 -
+68.186.100.115 - - [28/Jan/2017 14:49:37] "GET /auth/about HTTP/1.1" 200 -
+68.186.100.115 - - [28/Jan/2017 14:49:37] "GET /auth/about HTTP/1.1" 200 -
+68.186.100.115 - - [28/Jan/2017 14:49:37] "GET /auth/about HTTP/1.1" 200 -
+68.186.100.115 - - [28/Jan/2017 14:59:57] "GET /auth/about HTTP/1.1" 200 -
+68.186.100.115 - - [28/Jan/2017 14:59:58] "GET /auth/about HTTP/1.1" 200 -
+68.186.100.115 - - [28/Jan/2017 14:59:58] "GET /auth/about HTTP/1.1" 200 -
+68.186.100.115 - - [28/Jan/2017 15:00:09] "GET /auth/about HTTP/1.1" 200 -

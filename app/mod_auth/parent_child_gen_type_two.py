@@ -7,12 +7,18 @@ import copy
 
 
 def gen_Parents_And_Children_type_two(amountOfDP):
+    #Python Dictionary to be returned
+    the_return_dict = {}
+
     parentA = [None] * amountOfDP
     parentB = [None] * amountOfDP
     genList(parentA,amountOfDP)
     genList(parentB,amountOfDP)
     listOParents = []
-    listOChildren = []
+    #Added these lists to separate the children graphs from each other for the databases
+    listOClass1Childern = []
+    listOClass2Childern = []
+    listOChildren = [listOClass1Childern, listOClass2Childern]
     containerOfPandC = [listOParents,listOChildren]
     listOParents.append(parentA)
     listOParents.append(parentB)
@@ -36,24 +42,24 @@ def gen_Parents_And_Children_type_two(amountOfDP):
     child14 = copy.deepcopy(parentB)
     child16 = copy.deepcopy(parentB)
     child18 = copy.deepcopy(parentB)
-    listOChildren.append(child1)
-    listOChildren.append(child2)
-    listOChildren.append(child3)
-    listOChildren.append(child4)
-    listOChildren.append(child5)
-    listOChildren.append(child6)
-    listOChildren.append(child7)
-    listOChildren.append(child8)
-    listOChildren.append(child9)
-    listOChildren.append(child10)
-    listOChildren.append(child11)
-    listOChildren.append(child12)
-    listOChildren.append(child13)
-    listOChildren.append(child14)
-    listOChildren.append(child15)
-    listOChildren.append(child16)
-    listOChildren.append(child17)
-    listOChildren.append(child18)
+    listOClass1Childern.append(child1)
+    listOClass2Childern.append(child2)
+    listOClass1Childern.append(child3)
+    listOClass2Childern.append(child4)
+    listOClass1Childern.append(child5)
+    listOClass2Childern.append(child6)
+    listOClass1Childern.append(child7)
+    listOClass2Childern.append(child8)
+    listOClass1Childern.append(child9)
+    listOClass2Childern.append(child10)
+    listOClass1Childern.append(child11)
+    listOClass2Childern.append(child12)
+    listOClass1Childern.append(child13)
+    listOClass2Childern.append(child14)
+    listOClass1Childern.append(child15)
+    listOClass2Childern.append(child16)
+    listOClass1Childern.append(child17)
+    listOClass2Childern.append(child18)
 
     evenOddCounter = 1;
     noisePercentFactor = .10
@@ -66,7 +72,14 @@ def gen_Parents_And_Children_type_two(amountOfDP):
             evenOddCounter -= 1
             noisePercentFactor += .10
 
-    return containerOfPandC
+    #Here adds the lists to the dictionary so they can be returned and added to the database
+    the_return_dict["class1_parent"] =  listOParents[0]
+    the_return_dict["class2_parent"] =  listOParents[1]
+    the_return_dict["class1_children"] = listOChildren[0]
+    the_return_dict["class2_children"] = listOChildren[1]
+
+    return  the_return_dict
+    #return containerOfPandC
 
 
 
