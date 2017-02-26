@@ -65,8 +65,6 @@ function trial_login_handler(){
 
                 alert("Token invalid or timestamp incorrect");
             }
-
-            // Toggle view trial, or maybe start trial function
         });
     }
 }
@@ -79,7 +77,10 @@ function view_template_handler(){
 
     } else {
 
-        toggle_view_template();
+        get_template_details(credentials.auth_token).done(function(value) {
+            populate_view_template_page(value);
+            toggle_view_template();
+        });
     }
 }
 
@@ -125,7 +126,6 @@ function view_test_set_handler(){
             populate_view_test_page(value);
             toggle_view_test_set();
         });
-
     }
 }
 
@@ -137,6 +137,7 @@ function new_test_set_handler(){
         alert("You are not logged in. Try logging in again");
     }
     else {
+
 
         toggle_new_test_set();
     }
@@ -233,13 +234,18 @@ function training_fwd_movement() {
 
 function populate_view_template_page(template_details){
 
+
+    $("#view-template-admin-panel").empty();
+
+    // Now fill in the other details
+    $("#view-template-admin-panel").append("<p>d points  : " + template_details.total_data_points[0][0] + "<p>");
+    $("#view-template-admin-panel").append("<p>type   : " + template_details.graph_type[0][0] + "<p>");
+
 }
 
 // Takes the response from the [get_test_set_statuses] API call and parses it into the
 // trial-view-admin-panel-id-list, which is in need of a rename
 function populate_view_test_page(test_details){
-
-    let id_list_handle = $("#trial-view-admin-panel-id-list");
 
     // list all the id's
     $("#trial-view-admin-panel-id-list").empty();

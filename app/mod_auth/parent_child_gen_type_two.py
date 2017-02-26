@@ -34,6 +34,7 @@ class gen_two:
         #Python Dictionary to be returned
         the_return_dict = {}
         amountOfDP = int(amountOfDP)
+
         parentA = [None] * amountOfDP
         parentB = [None] * amountOfDP
         gen_two.genList(parentA,amountOfDP)
@@ -103,3 +104,4 @@ class gen_two:
         the_return_dict["class2_children"] = listOChildren[1]
 
         return  the_return_dict
+
