@@ -1,6 +1,7 @@
 # Import flask dependencies
 from flask import Blueprint, request, render_template, \
                   flash, g, session, redirect, url_for,jsonify, json, make_response
+from parent_child_gen_type_two import gen_two
 # Import password / encryption helper tools
 from werkzeug import check_password_hash, generate_password_hash
 # Import the database object from the main app module
@@ -12,7 +13,7 @@ from app.mod_auth.models import User
 from app import mysql
 import uuid
 import csv
-import StringIO 
+import StringIO
 # Define the blueprint: 'auth', set its url prefix: app.url/auth
 mod_auth = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -41,10 +42,25 @@ def get_test_set_statuses():
 
 @mod_auth.route('/get_template_details', methods=['GET', 'POST'])
 def get_template_details():
-    return json.dumps("SHITS WORKING")
+    login_token = None
+    template_id = None
+    login_token = request.json['login_token']
+    if(check_token(login_token) is False):
+        return json.dumps({'Status': "Invalid Token"})
+    template_id = request.json['template_id']
+    template_details={}
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    cursor.execute("SELECT total_data_points from templates where template_id=\'{0}\'".format(template_id))
+    total_data_points = cursor.fetchall()
+    cursor.execute("SELECT graph_type from templates where template_id=\'{0}\'".format(template_id))
+    graph_type = cursor.fetchall()
+    template_details={
+        'total_data_points':total_data_points,
+        'graph_type': graph_type
+    }
 
-
-
+    return json.dumps(template_details)
 
 @mod_auth.route('/get_test_set_details', methods=['GET', 'POST'])
 def get_test_set_details():
@@ -104,7 +120,7 @@ def delete_test_set():
     conn.commit()
     cursor.execute('DELETE FROM test_set_template_list WHERE test_set_id=\'{0}\''.format(test_set_id))
     conn.commit()
-    return json.dumps("Your test set has been deleted")
+    return json.dumps("SUCCESS")
 
 @mod_auth.route('/delete_template', methods=['GET', 'POST'])
 def delete_template():
@@ -131,6 +147,10 @@ def open_test():
     test_set_id = None
     token = request.json['login_token']
     test_set_id = request.json['test_set_id']
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    cursor.execute('UPDATE test_set_details SET status=\'1\' WHERE test_set_id=\'{0}\''.format(test_set_id))
+    conn.commit()
     return json.dumps("SUCCESS")
 
 
@@ -140,6 +160,10 @@ def close_test():
     test_set_id = None
     token = request.json['login_token']
     test_set_id = request.json['test_set_id']
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    cursor.execute('UPDATE test_set_details SET status=\'2\' WHERE test_set_id=\'{0}\''.format(test_set_id))
+    conn.commit()
     return json.dumps("SUCCESS")
 
 @mod_auth.route('/trial_login', methods=['GET', 'POST'])
@@ -244,4 +268,89 @@ def export_csv():
     response.headers["Content-type"] = "text/csv"
     return response
     
+@mod_auth.route('/new_test_set', methods=['GET', 'POST'])
+def new_test_set():
+    login_token = None
+    login_token = request.json['login_token']
+    if(check_token(login_token) is False):
+        return json.dumps({'Status': "Invalid Token"})
+    test_set_id = None
+    template_id = None
+    wait_time = None
+    close_time = None
+    uuid_count = None
+    test_set_id = request.json['test_set_id']
+    template_id = request.json['template_ids']
+    wait_time = request.json['wait_time']
+    close_time = request.json['close_time']
+    uuid_count = request.json['uuid_count']
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM test_set_details WHERE test_set_id=\'{0}\''.format(test_set_id))
+    data = cursor.fetchone()
+    if data is None:    
+        cursor.execute('INSERT INTO test_set_details VALUES(\'{0}\',\'{1}\',\'{2}\',3)'.format(test_set_id,wait_time,close_time))
+        conn.commit()
+
+	for i in template_id:
+            cursor.execute("SELECT total_data_points from templates WHERE template_id=\'{0}\'".format(i))
+            data = cursor.fetchone()[0]
+            data_point_dict = gen_two.gen_Parents_And_Children_type_two(data)
+
+            cursor.execute('INSERT INTO test_set_template_list VALUES(\'{0}\',\'{1}\',\'{2}\',\'{3}\',\'{4}\',\'{5}\')'.format(test_set_id, i, data_point_dict['class1_parent'],data_point_dict['class2_parent'],data_point_dict['class2_children'],data_point_dict['class1_children']))
+	    conn.commit()
+	    
+
+        for x in range(uuid_count):     
+            new_UUID = str(uuid.uuid4())
+            new_uuid = "\'"+str(new_UUID)+"\'"
+            cursor.execute('INSERT INTO test_set_user_login_id VALUES(\'{0}\', {1})'.format(test_set_id, new_uuid))
+            conn.commit()
+
+
+	return json.dumps("Success")	
+    else:
+	return json.dumps("Failed: test_set already exists")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

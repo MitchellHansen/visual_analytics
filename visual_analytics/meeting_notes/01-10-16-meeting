@@ -1,0 +1,38 @@
+
+Meeting starts:
+4:00 pm
+
+Members present:
+Mitchell
+Andrew
+Elliott
+Pushkin
+
+
+
+- What about actually using the "hard-coded" image files
+- And then overlaying the 6 quadrant selection view
+- Would you prefer to just have data points or just copy and paste images over
+
+- How should we seperate out responsibilities?
+	- Front end : Push
+	- Back end  : Anth, Ell
+	- UI        : Mitch
+	
+	Tenative
+
+- Laying out the schema for the DB
+- Get the layout for the quarters timeline, roles and deadlines
+- How are we sending emails?
+
+
+
+
+
+
+
+
+
+
+
+

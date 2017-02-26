@@ -1,7 +1,6 @@
 ![alt text](logo.png "Logo Title Text 1")
 ####Team Members
-- [Elliott Barcoe](https://www.linkedin.com/in/elliottbarcoewalsh) 
-- [Pushkin Feleke](https://www.linkedin.com/in/pushkin-feleke-649961b7)
+- [Elliott Barcoe-Walsh](https://www.linkedin.com/in/elliottbarcoewalsh) 
 - [Anthony Armatas-Brier](https://www.linkedin.com/in/anthonyarmatas)
 - [Mitchell Hansen](https://www.linkedin.com/in/mitchell-hansen-34a146127)
  

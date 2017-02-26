@@ -33,6 +33,7 @@ class gen_two:
     def gen_Parents_And_Children_type_two(amountOfDP):
         #Python Dictionary to be returned
         the_return_dict = {}
+        amountOfDP = int(amountOfDP)
 
         parentA = [None] * amountOfDP
         parentB = [None] * amountOfDP
@@ -104,4 +105,3 @@ class gen_two:
 
         return  the_return_dict
 
-gen_two.gen_Parents_And_Children_type_two(5)
