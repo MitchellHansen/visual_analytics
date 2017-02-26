@@ -405,3 +405,49 @@ function set_trial_selection(trial_name) {
     $("#" + selected_trial).children().children().first().toggleClass("w3-green");
 
 }
+
+function populate_admin_page_new_test_set_templates(test_templates) {
+
+    // Remove all the old data
+    $("#CurrentTemplatesID").empty();
+
+    // If we got blank data back
+    if (test_templates == undefined)
+        return;
+
+    $.each(test_templates, function (key, value) {
+        var ms = $('#CurrentTemplatesID')
+        ms.append($("<option></option>")
+                   .attr("value", key)
+                   .text(value));
+    });
+    
+}
+
+function addToSelectedTemplates() {
+    var curVal = document.getElementById('CurrentTemplatesID').value;
+    var curText = document.getElementById('CurrentTemplatesID').;
+    if (curVal == null) {
+        alert("curVal is null");
+    }
+    else {
+        alert(curVal);
+    }
+    if (curText == null) {
+        alert("curText is null");
+    }
+    else {
+        alert(key);
+
+    }
+
+
+    var o = new Option("option text", "Value");
+    o = chosenTemplate;
+    
+    $('#SelectedTemplatesID').append($('<option>',{
+        value: 1,
+        text: 2
+    },'</option>'));
+              
+}
