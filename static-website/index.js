@@ -13,13 +13,14 @@ window.onload = function(e) {
 
     // Set the onchange function for the admin page test filter
     $("#test-status-list-filter-select").change(function() {
-        get_test_set_statuses();
+        get_test_set_statuses(credentials.auth_token, $("#test-status-list-filter-select").val());
     });
 
     // Set the onchange functions for the admin page template filter
     $("#test-template-filter").change(function() {
-        get_template_ids($("#test-template-filter").val());
+        get_template_ids(credentials.auth_token, $("#test-template-filter").val());
     });
+
 };
 
 // ======================================================================
@@ -61,12 +62,12 @@ function trial_login_handler() {
 
         trial_login(login_code[0].value).done(function(value) {
 
-            if (value.status == "Success") {
+            if (value.status == "success") {
 
                 screen = screen_enum.TESTING_START;
                 toggle_start_testing();
 
-            } else {
+            } else if (value.status == "failed") {
 
                 alert("Token invalid or timestamp incorrect");
             }
@@ -87,9 +88,19 @@ function view_template_handler() {
 
     } else {
 
-        get_template_details(credentials.auth_token).done(function(value) {
-            populate_view_template_page(value);
-            toggle_view_template();
+        get_template_details(credentials.auth_token, selected_template).done(function(value) {
+
+            if (value.status == "success") {
+
+                populate_view_template_page(value);
+                toggle_view_template();
+
+            } else if (value.status == "failed") {
+
+                alert("Token invalid or timestamp incorrect");
+            }
+
+
         });
     }
 }
@@ -114,10 +125,10 @@ function delete_template_handler() {
 
     } else {
 
-        delete_template(credentials.auth_token).done(function(value) {
+        delete_template(credentials.auth_token, selected_template).done(function(value) {
 
             // Refresh the template list
-            if (!get_template_ids($("#test-template-filter").val())) {
+            if (!get_template_ids(credentials.auth_token, $("#test-template-filter").val())) {
                 // error
             }
         });
@@ -132,7 +143,7 @@ function view_test_set_handler() {
     }
     else {
 
-        get_test_set_details(credentials.auth_token).done(function(value) {
+        get_test_set_details(credentials.auth_token, selected_trial).done(function(value) {
             populate_view_test_page(value);
             toggle_view_test_set();
         });
@@ -147,7 +158,6 @@ function new_test_set_handler() {
         alert("You are not logged in. Try logging in again");
     }
     else {
-
 
         toggle_new_test_set();
     }
@@ -170,7 +180,7 @@ function export_test_set_handler() {
     else {
 
         let csv;
-        export_csv().done(function(value) {
+        export_csv(credentials.auth_token, selected_trial).done(function(value) {
             csv = value;
             download(csv, selected_trial + ".csv", 'text/plain');
         });
@@ -185,10 +195,10 @@ function delete_test_set_handler() {
     }
     else {
 
-        delete_test_set(credentials.auth_token).done(function(value) {
+        delete_test_set(credentials.auth_token, selected_trial).done(function(value) {
 
             // Refresh the test sets
-            if (!get_test_set_statuses()) {
+            if (!get_test_set_statuses(credentials.auth_token, $("#test-status-list-filter-select").val())) {
                 // error
             }
         });
@@ -202,10 +212,10 @@ function open_test_handler(){
     }
     else {
 
-        open_test(credentials.auth_token).done(function(value) {
+        open_test(credentials.auth_token, selected_trial).done(function(value) {
 
             // Refresh the test sets
-            if (!get_test_set_statuses()) {
+            if (!get_test_set_statuses(credentials.auth_token, $("#test-status-list-filter-select").val())) {
                 // error
             }
         });
@@ -219,10 +229,10 @@ function close_test_handler() {
     }
     else {
 
-        close_test(credentials.auth_token).done(function(value) {
+        close_test(credentials.auth_token, selected_trial).done(function(value) {
 
             // Refresh the test sets
-            if (!get_test_set_statuses()) {
+            if (!get_test_set_statuses(credentials.auth_token, $("#test-status-list-filter-select").val())) {
                 // error
             }
         });

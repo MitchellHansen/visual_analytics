@@ -211,14 +211,15 @@ function toggle_admin_panel() {
 
     if (screen == screen_enum.ADMIN_HOME)
         screen = screen_enum.HOME;
+
     else {
 
         screen = screen_enum.ADMIN_HOME;
         // Try and get the test-set names and statuses
-        if (!get_test_set_statuses()){
+        if (!get_test_set_statuses(credentials.auth_token, $("#test-status-list-filter-select").val())){
             // error
         }
-        if (!get_template_ids()){
+        if (!get_template_ids(credentials.auth_token, $("#test-template-filter").val())){
             // error
         }
     }
