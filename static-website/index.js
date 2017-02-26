@@ -13,15 +13,25 @@ window.onload = function(e) {
 
     // Set the onchange function for the admin page test filter
     $("#test-status-list-filter-select").change(function() {
-        get_test_set_statuses(credentials.auth_token, $("#test-status-list-filter-select").val());
+        refresh_admin_page_lists();
     });
 
     // Set the onchange functions for the admin page template filter
     $("#test-template-filter").change(function() {
-        get_template_ids(credentials.auth_token, $("#test-template-filter").val());
+        refresh_admin_page_lists();
     });
 
 };
+
+function refresh_admin_page_lists(){
+    get_template_ids(credentials.auth_token, $("#test-template-filter").val()).done(function(value) {
+        populate_admin_page_test_templates(value);
+    });
+    get_test_set_statuses(credentials.auth_token, $("#test-status-list-filter-select").val()).done(function(value) {
+        populate_admin_page_active_tests(value);
+    });
+
+}
 
 // ======================================================================
 // =  Handlers take a buttons event and tie them to middle or api code  =
@@ -41,6 +51,7 @@ function admin_login_handler() {
             credentials.logged_in = true;
             credentials.auth_token = value.token;
             toggle_admin_panel();
+            refresh_admin_page_lists();
 
         } else if (value.status == "failed") {
 
@@ -76,7 +87,6 @@ function trial_login_handler() {
 }
 
 function continue_test_handler() {
-
 
 }
 
@@ -127,10 +137,7 @@ function delete_template_handler() {
 
         delete_template(credentials.auth_token, selected_template).done(function(value) {
 
-            // Refresh the template list
-            if (!get_template_ids(credentials.auth_token, $("#test-template-filter").val())) {
-                // error
-            }
+            refresh_admin_page_lists();
         });
     }
 }
@@ -196,11 +203,7 @@ function delete_test_set_handler() {
     else {
 
         delete_test_set(credentials.auth_token, selected_trial).done(function(value) {
-
-            // Refresh the test sets
-            if (!get_test_set_statuses(credentials.auth_token, $("#test-status-list-filter-select").val())) {
-                // error
-            }
+            refresh_admin_page_lists();
         });
     }
 }
@@ -213,11 +216,7 @@ function open_test_handler(){
     else {
 
         open_test(credentials.auth_token, selected_trial).done(function(value) {
-
-            // Refresh the test sets
-            if (!get_test_set_statuses(credentials.auth_token, $("#test-status-list-filter-select").val())) {
-                // error
-            }
+            refresh_admin_page_lists();
         });
     }
 }
@@ -230,11 +229,7 @@ function close_test_handler() {
     else {
 
         close_test(credentials.auth_token, selected_trial).done(function(value) {
-
-            // Refresh the test sets
-            if (!get_test_set_statuses(credentials.auth_token, $("#test-status-list-filter-select").val())) {
-                // error
-            }
+            refresh_admin_page_lists();
         });
     }
 }
@@ -304,6 +299,7 @@ function populate_view_test_page(test_details) {
 // test-status-list
 function populate_admin_page_active_tests(test_statuses) {
 
+    test_statuses = test_statuses.data;
     // Remove all the old data
     $("#test-status-list").empty();
 
@@ -358,6 +354,7 @@ function populate_admin_page_active_tests(test_statuses) {
 
 function populate_admin_page_test_templates(test_templates) {
 
+    test_templates = test_templates.template_data;
     // Remove all the old data
     $("#test-template-list").empty();
 
