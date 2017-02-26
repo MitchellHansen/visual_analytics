@@ -9,15 +9,15 @@ let login_uuid = "345634563-erth3--dfgsdfg";
 var selected_trial = "";
 var selected_template = "";
 
-window.onload = function(e){
+window.onload = function(e) {
 
     // Set the onchange function for the admin page test filter
-    $("#test-status-list-filter-select").change(function(){
+    $("#test-status-list-filter-select").change(function() {
         get_test_set_statuses();
     });
 
     // Set the onchange functions for the admin page template filter
-    $("#test-template-filter").change(function(){
+    $("#test-template-filter").change(function() {
         get_template_ids();
     });
 };
@@ -27,7 +27,7 @@ window.onload = function(e){
 // ======================================================================
 
 // When the admin clicks the [Login] button on the [admin sign in page]
-function admin_login_handler(){
+function admin_login_handler() {
 
     // Get the creds from the input, and pass them to the api
     let admin_credentials_combo = $("#admin-login-form").serializeArray();
@@ -36,28 +36,31 @@ function admin_login_handler(){
     admin_login(admin_credentials_combo[0].value, admin_credentials_combo[1].value).done(function() {
 
         if (credentials.logged_in) {
+
             toggle_admin_panel();
+
         }
         else{
+
             alert("Log in failed");
         }
     });
 }
 
 // When the user clicks [Login] on the [testing login page]
-function trial_login_handler(){
+function trial_login_handler() {
 
     // Get the login token from the user and get the trial data associated with that login
     let login_code = $("#trial-login-form").serializeArray();
 
-    if (login_code == ""){
+    if (login_code == "") {
         // do nothing
 
     } else {
 
         trial_login(login_code[0].value).done(function(value) {
 
-            if (value.status == "Success"){
+            if (value.status == "Success") {
 
                 start_testing();
 
@@ -70,9 +73,9 @@ function trial_login_handler(){
 }
 
 // When the user clicks the [View Template] button on the [admin home page]
-function view_template_handler(){
+function view_template_handler() {
 
-    if (selected_template == ""){
+    if (selected_template == "") {
         // do nothing
 
     } else {
@@ -85,9 +88,9 @@ function view_template_handler(){
 }
 
 // When the user clicks the [View Template] button on the [admin home page]
-function new_template_handler(){
+function new_template_handler() {
 
-    if (credentials.logged_in == false){
+    if (credentials.logged_in == false) {
         alert("You are not logged in. Try logging in again");
 
     } else {
@@ -97,9 +100,9 @@ function new_template_handler(){
 }
 
 // When the user clicks the [Delete Template] button on the [admin home page]
-function delete_template_handler(){
+function delete_template_handler() {
 
-    if (credentials.logged_in == false){
+    if (credentials.logged_in == false) {
         alert("You are not logged in. Try logging in again");
 
     } else {
@@ -115,9 +118,9 @@ function delete_template_handler(){
 }
 
 // When the user clicks the [View Test Set] button on the [admin home page]
-function view_test_set_handler(){
+function view_test_set_handler() {
 
-    if (selected_trial == ""){
+    if (selected_trial == "") {
         // do nothing
     }
     else {
@@ -130,9 +133,9 @@ function view_test_set_handler(){
 }
 
 // When the user clicks the [New Test Set] button on the [admin home page]
-function new_test_set_handler(){
+function new_test_set_handler() {
 
-    if (credentials.logged_in == false){
+    if (credentials.logged_in == false) {
 
         alert("You are not logged in. Try logging in again");
     }
@@ -152,9 +155,9 @@ function download(text, name, type) {
 }
 
 // When the user clicks the [Export] button on the [admin home page]
-function export_test_set_handler(){
+function export_test_set_handler() {
 
-    if (selected_trial == ""){
+    if (selected_trial == "") {
         // error
     }
     else {
@@ -168,9 +171,9 @@ function export_test_set_handler(){
 }
 
 
-function delete_test_set_handler(){
+function delete_test_set_handler() {
 
-    if (selected_trial == ""){
+    if (selected_trial == "") {
 
     }
     else {
@@ -178,8 +181,8 @@ function delete_test_set_handler(){
         delete_test_set(credentials.auth_token).done(function(value) {
 
             // Refresh the test sets
-            if (!get_test_set_statuses()){
-            // error
+            if (!get_test_set_statuses()) {
+                // error
             }
         });
     }
@@ -195,16 +198,16 @@ function open_test_handler(){
         open_test(credentials.auth_token).done(function(value) {
 
             // Refresh the test sets
-            if (!get_test_set_statuses()){
+            if (!get_test_set_statuses()) {
                 // error
             }
         });
     }
 }
 
-function close_test_handler(){
+function close_test_handler() {
 
-    if (selected_trial == ""){
+    if (selected_trial == "") {
 
     }
     else {
@@ -212,14 +215,18 @@ function close_test_handler(){
         close_test(credentials.auth_token).done(function(value) {
 
             // Refresh the test sets
-            if (!get_test_set_statuses()){
+            if (!get_test_set_statuses()) {
                 // error
             }
         });
     }
 }
 
-function begin_training_handler(){
+function start_test_handler() {
+
+}
+
+function begin_training_handler() {
     toggle_training_intro_view();
 }
 
@@ -232,8 +239,7 @@ function training_fwd_movement() {
 // = and populate the page which the data is intended for        =
 // ===============================================================
 
-function populate_view_template_page(template_details){
-
+function populate_view_template_page(template_details) {
 
     $("#view-template-admin-panel").empty();
 
@@ -245,7 +251,7 @@ function populate_view_template_page(template_details){
 
 // Takes the response from the [get_test_set_statuses] API call and parses it into the
 // trial-view-admin-panel-id-list, which is in need of a rename
-function populate_view_test_page(test_details){
+function populate_view_test_page(test_details) {
 
     // list all the id's
     $("#trial-view-admin-panel-id-list").empty();
@@ -281,7 +287,7 @@ function populate_view_test_page(test_details){
 
 // Takes the response from the [get_template_ids] API call and parses it into the
 // test-status-list
-function populate_admin_page_active_tests(test_statuses){
+function populate_admin_page_active_tests(test_statuses) {
 
     // Remove all the old data
     $("#test-status-list").empty();
@@ -291,7 +297,7 @@ function populate_admin_page_active_tests(test_statuses){
         return;
 
     // For each of the tests the we received back
-    for (let index = 0; index < test_statuses.length; index++){
+    for (let index = 0; index < test_statuses.length; index++) {
 
         let test_set_id = test_statuses[index][0];
         let test_set_status = test_statuses[index][1];
@@ -335,7 +341,7 @@ function populate_admin_page_active_tests(test_statuses){
 
 }
 
-function populate_admin_page_test_templates(test_templates){
+function populate_admin_page_test_templates(test_templates) {
 
     // Remove all the old data
     $("#test-template-list").empty();
@@ -345,7 +351,7 @@ function populate_admin_page_test_templates(test_templates){
         return;
 
     // For each of the tests the we received back
-    for (let index = 0; index < test_templates.length; index++){
+    for (let index = 0; index < test_templates.length; index++) {
 
         var template_id = test_templates[index][0];
         var template_type = test_templates[index][1];
@@ -368,7 +374,7 @@ function populate_admin_page_test_templates(test_templates){
     }
 }
 
-function set_template_selection(template_name){
+function set_template_selection(template_name) {
     if (selected_template != ""){
         $("#" + selected_template).children().children().first().toggleClass("w3-green");
     }
@@ -376,7 +382,7 @@ function set_template_selection(template_name){
     $("#" + selected_template).children().children().first().toggleClass("w3-green");
 }
 
-function set_trial_selection(trial_name){
+function set_trial_selection(trial_name) {
    if (selected_trial != ""){
         $("#" + selected_trial).children().children().first().toggleClass("w3-green");
     }
