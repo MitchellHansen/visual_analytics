@@ -28,6 +28,8 @@ def get_test_set_statuses():
     login_token = request.json['login_token']
     if(check_token(login_token) is False):
         return json.dumps({'Status': "Invalid Token"})
+    if(check_token(login_token) is False):
+        return json.dumps({'Status': "Invalid Token"})
     filters = request.json['filters']
     cursor = mysql.connect().cursor()
     if(filters==0 or filters=="0"):
@@ -93,7 +95,8 @@ def get_template_ids():
     filters = None
     filters = request.json['filters']
     login_token = request.json['login_token']
-    conn = mysql.connect()
+    if(check_token(login_token) is False):
+        return json.dumps({'Status': "Invalid Token"})    conn = mysql.connect()
     cursor = conn.cursor()
     if(filters==0 or filters=="0"):
         cursor.execute("SELECT template_id, graph_type from templates")
@@ -107,9 +110,11 @@ def get_template_ids():
     
 @mod_auth.route('/delete_test_set', methods=['GET', 'POST'])
 def delete_test_set():
-    token = None
+    login_token = None
     test_set_id = None
-    token = request.json['login_token']
+    login_token = request.json['login_token']
+    if(check_token(login_token) is False):
+        return json.dumps({'Status': "Invalid Token"})    
     test_set_id = request.json['test_set_id']
 
     conn = mysql.connect()
@@ -124,11 +129,12 @@ def delete_test_set():
 
 @mod_auth.route('/delete_template', methods=['GET', 'POST'])
 def delete_template():
-    token = None
+    login_token = None
     test_set_id = None
-    token = request.json['login_token']
+    login_token = request.json['login_token']
+    if(check_token(login_token) is False):
+        return json.dumps({'Status': "Invalid Token"})    
     template_id = request.json['template_id']
-
     conn = mysql.connect()
     cursor = conn.cursor()
     row_count = cursor.execute('SELECT test_set_id FROM test_set_template_list WHERE template_id=\'{0}\''.format(template_id))
@@ -143,9 +149,11 @@ def delete_template():
 
 @mod_auth.route('/open_test', methods=['GET', 'POST'])
 def open_test():
-    token = None
+    login_token = None
     test_set_id = None
-    token = request.json['login_token']
+    login_token = request.json['login_token']
+    if(check_token(login_token) is False):
+        return json.dumps({'Status': "Invalid Token"})    
     test_set_id = request.json['test_set_id']
     conn = mysql.connect()
     cursor = conn.cursor()
@@ -156,9 +164,11 @@ def open_test():
 
 @mod_auth.route('/close_test', methods=['GET', 'POST'])
 def close_test():
-    token = None
+    login_token = None
     test_set_id = None
-    token = request.json['login_token']
+    login_token = request.json['login_token']
+    if(check_token(login_token) is False):
+        return json.dumps({'Status': "Invalid Token"})    
     test_set_id = request.json['test_set_id']
     conn = mysql.connect()
     cursor = conn.cursor()
@@ -251,10 +261,12 @@ def submit_user_trial_results():
 
 @mod_auth.route('/export_csv', methods=['GET', 'POST'])
 def export_csv():
-    token = None
+    login_token = None
     test_set_id = None
     test_set_id = request.json['test_set_id']
-    token = request.json['login_token']
+    login_token = request.json['login_token']
+    if(check_token(login_token) is False):
+        return json.dumps({'Status': "Invalid Token"})    
     si = StringIO.StringIO()
     cw = csv.writer(si)
     conn = mysql.connect()
@@ -311,46 +323,3 @@ def new_test_set():
 	return json.dumps("Success")	
     else:
 	return json.dumps("Failed: test_set already exists")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
