@@ -251,11 +251,15 @@ function training_fwd_movement() {
 
 function populate_view_template_page(template_details) {
 
-    $("#view-template-admin-panel").empty();
+    $("#view-template-center").empty();
 
     // Now fill in the other details
-    $("#view-template-admin-panel").append("<p>d points  : " + template_details.total_data_points[0][0] + "<p>");
-    $("#view-template-admin-panel").append("<p>type   : " + template_details.graph_type[0][0] + "<p>");
+
+    $("#view-template-center").append('<p id="viewTC_Header">Details Of The Template</p>');
+    $("#view-template-center").append('<p id="viewTC_para">data points in graph  : ' + template_details.total_data_points[0][0] + '<br>type of graph   : ' + template_details.graph_type[0][0]);
+
+    //$("#view-template-center").append('<p id="viewTC_para">data points in graph  : ' + template_details.total_data_points[0][0] + '<p>');
+    //$("#view-template-center").append('<p id="viewTC_para">type of graph   : ' + template_details.graph_type[0][0] + '<p>');
 
 }
 

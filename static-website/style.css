@@ -66,3 +66,21 @@
 #SelectedTemplatesID{
     width:150px;
 }
+#viewTC_Header{
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 3.0;
+}
+#viewTC_para{
+    color: black;
+    text-align: justify;
+    font: 15px;
+    border-color:white;
+    border-style: solid;
+    line-height: 3.0;
+    padding-bottom: 100%;
+    padding-left: 5%;
+    background-color: LightGray;
+
+}
