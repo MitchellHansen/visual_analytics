@@ -53,18 +53,18 @@ function training_graph_click(graph_index, data_index){
 graph_context = {TRAINING:0, TESTING:1, NOP:2};
 graph_type = {STAR:0, LINEAR:1};
 
-function build(container, context, type){
+function build_templateGraph(container, context, type, DatapointsLen){
 	
-	if (type == graph_type.STAR){
-		build_star(container, context);
-	} else if (type == graph_type.LINEAR){
-		build_linear(container, context);
-	} else {
-		console.log("Graph type (" + type + ") not supported");
-	}
+    if (type == graph_type.STAR){
+        build_star_templateGraph(container, context, DatapointsLen);
+    } else if (type == graph_type.LINEAR){
+        build_linear_templateGraph(container, context, DatapointsLen);
+    } else {
+        console.log("Graph type (" + type + ") not supported");
+    }
 }
 
-function build_linear(container, context){
+function build_linear_templateGraph(container, context, DatapointsLen){
 
     let graph_data = {};
 
@@ -74,7 +74,7 @@ function build_linear(container, context){
     // the future
     
     let data_points = [];
-    for (let i = 0; i < 20; i++){
+    for (let i = 0; i < DatapointsLen; i++){
         data_points.push(Math.floor((Math.random() * 100) + 1));
     }
     graph_data.data = data_points;
@@ -126,13 +126,13 @@ function build_linear(container, context){
 
         let onclick_string = "";
 
-	if (context == graph_context.TRAINING){
-		onclick_string += "training_graph_click(" + training_graph_arr.length-1 + "," + i + ")";
-	} else if (context == graph_context.TESTING){
-		onclick_string += "testing_graph_click(" + training_graph_arr.length-1 + "," + i + ")";
-	} else if (context == graph_context.NOP){
-		onclick_string += "console.log(" + training_graph_arr.length-1 + "," + i + ")";
-	}
+        if (context == graph_context.TRAINING){
+            onclick_string += "training_graph_click(" + training_graph_arr.length-1 + "," + i + ")";
+        } else if (context == graph_context.TESTING){
+            onclick_string += "testing_graph_click(" + training_graph_arr.length-1 + "," + i + ")";
+        } else if (context == graph_context.NOP){
+            onclick_string += "console.log(" + training_graph_arr.length-1 + "," + i + ")";
+        }
 
         dom_object.children().first().attr("onclick", onclick_string);
 
@@ -152,17 +152,30 @@ function build_linear(container, context){
 
     $(container).append(svg_base);
 
+    checkForGraphsOnNewTemplatePage(container, context, svg_base);
+
     return graph_data;
 }
 
-function build_star(container, context){
+//This section on the New template page should clear the generated graphs
+//This will happen if the context is NOP and there are other graphs already generated.
+function checkForGraphsOnNewTemplatePage(container, context, svg_base){
+    if($(container).length && context == graph_context.NOP){
+        $(container).empty();
+        $(container).append(svg_base);
+    }else if(context == graph_context.NOP){
+        $(container).append(svg_base);
+    }
+}
+
+function build_star_templateGraph(container, context, DatapointsLen){
 
     let graph_data = {};
 
     let svg_base = $(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"></svg>`);
 
     let data_points = [];
-    for (let i = 0; i < 20; i++){
+    for (let i = 0; i < DatapointsLen; i++){
         data_points.push(Math.floor((Math.random() * 100) + 1));
     }
     graph_data.data = data_points;
@@ -220,13 +233,13 @@ function build_star(container, context){
 
         let onclick_string = "";
 
-	if (context == graph_context.TRAINING){
-		onclick_string += "training_graph_click(" + training_graph_arr.length + "," + i + ")";
-	} else if (context == graph_context.TESTING){
-		onclick_string += "testing_graph_click(" + training_graph_arr.length + "," + i + ")";
-	} else if (context == graph_context.NOP){
-		onclick_string += "console.log(" + training_graph_arr.length + "," + i + ")";
-	}
+        if (context == graph_context.TRAINING){
+            onclick_string += "training_graph_click(" + training_graph_arr.length + "," + i + ")";
+        } else if (context == graph_context.TESTING){
+            onclick_string += "testing_graph_click(" + training_graph_arr.length + "," + i + ")";
+        } else if (context == graph_context.NOP){
+            onclick_string += "console.log(" + training_graph_arr.length + "," + i + ")";
+        }
 
         dom_object.children().first().attr("onclick", onclick_string);
 
@@ -245,6 +258,8 @@ function build_star(container, context){
     svg_base.html(function(){return this.innerHTML});
 
     $(container).append(svg_base);
+
+    checkForGraphsOnNewTemplatePage(container, context, svg_base);
 
     return graph_data;
 
