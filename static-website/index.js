@@ -426,7 +426,7 @@ function populate_admin_page_new_test_set_templates(test_templates) {
 
 function addToSelectedTemplates() {
     var curVal = document.getElementById('CurrentTemplatesID').value;
-    var curText = document.getElementById('CurrentTemplatesID').;
+    var curText = document.getElementById('CurrentTemplatesID');
     if (curVal == null) {
         alert("curVal is null");
     }
