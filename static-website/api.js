@@ -15,7 +15,7 @@ function admin_login(email, password){
         async: true,
 
         data :JSON.stringify({
-            "email": email,
+            "email"   : email,
             "password": password
         }),
 
@@ -56,7 +56,6 @@ function trial_login(login_uuid){
         success: function(result){
 
             console.log(result);
-            token = result[0];
         },
 
         error: function(e) {
@@ -79,13 +78,10 @@ function trial_login(login_uuid){
 //                         "test4":"3",
 //                         "test5":"2"
 //               };
+// {0, ANY} {1, RUNNING} {2, COMPLETE} {3, PARKED}
 // ============================================================================================================
 
-function get_test_set_statuses(){
-
-
-    // {0, ANY} {1, RUNNING} {2, COMPLETE} {3, PARKED}
-    var filter = $("#test-status-list-filter-select").val();
+function get_test_set_statuses(auth_token, filter){
 
     return $.ajax({
 
@@ -95,15 +91,14 @@ function get_test_set_statuses(){
         async: true,
 
         data :JSON.stringify({
-            "login_token":credentials.auth_token,
-            "filters": filter
+            "login_token" : auth_token,
+            "filters"     : filter
         }),
 
         dataType: "json",
         success: function(result){
 
             console.log(result);
-            populate_admin_page_active_tests(result);
         },
 
         error: function(e) {
@@ -127,7 +122,7 @@ function get_test_set_statuses(){
 //                         "close-time":"timestamp of some sort"
 //               };
 // ============================================================================================================
-function get_test_set_details(login_code){
+function get_test_set_details(auth_token, test_set_id){
 
     return $.ajax({
 
@@ -137,8 +132,8 @@ function get_test_set_details(login_code){
         async: true,
 
         data :JSON.stringify({
-            "login_token": credentials.auth_token,
-            "test_set_id": "Test1"
+            "login_token": auth_token,
+            "test_set_id": test_set_id
         }),
 
         dataType: "json",
@@ -169,7 +164,7 @@ function get_test_set_details(login_code){
 //               };
 // ============================================================================================================
 
-function get_template_ids(filter) {
+function get_template_ids(auth_token, filter) {
 
 
     return $.ajax({
@@ -180,15 +175,14 @@ function get_template_ids(filter) {
         async: true,
 
         data: JSON.stringify({
-            "login_token": credentials.auth_token,
-            "filters": filter
+            "login_token": auth_token,
+            "filters"    : filter
         }),
 
         dataType: "json",
         success: function (result) {
 
             console.log(result);
-            populate_admin_page_test_templates(result);
         },
 
         error: function(e) {
@@ -205,6 +199,7 @@ function get_template_ids(filter) {
 //  RECEIVES    : Success or fail
 // ============================================================================================================
 
+// THIS FUNCTION USES GLOBAL VARS
 function submit_user_trial_results(){
 
     return $.ajax({
@@ -216,7 +211,8 @@ function submit_user_trial_results(){
 
         data : JSON.stringify({
             "login_uuid": login_uuid,
-            "results" : training_graph_arr
+            "results"   : training_graph_arr,
+            "time"      : "0"
         }),
 
         dataType: "json",
@@ -240,7 +236,7 @@ function submit_user_trial_results(){
 //  RECEIVES    : A CSV file in text form
 // ============================================================================================================
 
-function export_csv(){
+function export_csv(auth_token, trial_id){
 
     return $.ajax({
 
@@ -250,8 +246,8 @@ function export_csv(){
         async: true,
 
         data : JSON.stringify({
-            "login_token": credentials.auth_token,
-            "test_set_id" : selected_trial
+            "login_token" : auth_token,
+            "test_set_id" : trial_id
         }),
 
         dataType: "text",
@@ -274,7 +270,7 @@ function export_csv(){
 //  RECEIVES    : Success or fail
 // ============================================================================================================
 
-function delete_test_set(){
+function delete_test_set(auth_token, trial_id){
 
     return $.ajax({
 
@@ -284,8 +280,8 @@ function delete_test_set(){
         async: true,
 
         data : JSON.stringify({
-            "login_token": credentials.auth_token,
-            "test_set_id" : selected_trial
+            "login_token" : auth_token,
+            "test_set_id" : trial_id
         }),
 
         dataType: "json",
@@ -308,7 +304,7 @@ function delete_test_set(){
 //  RECEIVES    : Success or fail
 // ============================================================================================================
 
-function delete_template(){
+function delete_template(auth_token, template_id){
 
     return $.ajax({
 
@@ -318,8 +314,8 @@ function delete_template(){
         async: true,
 
         data : JSON.stringify({
-            "login_token": credentials.auth_token,
-            "template_id" : selected_template
+            "login_token" : auth_token,
+            "template_id" : template_id
         }),
 
         dataType: "json",
@@ -350,7 +346,7 @@ function delete_template(){
 //  RECEIVES    : Success or fail
 // ============================================================================================================
 
-function new_test_set(test_set_id, template_list, wait_time, close_time, uuid_count){
+function new_test_set(test_set_id, template_list, wait_time, close_time, uuid_count, auth_token){
 
     return $.ajax({
 
@@ -360,7 +356,7 @@ function new_test_set(test_set_id, template_list, wait_time, close_time, uuid_co
         async: true,
 
         data : JSON.stringify({
-            "login_token" : credentials.auth_token,
+            "login_token" : auth_token,
             "test_set_id" : test_set_id,
             "template_ids": template_list,
             "wait_time"   : wait_time,
@@ -405,7 +401,7 @@ function new_test_set(test_set_id, template_list, wait_time, close_time, uuid_co
 //                };
 // ============================================================================================================
 
-function get_next_test(){
+function get_next_test(login_uuid){
 
     return $.ajax({
 
@@ -442,7 +438,7 @@ function get_next_test(){
 //  RECEIVES    : Success or fail
 // ============================================================================================================
 
-function open_test(){
+function open_test(auth_token, test_set_id){
 
     return $.ajax({
 
@@ -452,8 +448,8 @@ function open_test(){
         async: true,
 
         data : JSON.stringify({
-            "login_token": credentials.auth_token,
-            "test_set_id" : selected_trial
+            "login_token" : auth_token,
+            "test_set_id" : test_set_id
         }),
 
         dataType: "json",
@@ -480,7 +476,7 @@ function open_test(){
 //  RECEIVES    : Success or fail
 // ============================================================================================================
 
-function close_test(){
+function close_test(auth_token, test_set_id){
 
     return $.ajax({
 
@@ -490,8 +486,8 @@ function close_test(){
         async: true,
 
         data : JSON.stringify({
-            "login_token": credentials.auth_token,
-            "test_set_id" : selected_trial
+            "login_token" : auth_token,
+            "test_set_id" : test_set_id
         }),
 
         dataType: "json",
@@ -518,7 +514,7 @@ function close_test(){
 //  RECEIVES    : JSON object with total_data_points, graph_type
 // ============================================================================================================
 
-function get_template_details(){
+function get_template_details(auth_token, template_id){
 
     return $.ajax({
 
@@ -528,8 +524,8 @@ function get_template_details(){
         async: true,
 
         data : JSON.stringify({
-            "login_token" : credentials.auth_token,
-            "template_id" : selected_template
+            "login_token" : auth_token,
+            "template_id" : template_id
         }),
 
         dataType: "json",
