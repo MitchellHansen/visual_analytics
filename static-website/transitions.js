@@ -224,7 +224,7 @@ function toggle_admin_panel() {
     }
 }
 
-function start_testing(){
+function toggle_start_testing(){
     $("#home-row").slideToggle();
     $("#testing-start-panel").toggleClass("hidden");
 }

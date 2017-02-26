@@ -18,7 +18,7 @@ window.onload = function(e) {
 
     // Set the onchange functions for the admin page template filter
     $("#test-template-filter").change(function() {
-        get_template_ids();
+        get_template_ids($("#test-template-filter").val());
     });
 };
 
@@ -33,16 +33,17 @@ function admin_login_handler() {
     let admin_credentials_combo = $("#admin-login-form").serializeArray();
 
     // API call to the admin_login endpoint
-    admin_login(admin_credentials_combo[0].value, admin_credentials_combo[1].value).done(function() {
+    admin_login(admin_credentials_combo[0].value, admin_credentials_combo[1].value).done(function(value) {
 
-        if (credentials.logged_in) {
+        if (value.status == "success"){
 
+            credentials.logged_in = true;
+            credentials.auth_token = value.token;
             toggle_admin_panel();
 
-        }
-        else{
+        } else if (value.status == "failed") {
 
-            alert("Log in failed");
+            alert("Email and password is not correct");
         }
     });
 }
@@ -62,7 +63,8 @@ function trial_login_handler() {
 
             if (value.status == "Success") {
 
-                start_testing();
+                screen = screen_enum.TESTING_START;
+                toggle_start_testing();
 
             } else {
 
@@ -70,6 +72,11 @@ function trial_login_handler() {
             }
         });
     }
+}
+
+function continue_test_handler() {
+
+
 }
 
 // When the user clicks the [View Template] button on the [admin home page]
@@ -110,7 +117,7 @@ function delete_template_handler() {
         delete_template(credentials.auth_token).done(function(value) {
 
             // Refresh the template list
-            if (!get_template_ids()) {
+            if (!get_template_ids($("#test-template-filter").val())) {
                 // error
             }
         });
@@ -222,9 +229,7 @@ function close_test_handler() {
     }
 }
 
-function start_test_handler() {
 
-}
 
 function begin_training_handler() {
     toggle_training_intro_view();

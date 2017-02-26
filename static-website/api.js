@@ -22,12 +22,7 @@ function admin_login(email, password){
         dataType: "json",
         success: function(result){
 
-            if (result[0] != "Email and password is not correct"){
-                credentials.logged_in = true;
-                credentials.auth_token = result[0];
-            } else {
-                alert("Email and password is not correct");
-            }
+            console.log(result);
         },
 
         error: function(e) {
@@ -163,7 +158,7 @@ function get_test_set_details(login_code){
 
 // ============================================================================================================
 //  API CALL TO : "/auth/get_template_ids"
-//  SENDS       : Login Token
+//  SENDS       : Login Token, filter
 //  RECEIVES    : JSON list template-ids combined with their test type
 //                JSON = {
 //                        "star-graph-1":"1",
@@ -174,10 +169,8 @@ function get_test_set_details(login_code){
 //               };
 // ============================================================================================================
 
-function get_template_ids() {
+function get_template_ids(filter) {
 
-    // Get from the filter selection the type of test templates we want to see
-    let filter = $("#test-template-filter").val();
 
     return $.ajax({
 
@@ -194,6 +187,7 @@ function get_template_ids() {
         dataType: "json",
         success: function (result) {
 
+            console.log(result);
             populate_admin_page_test_templates(result);
         },
 
