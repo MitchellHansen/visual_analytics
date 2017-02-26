@@ -59,3 +59,10 @@
     border-right: 5px solid #334477;
     border-bottom: 15px solid #141b2f;
 }
+
+#CurrentTemplatesID{
+    width:150px;
+}
+#SelectedTemplatesID{
+    width:150px;
+}
