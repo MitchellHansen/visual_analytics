@@ -269,16 +269,19 @@ function toggle_home_from_training() {
     $("#training-panel").toggleClass("hidden");
     $("#home-row").slideToggle();
 }
+
 //Brings the user back from the selection training to the training info
 function toggle_intro_from_selection() {
     $("#training-selection").toggleClass("hidden");
     $("#training-panel").toggleClass("hidden");
 }
+
 //Brings the user back from the practice training to the selection training
 function toggle_selection_from_practice() {
     $("#training-practice").toggleClass("hidden");
     $("#training-selection").toggleClass("hidden");
 }
+
 //Brings the user back from the practice training to the selection training
 function toggle_practice_from_results() {
     $("#training-results").toggleClass("hidden");
@@ -298,7 +301,6 @@ function toggle_training_selection_view() {
     $("#training-selection").toggleClass("hidden");
 
     //screen = screen_enum.TRAINING_HOW_WORK;
-
 }
 function toggle_training_practice_view() {
 

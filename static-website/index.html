@@ -27,7 +27,7 @@
         </li>
         <li>
             <button id="refresh-button" type="button" class="w3-btn w3-btn-block w3-hover-teal w3-padding-16"
-                    onclick="get_test_set_statuses()">Refresh
+                    onclick="get_test_set_statuses(); get_template_ids();">Refresh
             </button>
         </li>
     </ul>
@@ -450,8 +450,7 @@
 
             <div class="w3-row">
                 <div class="w3-col w3-padding">
-                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey"
-                            onclick="view_template_handler()">
+                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="view_template_handler()">
                         View Template
                     </button>
                 </div>
@@ -463,8 +462,7 @@
 
             <div class="w3-row">
                 <div class="w3-col w3-padding">
-                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey"
-                            onclick="view_test_set_handler()">
+                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="view_test_set_handler()">
                         View Test Set
                     </button>
                 </div>
@@ -472,38 +470,48 @@
 
             <div class="w3-row">
                 <div class="w3-col w3-padding">
-                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey"
-                            onclick="export_test_set_handler()">Export
+                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="export_test_set_handler()">
+                        Export
                     </button>
                 </div>
                 <div class="w3-col w3-padding">
-                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick=""><a href=""
-                                                                                                       id="download-button">Download</a>
+                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="">
+                        <a href="" id="download-button">
+                            Download
+                        </a>
                     </button>
                 </div>
             </div>
 
             <div class="w3-row">
                 <div class="w3-col w3-padding">
-                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="new_test_set_handler()">New Test Set</button>
+                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="new_test_set_handler()">
+                        New Test Set
+                    </button>
                 </div>
             </div>
 
             <div class="w3-row">
                 <div class="w3-col w3-padding">
-                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="delete_test_set_handler()">Delete Test</button>
+                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="delete_test_set_handler()">
+                        Delete Test
+                    </button>
                 </div>
             </div>
 
             <div class="w3-row">
                 <div class="w3-col w3-padding">
-                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="open_test_handler()">Open Test</button>
+                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="open_test_handler()">
+                        Open Test
+                    </button>
                 </div>
             </div>
 
             <div class="w3-row">
                 <div class="w3-col w3-padding">
-                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="close_test_handler()">Close Test</button>
+                    <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey" onclick="close_test_handler()">
+                        Close Test
+                    </button>
                 </div>
             </div>
 
