@@ -25,9 +25,8 @@ def index():
 def get_test_set_statuses():
     login_token = None
     filters = None
+    response = {}
     login_token = request.json['login_token']
-    if(check_token(login_token) is False):
-        return json.dumps({'Status': "Invalid Token"})
     if(check_token(login_token) is False):
         return json.dumps({'Status': "Invalid Token"})
     filters = request.json['filters']
@@ -38,31 +37,37 @@ def get_test_set_statuses():
         cursor.execute("SELECT test_set_id, status from test_set_details where status={0}".format(filters))
     data = cursor.fetchall()
     if data is None:
-        return "No tests found"
+        response = {'status':'failed'}
+        return json.dumps("No tests found")
     else:
-        return json.dumps(data)
+        response = {'status':'success', 'data':data}
+        return json.dumps(response)
 
 @mod_auth.route('/get_template_details', methods=['GET', 'POST'])
 def get_template_details():
     login_token = None
     template_id = None
+    response = {}
     login_token = request.json['login_token']
     if(check_token(login_token) is False):
         return json.dumps({'Status': "Invalid Token"})
     template_id = request.json['template_id']
-    template_details={}
+    print("TEMPLATE ID ", template_id)
     conn = mysql.connect()
     cursor = conn.cursor()
     cursor.execute("SELECT total_data_points from templates where template_id=\'{0}\'".format(template_id))
-    total_data_points = cursor.fetchall()
+    total_data_points = cursor.fetchall()[0]
     cursor.execute("SELECT graph_type from templates where template_id=\'{0}\'".format(template_id))
-    graph_type = cursor.fetchall()
-    template_details={
-        'total_data_points':total_data_points,
-        'graph_type': graph_type
-    }
-
-    return json.dumps(template_details)
+    graph_type = cursor.fetchall()[0]
+    if graph_type is None or total_data_points is None:
+        response = {'status':'failed'}
+    else:
+        response={
+            'status':'success',
+            'total_data_points':total_data_points,
+            'graph_type': graph_type
+        }
+    return json.dumps(response)
 
 @mod_auth.route('/get_test_set_details', methods=['GET', 'POST'])
 def get_test_set_details():
@@ -72,8 +77,7 @@ def get_test_set_details():
     if(check_token(login_token) is False):
         return json.dumps({'Status': "Invalid Token"})
     test_set_id = request.json['test_set_id']
-    print(test_set_id)
-    test_set_details={}
+    response={}
     conn = mysql.connect()
     cursor = conn.cursor()
     cursor.execute("SELECT * from test_set_details where test_set_id=\'{0}\'".format(test_set_id))
@@ -82,21 +86,27 @@ def get_test_set_details():
     users = cursor.fetchall()
     cursor.execute("SELECT template_id from test_set_template_list where test_set_id=\'{0}\'".format(test_set_id))
     template_list = cursor.fetchall()
-    test_set_details ={
-        'test_details':test_details,
-	'users':users,
-        'template_list':template_list
-    }
-    return json.dumps(test_set_details)
+    if test_details is None or users is None or template_list is None:
+        response = {'status':'failed'} 
+    else:
+        response ={
+            'status': 'success',
+            'test_details':test_details,
+	    'users':users,
+            'template_list':template_list
+        }
+    return json.dumps(response)
 
 @mod_auth.route('/get_template_ids', methods=['GET', 'POST'])
 def get_template_ids():
     login_token = None
     filters = None
+    response = {}
     filters = request.json['filters']
     login_token = request.json['login_token']
     if(check_token(login_token) is False):
-        return json.dumps({'Status': "Invalid Token"})    conn = mysql.connect()
+        return json.dumps({'Status': "Invalid Token"})    
+    conn = mysql.connect()
     cursor = conn.cursor()
     if(filters==0 or filters=="0"):
         cursor.execute("SELECT template_id, graph_type from templates")
@@ -104,14 +114,16 @@ def get_template_ids():
         cursor.execute("SELECT template_id, graph_type from templates where graph_type={0}".format(filters))
     data = cursor.fetchall()
     if data is None:
-        return "No tests found"
+        response = {'status':'failed'}
     else:
-        return json.dumps(data)
+        response ={'status': 'success', 'template_data':data}
+        return json.dumps(response)
     
 @mod_auth.route('/delete_test_set', methods=['GET', 'POST'])
 def delete_test_set():
     login_token = None
     test_set_id = None
+    response = {}
     login_token = request.json['login_token']
     if(check_token(login_token) is False):
         return json.dumps({'Status': "Invalid Token"})    
@@ -125,12 +137,14 @@ def delete_test_set():
     conn.commit()
     cursor.execute('DELETE FROM test_set_template_list WHERE test_set_id=\'{0}\''.format(test_set_id))
     conn.commit()
-    return json.dumps("SUCCESS")
+    response = {'status':'success'}
+    return json.dumps(response)
 
 @mod_auth.route('/delete_template', methods=['GET', 'POST'])
 def delete_template():
     login_token = None
     test_set_id = None
+    response = {}
     login_token = request.json['login_token']
     if(check_token(login_token) is False):
         return json.dumps({'Status': "Invalid Token"})    
@@ -143,24 +157,33 @@ def delete_template():
 	conn.commit()
         cursor.execute('DELETE FROM templates WHERE template_id=\'{0}\''.format(template_id))
 	conn.commit()
-        return json.dumps("Template removed")
+        response = {'status':'success'}
     else:
-        return json.dumps("Sorry, template_id is being used")
+        response = {'status':'failed'}
+    return json.dumps(response)
 
 @mod_auth.route('/open_test', methods=['GET', 'POST'])
 def open_test():
     login_token = None
     test_set_id = None
+    response = {}
     login_token = request.json['login_token']
     if(check_token(login_token) is False):
         return json.dumps({'Status': "Invalid Token"})    
     test_set_id = request.json['test_set_id']
+    print('LOGIN TOKEN ', login_token)
+    print('test_set_id ', test_set_id)
     conn = mysql.connect()
     cursor = conn.cursor()
     cursor.execute('UPDATE test_set_details SET status=\'1\' WHERE test_set_id=\'{0}\''.format(test_set_id))
     conn.commit()
-    return json.dumps("SUCCESS")
-
+    cursor.execute('SELECT status FROM test_set_details WHERE test_set_id=\'{0}\''.format(test_set_id))
+    data=cursor.fetchone()[0]
+    if data==1:
+        response={'status':'success'}
+    else:
+	response={'status':'failed'}
+    return json.dumps(response)
 
 @mod_auth.route('/close_test', methods=['GET', 'POST'])
 def close_test():
@@ -173,8 +196,16 @@ def close_test():
     conn = mysql.connect()
     cursor = conn.cursor()
     cursor.execute('UPDATE test_set_details SET status=\'2\' WHERE test_set_id=\'{0}\''.format(test_set_id))
-    conn.commit()
-    return json.dumps("SUCCESS")
+    conn.commit()    
+    cursor.execute('SELECT status FROM test_set_details WHERE test_set_id=\'{0}\''.format(test_set_id))
+    data=cursor.fetchone()[0]
+    if data==2:
+        response={'status':'success'}
+    else:
+	response={'status':'failed'}
+    return json.dumps(response)
+
+
 
 @mod_auth.route('/trial_login', methods=['GET', 'POST'])
 def trial_login():
@@ -205,49 +236,50 @@ def check_token(token):
 def admin_login():
     email = None
     password = None
-    
+ 
     email = request.json['email']
-    email = "\'"+email+"\'"
+    email = email
     password = request.json['password']
-    password = "\'"+password+"\'"
+    password = password 
+
+
     conn = mysql.connect()
     cursor = conn.cursor()
-    if(email is None or password is None):
-        return json.dumps("")
-    else:
-        cursor.execute("SELECT * FROM admin where email={0} and password={1}".format(email, password))
+    response = {}
+    
+    cursor.execute("SELECT * FROM admin where email=\'{0}\' and password=\'{1}\'".format(email, password))
     data = cursor.fetchone()
     if(data is None):
-	return json.dumps("Email and password is not correct")
+        response = {'status':'failed'}
+        return json.dumps(response) 
     else:
 	data = None
-	cursor.execute("SELECT uuid FROM admin where email={0} and password={1}".format(email, password))
+	cursor.execute("SELECT uuid FROM admin where email=\'{0}\' and password=\'{1}\'".format(email, password))
 	data = cursor.fetchone()
 	if(data[0] is None):
 	    new_UUID = str(uuid.uuid4())
 	    new_uuid = "\'"+str(new_UUID)+"\'"
-	    cursor.execute("UPDATE admin SET uuid={0} WHERE email={1} and password={2}".format(new_uuid, email, password))
+	    cursor.execute("UPDATE admin SET uuid=\'{0}\' WHERE email=\'{1}\' and password=\'{2}\'".format(new_uuid, email, password))
             conn.commit()
-        
-	cursor.execute("SELECT uuid FROM admin where email={0} and password={1}".format(email, password))
-        return json.dumps(cursor.fetchone())
+        cursor.execute("SELECT uuid FROM admin where email=\'{0}\' and password=\'{1}\'".format(email, password))
+        token = cursor.fetchone()[0]
+	response={'status':'success', 'token':token}
+        return json.dumps(response)
 
 @mod_auth.route('/submit_user_trial_results', methods=['GET', 'POST'])
 def submit_user_trial_results():
     results = None
     token = None
     time = None
-    #time = request.json['time']
+    time = request.json['time']
     results = request.json['results']
     token = request.json['login_uuid']
     class_choice = []
     selected_point = [] 
-    data_points = []
     
     for i in results:
 	class_choice.append(i['class'])
 	selected_point.append(i['selected_point'])
-	data_points.append(i['data'])
     
     class_choice = str(class_choice)
     selected_point = str(selected_point)
@@ -255,8 +287,9 @@ def submit_user_trial_results():
 
     conn = mysql.connect()
     cursor = conn.cursor()
-    cursor.execute("UPDATE test_set_result SET result=\'{0}\', time=\'{1}\', selected_point=\'{2}\', class=\'{3}\', data_points=\'{4}\' WHERE login_uuid=\'{5}\' and class IS NULL".format('94', '45', selected_point, class_choice, data_points, token)) 
+    cursor.execute("UPDATE test_set_result SET result=\'{0}\', time=\'{1}\', selected_point=\'{2}\', class=\'{3}\' WHERE login_uuid=\'{5}\' and class IS NULL".format('results', 'time', selected_point, class_choice, token)) 
     conn.commit()
+    #cursor.execute("SELECT ")
     return json.dumps("SUCCESS")
 
 @mod_auth.route('/export_csv', methods=['GET', 'POST'])
@@ -312,14 +345,42 @@ def new_test_set():
             cursor.execute('INSERT INTO test_set_template_list VALUES(\'{0}\',\'{1}\',\'{2}\',\'{3}\',\'{4}\',\'{5}\')'.format(test_set_id, i, data_point_dict['class1_parent'],data_point_dict['class2_parent'],data_point_dict['class2_children'],data_point_dict['class1_children']))
 	    conn.commit()
 	    
-
+        response ={}
         for x in range(uuid_count):     
             new_UUID = str(uuid.uuid4())
             new_uuid = "\'"+str(new_UUID)+"\'"
             cursor.execute('INSERT INTO test_set_user_login_id VALUES(\'{0}\', {1})'.format(test_set_id, new_uuid))
             conn.commit()
-
-
-	return json.dumps("Success")	
+	
+        cursor.execute('SELECT test_set_id from test_set_details WHERE test_set_id=\'{0}\''.format(test_set_id))
+        data = cursor.fetchone()[0]
+        if len(data[0])>0:
+            response = {'status':'success'}
+        else:
+	    response = {'status':'failed'}
+	return json.dumps(response)	
     else:
-	return json.dumps("Failed: test_set already exists")
+        response = {'status':'failed'}
+	return json.dumps(response)
+
+
+@mod_auth.route('/get_next_test', methods=['GET', 'POST'])
+def get_next_test():
+    login_uuid = None
+    login_uuid = request.json['login_uuid']
+    response = {}
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    cursor.execute('select template_id from test_set_template_list b where b.template_id not in (select a.template_id from test_set_result a)')
+    data = cursor.fetchone()
+    if data is None:
+	response = {'status':'success','messesge':'all templates complete'}
+    else:
+	cursor.execute('insert into test_set_result values(\'{0}\', \'{1}\', NULL, NULL, NULL,NULL,NULL'.format(data[0],login_uuid))
+	conn.commit()
+	response = {'status':'success','messesge':'On to the next template', 'template_id':data[0]}
+    return json.dumps(response)
+
+
+ 
+
