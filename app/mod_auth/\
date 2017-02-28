@@ -274,13 +274,20 @@ def submit_user_trial_results():
     time = None
     selected_point = None
     selected_class = None
-    
-    template_id = request.json['template_id']
-    login_uuid = request.json['login_uuid']
-    score = request.json['score']
+  
     time = request.json['time']
-    selected_point = request.json['selected_point']
-    selected_class = request.json['selected_class']
+    results = request.json['results']
+    token = request.json['login_uuid']
+    class_choice = []
+    selected_point = [] 
+    
+    for i in results:
+	class_choice.append(i['class'])
+	selected_point.append(i['selected_point'])
+    
+    class_choice = str(class_choice)
+    selected_point = str(selected_point)
+    data_points = str(data_points)
 
     conn = mysql.connect()
     cursor = conn.cursor()
@@ -369,7 +376,7 @@ def get_next_test():
     conn = mysql.connect()
     cursor = conn.cursor()
     cursor.execute('select template_id from test_set_template_list b where b.template_id not in (select a.template_id from test_set_result a)')
-    data = cursor.fetchall()[0]
+    data = cursor.fetchone()
     if data is None:
 	response = {'status':'success','messesge':'all templates complete'}
     else:
@@ -378,34 +385,6 @@ def get_next_test():
 	response = {'status':'success','messesge':'On to the next template', 'template_id':data[0]}
     return json.dumps(response)
 
-@mod_auth.route('/new_template', methods=['GET','POST'])
-def new_template():
-    login_token = None
-    login_token = request.json['login_token']
-    if(check_token(login_token) is False):
-        return json.dumps({'Status': "Invalid Token"})
-    graph_type = None
-    total_data_points = None
-    template_id = None
-    graph_type = request.json['graph_type']
-    total_data_points = request.json['total_data_points']
-    template_id = request.json['template_id']
 
-    response = {}
-    conn = mysql.connect()
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM templates where template_id=\'{0}\''.format(template_id))
-    data = cursor.fetchall()
-    if data[0] == None:
-	cursor.execute('INSERT INTO templates VALUES(\'{0}\',{1},{2})'.format(template_id, total_data_points, graph_type))
-	conn.commit()
-        response = {'status':'success', 'messege':'Template added'}
-    else:
-       response = {'status':'success', 'messege':'Template already exists'}
-    return json.dumps(response)
-
-
-
-
-
+ 
 
