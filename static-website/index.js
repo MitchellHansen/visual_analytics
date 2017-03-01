@@ -452,3 +452,21 @@ function addToSelectedTemplates() {
     },'</option>'));
               
 }
+
+function create_new_template_handler() {
+
+    if (credentials.logged_in == false) {
+        alert("You are not logged in. Try logging in again");
+
+    } else {
+        var templ_id = $('#template_id').val();
+        var gtype = $("input[type='radio'][name='GraphType']:checked").val();
+        var numofDP = $('#total_data_points').val();
+        //alert("Template Id " + templ_id + " graphtype " + gtype + " num of points " + numofDP);
+
+        new_test_template(credentials.auth_token, templ_id, gtype, numofDP).done(function (value) {
+
+            toggle_new_template();
+        });
+    }
+}
