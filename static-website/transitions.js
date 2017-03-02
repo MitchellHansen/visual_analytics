@@ -4,14 +4,14 @@
 //
 // The flow section relies on keeping track of what page the user is currently on
 // and handling the possible options the user has to navigate forward and backwards.
-// 
+//
 // The toggle section handles each individual page toggle. We have used toggle functions
 // to allow esay single function hiding and showing of pages. It's recommended that this
 // is continued to remove the extra code needed to determine if the page is opening or closing
 
 // To do a back button I think I'm just gonna do this jank jumplist
 
-var screen_enum = { 
+var screen_enum = {
                     HOME: 1,
                     ADMIN_HOME:2,
                     TEST_NEW:3,
@@ -305,16 +305,16 @@ function toggle_training_selection_view() {
 }
 function toggle_training_practice_view() {
 
-    $("#svg-row").empty();
+    $("#graph-space-training").empty();
 
     for (let i = 0; i < 10; i++){
-        build($("#svg-row"), graph_context.TRAINING, graph_type.LINEAR)
+        build($("#graph-space-training"), graph_context.TRAINING, graph_type.LINEAR)
     }
-  
+
     for (let i = 0; i < 10; i++){
-        build($("#svg-row"), graph_context.TRAINING, graph_type.STAR)
+        build($("#graph-space-training"), graph_context.TRAINING, graph_type.STAR)
     }
-  
+
     $("#training-selection").toggleClass("hidden");
     $("#training-practice").toggleClass("hidden");
 }
@@ -328,5 +328,3 @@ function toggle_back_to_home() {
     $("#training-results").toggleClass("hidden");
     $("#home-row").slideToggle();
 }
-
-

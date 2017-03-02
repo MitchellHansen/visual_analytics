@@ -1,7 +1,7 @@
 
 $(document).ready(function() {
-});
 
+});
 
 // Holds the currently loaded graphs & their jquery DOM object
 var training_graph_arr = [];
@@ -43,7 +43,7 @@ function training_graph_click(graph_index, data_index){
         $(graph.svg_g.children()[data_index + graph.data.length]).toggleClass("selected-class-1")
     }
 
-    ($($("#svg-row").children()[graph_index]).children()[data_index + graph.data.length]);
+    ($($("#graph-space-training").children()[graph_index]).children()[data_index + graph.data.length]);
 }
 
 
@@ -54,7 +54,7 @@ graph_context = {TRAINING:0, TESTING:1, NOP:2};
 graph_type = {STAR:0, LINEAR:1};
 
 function build(container, context, type){
-	
+
 	if (type == graph_type.STAR){
 		build_star(container, context);
 	} else if (type == graph_type.LINEAR){
@@ -72,7 +72,7 @@ function build_linear(container, context){
 
     // Random data points, this will hit the server in
     // the future
-    
+
     let data_points = [];
     for (let i = 0; i < 20; i++){
         data_points.push(Math.floor((Math.random() * 100) + 1));
@@ -82,57 +82,59 @@ function build_linear(container, context){
 
     let data_point_count = data_points.length;
     let rectangle = {width:200, height:200};
-    let spacing = rectangle.width / data_point_count;
+    let spacing = rectangle.width / (data_point_count+1) ;
 
-    for (let i = 0; i < data_point_count - 1; i++){
-        
+    for (let i = 0; i < data_point_count; i++){
+
         let dom_object = $("<g class=\"svg_color\"><polygon points=\"\" style=\"stroke-width:1\"/></g>");
 
-        let coordinates = spacing * i + "," + // Bottom Left 
+        let coordinates = spacing * i + "," + // Bottom Left
                           rectangle.height + " " +
-                          
+
                           spacing * i + "," + // Top Left
-			  (rectangle.height - data_points[i]) + " " +
+                  			  (rectangle.height - data_points[i]) + " " +
 
-			  spacing * (i+1) + "," + // Top Right
-			  (rectangle.height - data_points[i+1]) + " " +
+                  			  spacing * (i+1) + "," + // Top Right
+                  			  (rectangle.height - data_points[i+1]) + " " +
 
-			  spacing * (i+1) + "," + // Bottom Right
-			  rectangle.height + " ";
-			  
+                  			  spacing * (i+1) + "," + // Bottom Right
+                  			  rectangle.height + " ";
+
         dom_object.children().first().attr("points", coordinates);
 
         svg_base.append(dom_object);
     }
 
-    for (let i = 0; i < data_point_count-1; i++) {
+    for (let i = 0; i < data_point_count; i++) {
 
 
         let dom_object = $(`<g class="hover_group"><polygon points=\"\" style=\"stroke-width:1\"/></polygon></g>`);
 
-        let coordinates = spacing * i + "," + // Bottom Left 
+        let coordinates = spacing * i + "," + // Bottom Left
                           rectangle.height + " " +
-                          
+
                           spacing * i + "," + // Top Left
-			  0 + " " +
+                  			  0 + " " +
 
-			  spacing * (i+1) + "," + // Top Right
-			  0 + " " +
+                  			  spacing * (i+1) + "," + // Top Right
+                  			  0 + " " +
 
-			  spacing * (i+1) + "," + // Bottom Right
-			  rectangle.height + " ";
+                  			  spacing * (i+1) + "," + // Bottom Right
+                  			  rectangle.height + " ";
 
         dom_object.children().first().attr("points", coordinates);
 
         let onclick_string = "";
 
-	if (context == graph_context.TRAINING){
-		onclick_string += "training_graph_click(" + training_graph_arr.length-1 + "," + i + ")";
-	} else if (context == graph_context.TESTING){
-		onclick_string += "testing_graph_click(" + training_graph_arr.length-1 + "," + i + ")";
-	} else if (context == graph_contxt.NOP){
-		onclick_string += "console.log(" + training_graph_arr.length-1 + "," + i + ")";
-	}
+        if (context == graph_context.TRAINING){
+          onclick_string += "training_graph_click(" + training_graph_arr.length + "," + i + ")";
+
+        } else if (context == graph_context.TESTING){
+          onclick_string += "testing_graph_click(" + training_graph_arr.length + "," + i + ")";
+
+        } else if (context == graph_contxt.NOP){
+          onclick_string += "console.log(" + training_graph_arr.length + "," + i + ")";
+        }
 
         dom_object.children().first().attr("onclick", onclick_string);
 
@@ -220,13 +222,13 @@ function build_star(container, context){
 
         let onclick_string = "";
 
-	if (context == graph_context.TRAINING){
-		onclick_string += "training_graph_click(" + training_graph_arr.length + "," + i + ")";
-	} else if (context == graph_context.TESTING){
-		onclick_string += "testing_graph_click(" + training_graph_arr.length + "," + i + ")";
-	} else if (context == graph_context.NOP){
-		onclick_string += "console.log(" + training_graph_arr.length + "," + i + ")";
-	}
+      	if (context == graph_context.TRAINING){
+      		onclick_string += "training_graph_click(" + training_graph_arr.length + "," + i + ")";
+      	} else if (context == graph_context.TESTING){
+      		onclick_string += "testing_graph_click(" + training_graph_arr.length + "," + i + ")";
+      	} else if (context == graph_context.NOP){
+      		onclick_string += "console.log(" + training_graph_arr.length + "," + i + ")";
+      	}
 
         dom_object.children().first().attr("onclick", onclick_string);
 
@@ -240,7 +242,7 @@ function build_star(container, context){
     graph_data.class = -1;
 
     training_graph_arr.push(graph_data);
-    
+
     // Fun little hack to show the svg's because Jquery sucks
     svg_base.html(function(){return this.innerHTML});
 
