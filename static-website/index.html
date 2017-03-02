@@ -2,9 +2,7 @@
 <html>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script src="svg_builder.js"></script>
 <script src="graph_rendering.js"></script>
-<script src="template_graph_rendering.js"></script>
 <script src="index.js"></script>
 <script src="transitions.js"></script>
 <script src="api.js"></script>
@@ -231,17 +229,13 @@
     <!-- Main testing panel which contains the graphs -->
     <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="testing-test-panel">
 
-        <div class="w3-row" id="svg-row">
-
-        </div>
-
         <h1>TESTING</h1>
 
-        <div class="w3-row" id="graph_space">
+        <div class="w3-row" id="graph-space-testing">
 
         </div>
 
-        <div class="w3-row" id="practice_button_space"  style="">
+        <div class="w3-row" style="">
 
             <div class="button-placement">
                 <button class="w3-btn" style="" onclick="toggle_wait_from_test()">
@@ -255,10 +249,6 @@
     <!-- Testing wait panel, which a timer counts down until the next test -->
     <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="testing-wait-panel">
 
-        <div class="w3-row" id="svg-row">
-
-        </div>
-
         <h1>TESTING WAIT</h1>
 
     </div>
@@ -266,14 +256,10 @@
     <!-- When there are no more tests, the users gets this page -->
     <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="testing-finish-panel">
 
-        <div class="w3-row" id="svg-row">
-
-        </div>
-
         <h1>TESTING FINISH</h1>
         <h3>THANKS FOR PLAYING BITCHES</h3>
 
-        <div class="w3-row" id="practice_button_space"  style="">
+        <div class="w3-row"  style="">
 
             <div class="button-placement">
                 <button class="w3-btn" style="" onclick="stop_testing()">
@@ -362,12 +348,9 @@
     <!-- Third Training Window-->
     <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="training-practice">
 
-        <div class="w3-row" id="svg-row">
-
-        </div>
-
         <h1>Training: Practice</h1>
-        <div class="w3-row" id="graph_space">
+
+        <div class="w3-row" id="graph-space-training">
 
         </div>
 
@@ -537,7 +520,7 @@
                             <button type="button"
                                     class="w3-btn w3-left w3-threequarter w3-btn-block w3-hover-blue-grey w3-padding-16"
                                     onclick="">
-                                
+
                             </button>
                             <div class="w3-card w3-right w3-quarter">
                                 <p></p>
@@ -656,7 +639,6 @@
     <!-- Admin panel for creating new test sets -->
     <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="new-test-set-admin-panel">
 
-        <!--/////////////////////////////////////////////////////////////////////////////////////////////////////-->
         <div class="w3-left-align" id="newTestSetsDiv">
             <table border=0>
                 <tr>
@@ -686,14 +668,6 @@
             </table>
         </div>
 
-        <!--////////////////////////////////////////////////////////////////////////////////////////////////////-->
-
-
-    </div>
-
-
-
-        <!--////////////////////////////////////////////////////////////////////////////////////////////////////-->
         <div class="w3-half w3-dark-gray w3-center w3-padding-64 w3-padding-jumbo" style="height: 800px;" >
             <select id="template-selector"></select>
         </div>
