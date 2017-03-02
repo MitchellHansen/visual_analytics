@@ -10,7 +10,8 @@
 ####Discription
 
 ## Tech
-
+####Operating System:
+*Ubuntu 16.04.1 LTS
 ####Backend:
 
 ####Front End
