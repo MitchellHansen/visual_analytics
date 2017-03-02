@@ -10,11 +10,16 @@
 ####Discription
 
 ## Tech
-####Operating System:
+####Operating System/ Software Versions:
 * Ubuntu 16.04.1 LTS
+* Python 2.7.12
+
 ####Backend:
+* Python
+* Flask
 
 ####Front End
-
-####Comunication Tools
-
+* HTML
+* JavaScript
+* CSS
+* Ajax
