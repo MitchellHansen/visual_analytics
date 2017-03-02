@@ -2,9 +2,7 @@
 <html>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script src="svg_builder.js"></script>
 <script src="graph_rendering.js"></script>
-<script src="template_graph_rendering.js"></script>
 <script src="index.js"></script>
 <script src="transitions.js"></script>
 <script src="api.js"></script>
@@ -237,7 +235,7 @@
 
         </div>
 
-        <div class="w3-row" id="practice_button_space"  style="">
+        <div class="w3-row" style="">
 
             <div class="button-placement">
                 <button class="w3-btn" style="" onclick="toggle_wait_from_test()">
@@ -261,7 +259,7 @@
         <h1>TESTING FINISH</h1>
         <h3>THANKS FOR PLAYING BITCHES</h3>
 
-        <div class="w3-row" id="practice_button_space"  style="">
+        <div class="w3-row"  style="">
 
             <div class="button-placement">
                 <button class="w3-btn" style="" onclick="stop_testing()">
@@ -641,7 +639,6 @@
     <!-- Admin panel for creating new test sets -->
     <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="new-test-set-admin-panel">
 
-        <!--/////////////////////////////////////////////////////////////////////////////////////////////////////-->
         <div class="w3-left-align" id="newTestSetsDiv">
             <table border=0>
                 <tr>
@@ -671,14 +668,6 @@
             </table>
         </div>
 
-        <!--////////////////////////////////////////////////////////////////////////////////////////////////////-->
-
-
-    </div>
-
-
-
-        <!--////////////////////////////////////////////////////////////////////////////////////////////////////-->
         <div class="w3-half w3-dark-gray w3-center w3-padding-64 w3-padding-jumbo" style="height: 800px;" >
             <select id="template-selector"></select>
         </div>

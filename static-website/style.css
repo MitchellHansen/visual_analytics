@@ -3,9 +3,17 @@
     opacity: 0.4;
 }
 
+.parent-class-1{
+    stroke: green !important;
+}
+
 .selected-class-2 {
     fill: red !important;
     opacity: 0.4;
+}
+
+.parent-class-2{
+    stroke: red !important;
 }
 
 .hover_group:hover {
