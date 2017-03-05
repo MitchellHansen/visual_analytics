@@ -246,6 +246,7 @@ function build_linear(context, data_array){
 
         let onclick_string = "";
 
+
         if (context == graph_context.TRAINING){
           onclick_string += "training_graph_click(" + training_graph_arr.length + "," + i + ")";
 

@@ -253,11 +253,15 @@ function training_fwd_movement() {
 
 function populate_view_template_page(template_details) {
 
-    $("#view-template-admin-panel").empty();
+    $("#view-template-center").empty();
 
     // Now fill in the other details
-    $("#view-template-admin-panel").append("<p>d points  : " + template_details.total_data_points[0][0] + "<p>");
-    $("#view-template-admin-panel").append("<p>type   : " + template_details.graph_type[0][0] + "<p>");
+
+    $("#view-template-center").append('<p id="viewTC_Header">Details Of The Template</p>');
+    $("#view-template-center").append('<p id="viewTC_para">data points in graph  : ' + template_details.total_data_points[0][0] + '<br>type of graph   : ' + template_details.graph_type[0][0]);
+
+    //$("#view-template-center").append('<p id="viewTC_para">data points in graph  : ' + template_details.total_data_points[0][0] + '<p>');
+    //$("#view-template-center").append('<p id="viewTC_para">type of graph   : ' + template_details.graph_type[0][0] + '<p>');
 
 }
 
@@ -423,30 +427,109 @@ function populate_admin_page_new_test_set_templates(test_templates) {
     
 }
 
+
+//Displays a time in int minutes for the admin
+function timeChangeSecToMin() {
+    var timeInSec = $('#test_set_wait_time').val();
+    var timeInMin = parseInt(timeInSec / 60);
+    $('#time_in_min').text(timeInMin);
+}
+function timeAllotedChangeSecToMin() {
+    var timeInSec = $('#test_set_alloted_time').val();
+    var timeInMin = parseInt(timeInSec / 60);
+    $('#alloted_time_in_min').text(timeInMin);
+
+}
+
+function setMinTime() {
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1; //January is 0!
+    var yyyy = today.getFullYear();
+    if (dd < 10) {
+        dd = '0' + dd
+    }
+    if (mm < 10) {
+        mm = '0' + mm
+    }
+
+    today = yyyy + '-' + mm + '-' + dd + 'T' + '00:00:00';
+    document.getElementById("test_set_close_time").min = today;
+    //$("#test_set_close_time").min(today);
+}
+
+function dropToMax() {
+    if ($('#test_set_num_of_AC').val() > 60) {
+        var max = parseInt(60);
+        $('#test_set_num_of_AC').val(max);
+    }
+}
+
+///////////Functions for the select boxes in New Test Set //////////////////////
 function addToSelectedTemplates() {
-    var curVal = document.getElementById('CurrentTemplatesID').value;
-    var curText = document.getElementById('CurrentTemplatesID');
-    if (curVal == null) {
-        alert("curVal is null");
-    }
-    else {
-        alert(curVal);
-    }
-    if (curText == null) {
-        alert("curText is null");
-    }
-    else {
-        alert(key);
 
+     var $options = $('option:selected', '#CurrentTemplatesID').clone();
+
+     $("#SelectedTemplatesID").append($options);
+
+}
+function addALLToSelectedTemplates() {
+    var $option;
+    $("#CurrentTemplatesID > option").each(function () {
+        //alert(this.text + ' ' + this.value);
+        $option = $(this).clone();
+        $("#SelectedTemplatesID").append($option);
+
+    });
+
+
+}
+function removeFromSelectedTemplates() {
+    $('option:selected', '#SelectedTemplatesID').remove();
+}
+function removeALLFromSelectedTemplates() {
+    $("#SelectedTemplatesID > option").each(function () {
+        //alert(this.text + ' ' + this.value);
+        this.remove();
+    });
+}
+///////////Functions for the select boxes in New Test Set End///////////////////
+
+function create_new_template_handler() {
+
+    if (credentials.logged_in == false) {
+        alert("You are not logged in. Try logging in again");
+
+    } else {
+        var templ_id = $('#template_id').val();
+        var gtype = $("input[type='radio'][name='GraphType']:checked").val();
+        var numofDP = $('#total_data_points').val();
+        //alert("Template Id " + templ_id + " graphtype " + gtype + " num of points " + numofDP);
+
+        new_test_template(credentials.auth_token, templ_id, gtype, numofDP).done(function (value) {
+
+            toggle_new_template();
+        });
     }
+}
 
+function create_new_test_set_handler() {
 
-    var o = new Option("option text", "Value");
-    o = chosenTemplate;
-    
-    $('#SelectedTemplatesID').append($('<option>',{
-        value: 1,
-        text: 2
-    },'</option>'));
-              
+    if (credentials.logged_in == false) {
+        alert("You are not logged in. Try logging in again");
+
+    } else {
+        var test_set_id = $('#test_set_id_name').val();
+        var alloted_test_time = $("#test_set_alloted_time").val();
+        var close_time = $('#test_set_close_time').val();
+        var uuid_count = $("#test_set_num_of_AC").val();
+        var wait_time = $('#test_set_wait_time').val();
+        //Need to make a list from #SelectedTemplatesID
+        var setOfTests = $('#test_set_wait_time').val();
+
+        new_test_set(credentials.auth_token, test_set_id, alloted_test_time, close_time, uuid_count, wait_time, setOfTests).done(function (value) {
+
+            toggle_new_template();
+        });
+    }
 }

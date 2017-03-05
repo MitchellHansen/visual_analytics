@@ -546,3 +546,112 @@ function get_template_details(auth_token, template_id){
     });
 }
 
+// ============================================================================================================
+//  API CALL TO :  "/auth/new_test_template"
+//  SENDS       : A JSON object specifying the template variables
+//                JSON = {
+//                         "login_token"  : credentials.auth_token,
+//                         "test_set_id"  : "trial-1",
+//                         "template_ids" : ["template-1" , "template-1", "template-2"],
+//                         "wait_time"    : "60",
+//                         "close_time"   : "timestamp of some sort",
+//                         "uuid_count"   : 30
+//                };
+//  RECEIVES    : Success or fail
+// ============================================================================================================
+
+function new_test_template(auth_token, template_id, graph_type, total_data_points) {
+    //The alert shows that the values passed in are correct it works
+    //alert("auth_token " + auth_token + " Template Id " + template_id + " graphtype " + graph_type + " num of points " + total_data_points);
+
+    return $.ajax({
+
+        url: "http://68.186.100.115/auth/new_template",
+        contentType: "application/json;charset=UTF-8",
+        type: "POST",
+        async: true,
+
+
+
+        data: JSON.stringify({
+            "login_token": auth_token,
+            "template_id": template_id,
+            "graph_type": graph_type,
+            "total_data_points": total_data_points
+        }),
+
+        dataType: "json",
+        success: function (result) {
+
+            console.log(result);
+        },
+
+        error: function (e) {
+
+            if (e.responseText == "") {
+
+            } else {
+                alert("Api call failed");
+                console.log(e);
+            }
+        },
+    });
+}
+
+// ============================================================================================================
+//  API CALL TO :  "/auth/new_test_template"
+//  SENDS       : A JSON object specifying the template variables
+//                JSON = {
+//                         "login_token": credentials.auth_token,
+//                         "test_set_id": "Test-set-1",
+//                         "alloted_test_time": "60",
+//                         "close_time": "1990-12-31T23:59:60Z",
+//                         "uuid_count": "> 60",
+//                         "wait_time": "30",
+//                         "setOfTests": ["template-1" , "template-1", "template-2"]
+//                };
+//  RECEIVES    : Success or fail
+// ============================================================================================================
+
+
+function new_test_set(auth_token, test_set_id, alloted_test_time, timeTSClose, uuid_count, tBetweenT, setOfTests) {
+    //The alert shows that the values passed in are correct it works
+    //alert("auth_token " + auth_token + " Template Id " + template_id + " graphtype " + graph_type + " num of points " + total_data_points);
+
+    return $.ajax({
+        //Need to put the actual url
+        url: "http://68.186.100.115/auth/new_template",
+        contentType: "application/json;charset=UTF-8",
+        type: "POST",
+        async: true,
+
+
+
+        data: JSON.stringify({
+            "login_token": auth_token,
+            "test_set_id": test_set_id,
+            "alloted_test_time": alloted_test_time,
+            "close_time": timeTSClose,
+            "uuid_count": numOfAccCodes,
+            "wait_time": tBetweenT,
+            "setOfTests": setOfTests
+            
+        }),
+
+        dataType: "json",
+        success: function (result) {
+
+            console.log(result);
+        },
+
+        error: function (e) {
+
+            if (e.responseText == "") {
+
+            } else {
+                alert("Api call failed");
+                console.log(e);
+            }
+        },
+    });
+}
