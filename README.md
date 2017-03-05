@@ -10,10 +10,18 @@
 ####Discription
 
 ## Tech
+####Operating System/ Software Versions:
+* Ubuntu 16.04.1 LTS
+* Python 2.7.12
 
-####Backend:
+####Back End:
+* Python
+* Flask
 
-####Front End
+####Front End:
+* HTML
+* JavaScript
+* CSS
+* Ajax
 
-####Comunication Tools
-
+Please view the Wikis for more information on our JavaScript and Python/Flask functions

@@ -9,6 +9,8 @@ let login_uuid = "345634563-erth3--dfgsdfg";
 var selected_trial = "";
 var selected_template = "";
 
+
+
 window.onload = function(e) {
 
     // Set the onchange function for the admin page test filter
