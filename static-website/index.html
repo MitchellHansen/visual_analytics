@@ -632,57 +632,111 @@
     </div>
 
     <!-- Admin panel for creating new test sets -->
-    <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="new-test-set-admin-panel">
+    <div class="w3-dark-grey w3-center hidden" style="min-height:800px" id="new-test-set-admin-panel">
+    <!--Used for left w3-quarter spaceing to make the page look nice-->
+    <div class="w3-dark-grey w3-center w3-quarter hide-scrollbar" style="height:800px;"></div>
+    <!--Used for ceneter w3-half spaceing to make the page look nice-->
+    <div class="w3-dark-grey w3-center w3-half  hide-scrollbar" style="height:800px;">
+        <form id="new_test_set_form" onsubmit="create_new_test_set_handler()">
+            <!--/////////////////////////////////////////////////////////////////////////////////////////////////////-->
+            <div class="w3-blue-grey w3-row w3-padding-16 w3-margin">
+                <div class="w3-col">
+                    New TestSet ID(Name):
+                </div>
+                <div class="w3-col">
+                    <input type="text" name="test_set_id_name" id="test_set_id_name"><br>
+                </div>
+            </div>
 
-        <!--/////////////////////////////////////////////////////////////////////////////////////////////////////-->
-        <div class="w3-left-align" id="newTestSetsDiv">
-            <table border=0>
-                <tr>
-                    <td>
-                        <select name="CurrentTemplates" id="CurrentTemplatesID" multiple size=10 onchange="addToSelectedTemplates()">
-                            <!-- Need to populate with the templates-->
-                            <option value="George">George</option>
-                            <option value="Fred">Fred</option>
-                            <option value="Ryan">Ryan</option>
-                            <option value="Angela">Angela</option>
-                            <option value="Jill">Jill</option>
-                        </select>
-                    </td>
-                    <td valign=MIDDLE align=CENTER>
-                        <input type="button" name="right" value="&gt;&gt;" onclick="addToSelectedTemplates()"><br><br>
-                        <input type="button" name="right" value="All &gt;&gt;" onclick="opt.transferAllRight()"><br><br>
-                        <input type="button" name="left" value="&lt;&lt;" onclick="opt.transferLeft()"><br><br>
-                        <input type="button" name="left" value="All &lt;&lt;" onclick="opt.transferAllLeft()">
-                    </td>
-                    <td>
-                        <select name="SelectedTemplates" id="SelectedTemplatesID" multiple size=10 ondblclick="opt.transferLeft()">
-                            <!--Need to allow multiple of the same template-->
+            <div class="w3-blue-grey w3-row w3-padding-16 w3-margin">
+                <div class="w3-col">
+                    Alloted Test Time(in seconds):
+                </div>
+                <div class="w3-col">
+                    <input type="number" name="test_set_alloted_time" id="test_set_alloted_time" onchange="timeAllotedChangeSecToMin()"><br>
+                    Time In min: <p style="display:inline" id="alloted_time_in_min"></p>
+                </div>
+            </div>
 
-                        </select>
-                    </td>
-                </tr>
-            </table>
-        </div>
+            <div class="w3-blue-grey w3-row w3-padding-16 w3-margin">
+                <div class="w3-col">
+                    Time the Test Set Will Close:
+                </div>
+                <div class="w3-col">
+                    <input type="datetime-local" name="test_set_close_time" id="test_set_close_time" onfocus="setMinTime()"><br>
+                </div>
+            </div>
 
-        <!--////////////////////////////////////////////////////////////////////////////////////////////////////-->
+            <div class="w3-blue-grey w3-row w3-padding-16 w3-margin">
+                <div class="w3-col">
+                    Number of Access Codes to Generate:
+                </div>
+                <div class="w3-col">
+                    <input type="number" max="60" name="test_set_num_of_AC" id="test_set_num_of_AC" onblur="dropToMax()"><br>
+                </div>
+            </div>
+
+            <div class="w3-blue-grey w3-row w3-padding-16 w3-margin">
+                <div class="w3-col">
+                    Wait time between tests(in seconds):
+                </div>
+                <div class="w3-col">
+                    <input type="number" name="test_set_wait_time" id="test_set_wait_time" onchange="timeChangeSecToMin()"><br>
+                    Time In min: <p style="display:inline" id="time_in_min"></p>
+                </div>
+            </div>
 
 
-    </div>
+            <div class=" w3-light-grey w3-row " id="newTestSetsDiv">
+                <table border="1" class="w3-col">
+                    <tr>
+                        <td>
+                            <select name="CurrentTemplates" id="CurrentTemplatesID" multiple size=10 ondblclick="addToSelectedTemplates()">
+                                <!-- Need to populate with the templates-->
+                                <option value="George">George</option>
+                                <option value="Fred">Fred</option>
+                                <option value="Ryan">Ryan</option>
+                                <option value="Angela">Angela</option>
+                                <option value="Jill">Jill</option>
+                            </select>
+                        </td>
+                        <td valign=MIDDLE align=CENTER>
+                            <input type="button" name="right" value="&gt;&gt;" onclick="addToSelectedTemplates()"><br><br>
+                            <input type="button" name="right" value="All &gt;&gt;" onclick="addALLToSelectedTemplates()"><br><br>
+                            <input type="button" name="left" value="&lt;&lt;" onclick="removeFromSelectedTemplates()"><br><br>
+                            <input type="button" name="left" value="All &lt;&lt;" onclick="removeALLFromSelectedTemplates()">
+                        </td>
+                        <td>
+                            <select name="SelectedTemplates" id="SelectedTemplatesID" multiple size=10 ondblclick="removeFromSelectedTemplates()">
 
-
-
-        <!--////////////////////////////////////////////////////////////////////////////////////////////////////-->
-      <!--  <div class="w3-half w3-dark-gray w3-center w3-padding-64 w3-padding-jumbo" style="height: 800px;" >
-            <select id="template-selector"></select>
-        </div>
-
-        <div class="w3-half w3-dark-gray w3-left-align w3-padding-64" style="height: 800px;">
-
-        </div> -->
-
-    </div>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="w3-dark-grey w3-row w3-padding-4">
+                <input type="submit" class="w3-btn" value="Create New Test Set">
+            </div>
+            </form>
+            <!--////////////////////////////////////////////////////////////////////////////////////////////////////-->
 
 </div>
+  </div>
+
+
+
+            <!--////////////////////////////////////////////////////////////////////////////////////////////////////-->
+            <!--  <div class="w3-half w3-dark-gray w3-center w3-padding-64 w3-padding-jumbo" style="height: 800px;" >
+                  <select id="template-selector"></select>
+              </div>
+
+              <div class="w3-half w3-dark-gray w3-left-align w3-padding-64" style="height: 800px;">
+
+              </div> -->
+
+        </div>
+
+    </div>
 
 <li id="test-status-list-element-template" class="hidden">
     <div style="display:flex;">
