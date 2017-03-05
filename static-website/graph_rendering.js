@@ -87,7 +87,7 @@ function build(container, context, type, data){
     // Due to poor decisions I have to now call a for loop for each style of graph which inflates
     // this function unnecessarily, but oh well.
 
-    $(context).empty();
+    $(container).empty();
 
     if (context != graph_context.TRAINING &&
         context != graph_context.TESTING &&
@@ -141,7 +141,10 @@ function build(container, context, type, data){
         $(this).toggleClass("parent-class-1")
     });
 
-    $(container).children().eq(Math.floor(Math.random() * $(container).length)).after(parent_graph.svg_g);
+    if ($(container).children().length == 0)
+        $(container).append(parent_graph.svg_g);
+    else
+        $(container).children().eq(Math.floor(Math.random() * $(container).length)).after(parent_graph.svg_g);
 
 
     // Init and add all the class 2 children
@@ -184,7 +187,10 @@ function build(container, context, type, data){
         $(this).toggleClass("parent-class-2")
     });
 
-    $(container).children().eq(Math.floor(Math.random() * $(container).length)).after(parent_graph.svg_g);
+    if ($(container).children().length == 0)
+        $(container).append(parent_graph.svg_g);
+    else
+        $(container).children().eq(Math.floor(Math.random() * $(container).length)).after(parent_graph.svg_g);
 
 }
 
@@ -201,10 +207,10 @@ function build_linear(context, data_array){
     graph_data.data = data_array;
 
     let data_point_count = data_array.length;
-    let rectangle = graph_dimensions
+    let rectangle = graph_dimensions;
     let spacing = rectangle.width / (data_point_count+1) ;
 
-    for (let i = 0; i < data_point_count; i++){
+    for (let i = 0; i < data_point_count-1; i++){
 
         let dom_object = $("<g class=\"svg_color\"><polygon points=\"\" style=\"stroke-width:1\"/></g>");
 
@@ -225,21 +231,26 @@ function build_linear(context, data_array){
         svg_base.append(dom_object);
     }
 
-    for (let i = 0; i < data_point_count; i++) {
+    // Because of the way we draw this graph and handle clicking we have to put
+    // a dummy element at the end of the svg
+    let dom_object = $("<g class=\"svg_color\"><polygon points=\"\" style=\"stroke-width:1\"/></g>");
+    svg_base.append(dom_object);
+
+    for (let i = 0; i < data_point_count-1; i++) {
 
 
         let dom_object = $(`<g class="hover_group"><polygon points=\"\" style=\"stroke-width:1\"/></polygon></g>`);
 
-        let coordinates = spacing * i + "," + // Bottom Left
+        let coordinates = (spacing * i) + "," + // Bottom Left
                           rectangle.height + " " +
 
-                          spacing * i + "," + // Top Left
+                          (spacing * i) + "," + // Top Left
                           0 + " " +
 
-                          spacing * (i+1) + "," + // Top Right
+                          (spacing * (i+1)) + "," + // Top Right
                           0 + " " +
 
-                          spacing * (i+1) + "," + // Bottom Right
+                          (spacing * (i+1)) + "," + // Bottom Right
                           rectangle.height + " ";
 
         dom_object.children().first().attr("points", coordinates);
@@ -248,13 +259,13 @@ function build_linear(context, data_array){
 
 
         if (context == graph_context.TRAINING){
-          onclick_string += "training_graph_click(" + training_graph_arr.length + "," + i + ")";
+          onclick_string += "training_graph_click(" + training_graph_arr.length + "," + (i) + ")";
 
         } else if (context == graph_context.TESTING){
-          onclick_string += "testing_graph_click(" + training_graph_arr.length + "," + i + ")";
+          onclick_string += "testing_graph_click(" + training_graph_arr.length + "," + (i) + ")";
 
         } else if (context == graph_context.NOP){
-          onclick_string += "console.log(" + training_graph_arr.length + "," + i + ")";
+          onclick_string += "console.log(" + training_graph_arr.length + "," + (i) + ")";
         }
 
         dom_object.children().first().attr("onclick", onclick_string);
@@ -262,6 +273,8 @@ function build_linear(context, data_array){
         dom_object.html(function(){return this.innerHTML});
         svg_base.append(dom_object);
     }
+
+
 
 
     graph_data.svg_g = svg_base;
@@ -454,6 +467,27 @@ function generate_class_data(data_point_count){
 
         ret_data.class_2_child.push(array);
     }
+
+    return ret_data;
+
+}
+
+function generate_parent_data(data_point_count){
+
+    let ret_data = {
+
+        class_1_parent: [],
+        class_2_parent: [],
+        class_1_child: [],
+        class_2_child: []
+    };
+
+    for (let i = 0; i < data_point_count; i++){
+
+        ret_data.class_1_parent.push(rand());
+        ret_data.class_2_parent.push(rand());
+    }
+
 
     return ret_data;
 

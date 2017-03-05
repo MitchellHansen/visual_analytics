@@ -307,8 +307,7 @@ function toggle_training_practice_view() {
 
     $("#graph-space-training").empty();
 
-
-    build($("#graph-space-training"), graph_context.TRAINING, graph_type.STAR, generate_class_data(20))
+    build($("#graph-space-training"), graph_context.TRAINING, graph_type.LINEAR, generate_class_data(20))
 
 
     $("#training-selection").toggleClass("hidden");

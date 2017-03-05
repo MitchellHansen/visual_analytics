@@ -418,6 +418,10 @@ function populate_admin_page_new_test_set_templates(test_templates) {
     if (test_templates == undefined)
         return;
 
+    for (let i = 0; i < test_templates.template_data.length; i++){
+        let val = test_templates.template_data[i][0];
+    }
+
     $.each(test_templates, function (key, value) {
         var ms = $('#CurrentTemplatesID')
         ms.append($("<option></option>")
@@ -533,3 +537,22 @@ function create_new_test_set_handler() {
         });
     }
 }
+
+function graph_type_radio_handler(value, data_points){
+    build($("#templateGraphDiv"), 2, value, generate_parent_data(data_points));
+}
+
+function data_point_change_handler(value, data_points){
+    build($("#templateGraphDiv"), 2, value, generate_parent_data(data_points));
+}
+
+
+
+
+
+
+
+
+
+
+

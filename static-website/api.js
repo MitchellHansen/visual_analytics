@@ -571,9 +571,7 @@ function new_test_template(auth_token, template_id, graph_type, total_data_point
         type: "POST",
         async: true,
 
-
-
-        data: JSON.stringify({
+        data : JSON.stringify({
             "login_token": auth_token,
             "template_id": template_id,
             "graph_type": graph_type,
@@ -581,14 +579,14 @@ function new_test_template(auth_token, template_id, graph_type, total_data_point
         }),
 
         dataType: "json",
-        success: function (result) {
+        success: function(result){
 
             console.log(result);
         },
 
-        error: function (e) {
+        error: function(e) {
 
-            if (e.responseText == "") {
+            if (e.responseText == ""){
 
             } else {
                 alert("Api call failed");
