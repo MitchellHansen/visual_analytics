@@ -524,15 +524,22 @@ function create_new_test_set_handler() {
         alert("You are not logged in. Try logging in again");
 
     } else {
-        var test_set_id = $('#test_set_id_name').val();
-        var alloted_test_time = $("#test_set_alloted_time").val();
-        var template_list = $('#SelectedTemplatesID').val();
-        var wait_time = $('#test_set_wait_time').val();
-        var close_time = $('#test_set_close_time').val();
-        var uuid_count = $("#test_set_num_of_AC").val();
+        let test_set_id = $('#test_set_id_name').val();
+        let test_duration = $("#test_set_alloted_time").val();
+        
+        let wait_time = $('#test_set_wait_time').val();
+        let close_time = $('#test_set_close_time').val();
+        let uuid_count = $("#test_set_num_of_AC").val();
         //Need to make a list from #SelectedTemplatesID
+		
+		let template_list = $('#SelectedTemplatesID').children();
+		let list = [];
 
-        new_test_set(credentials.auth_token, test_set_id, alloted_test_time, template_list, wait_time, close_time, uuid_count).done(function (value) {
+		for (let i = 0; i < template_list.length; i++){
+		    list.push($(template_list[i]).val());
+        }
+
+        new_test_set(credentials.auth_token, test_set_id, test_duration, list, wait_time, close_time, uuid_count).done(function (value) {
 
         toggle_new_template();
         });

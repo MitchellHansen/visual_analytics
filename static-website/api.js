@@ -358,7 +358,7 @@ function new_test_set(auth_token, test_set_id, alloted_test_time, template_list,
         data : JSON.stringify({
             "login_token" : auth_token,
             "test_set_id" : test_set_id,
-            "alloted_test_time": alloted_test_time,
+            "test_duration": alloted_test_time,
             "template_ids": template_list,
             "wait_time"   : wait_time,
             "close_time"  : close_time,
