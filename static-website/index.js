@@ -26,6 +26,8 @@ window.onload = function(e) {
 };
 
 function refresh_admin_page_lists(){
+    set_template_selection('');
+    set_trial_selection('');
     get_template_ids(credentials.auth_token, $("#test-template-filter").val()).done(function(value) {
         populate_admin_page_test_templates(value);
     });
@@ -137,9 +139,11 @@ function delete_template_handler() {
 
     } else {
 
+
         delete_template(credentials.auth_token, selected_template).done(function(value) {
 
             refresh_admin_page_lists();
+            selected_template = '';
         });
     }
 }
@@ -258,12 +262,8 @@ function populate_view_template_page(template_details) {
     $("#view-template-center").empty();
 
     // Now fill in the other details
-
     $("#view-template-center").append('<p id="viewTC_Header">Details Of The Template</p>');
-    $("#view-template-center").append('<p id="viewTC_para">data points in graph  : ' + template_details.total_data_points[0][0] + '<br>type of graph   : ' + template_details.graph_type[0]);
-   // build($("#viewTC_para"), 0, template_details.total_data_points[0][0], generate_parent_data(template_details.total_data_points[0][0]));
-    //$("#view-template-center").append('<p id="viewTC_para">data points in graph  : ' + template_details.total_data_points[0][0] + '<p>');
-    //$("#view-template-center").append('<p id="viewTC_para">type of graph   : ' + template_details.graph_type[0][0] + '<p>');
+    $("#view-template-center").append('<p id="viewTC_para">data points in graph  : ' + template_details.total_data_points[0] + '<br>type of graph   : ' + template_details.graph_type[0]);
 
 }
 
@@ -397,18 +397,23 @@ function populate_admin_page_test_templates(test_templates) {
 function set_template_selection(template_name) {
     if (selected_template != ""){
         $("#" + selected_template).children().children().first().toggleClass("w3-green");
+        selected_template = '';
     }
-    selected_template = template_name;
-    $("#" + selected_template).children().children().first().toggleClass("w3-green");
+    if (template_name != '') {
+        selected_template = template_name;
+        $("#" + selected_template).children().children().first().toggleClass("w3-green");
+    }
 }
 
 function set_trial_selection(trial_name) {
    if (selected_trial != ""){
-        $("#" + selected_trial).children().children().first().toggleClass("w3-green");
-    }
-    selected_trial = trial_name;
-    $("#" + selected_trial).children().children().first().toggleClass("w3-green");
-
+       $("#" + selected_trial).children().children().first().toggleClass("w3-green");
+       selected_trial = '';
+   }
+   if (trial_name != '') {
+       selected_trial = trial_name;
+       $("#" + selected_trial).children().children().first().toggleClass("w3-green");
+   }
 }
 
 function populate_admin_page_new_test_set_templates(test_templates) {
