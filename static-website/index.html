@@ -173,6 +173,7 @@
         </div>
 
     </div>
+
 </div>
 
 <!--  The bottom app container  -->
@@ -219,7 +220,7 @@
         </p>
 
         <div class="button-placement w3-row">
-            <button class="w3-btn" style="" onclick="toggle_test_from_start()">
+            <button class="w3-btn" style="" onclick="start_testing_handler()">
                 Start the Test
             </button>
         </div>
@@ -231,6 +232,12 @@
 
         <h1>TESTING</h1>
 
+        <div class="w3-row">
+            <div class="w3-col">
+                <p>You have <b id="test-time">5</b> seconds to finish this quiz</p>
+            </div>
+        </div>
+
         <div class="w3-row" id="graph-space-testing">
 
         </div>
@@ -238,7 +245,7 @@
         <div class="w3-row" style="">
 
             <div class="button-placement">
-                <button class="w3-btn" style="" onclick="toggle_wait_from_test()">
+                <button class="w3-btn" style="" onclick="continue_to_wait_page_handler()">
                     Continue
                 </button>
             </div>
@@ -250,7 +257,11 @@
     <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="testing-wait-panel">
 
         <h1>TESTING WAIT</h1>
-
+        <div class="w3-row">
+            <div class="w3-col">
+                <p>Please wait for <b id="wait-time">5</b> seconds</p>
+            </div>
+        </div>
     </div>
 
     <!-- When there are no more tests, the users gets this page -->

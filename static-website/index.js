@@ -9,8 +9,6 @@ let login_uuid = "345634563-erth3--dfgsdfg";
 var selected_trial = "";
 var selected_template = "";
 
-
-
 window.onload = function(e) {
 
     // Set the onchange function for the admin page test filter
@@ -25,16 +23,18 @@ window.onload = function(e) {
 
 };
 
+// Refresh the admin page, clear all the selections
 function refresh_admin_page_lists(){
+
     set_template_selection('');
     set_trial_selection('');
+
     get_template_ids(credentials.auth_token, $("#test-template-filter").val()).done(function(value) {
         populate_admin_page_test_templates(value);
     });
     get_test_set_statuses(credentials.auth_token, $("#test-status-list-filter-select").val()).done(function(value) {
         populate_admin_page_active_tests(value);
     });
-
 }
 
 // ======================================================================
@@ -68,16 +68,16 @@ function admin_login_handler() {
 function trial_login_handler() {
 
     // Get the login token from the user and get the trial data associated with that login
-    let login_code = $("#trial-login-form").serializeArray();
+    let login_uuid = $("#trial-login-form").serializeArray()[0].value;
 
-    if (login_code == "") {
+    if (login_uuid == "") {
         // do nothing
 
     } else {
 
-        trial_login(login_code[0].value).done(function(value) {
+        trial_login(login_uuid).done(function(value) {
 
-            if (value.status == "success") {
+            if (value.status == "success" || value.status == "Success" ) {
 
                 screen = screen_enum.TESTING_START;
                 toggle_start_testing();
@@ -90,9 +90,6 @@ function trial_login_handler() {
     }
 }
 
-function continue_test_handler() {
-
-}
 
 // When the user clicks the [View Template] button on the [admin home page]
 function view_template_handler() {
@@ -549,6 +546,83 @@ function graph_type_radio_handler(value, data_points){
 function data_point_change_handler(value, data_points){
     build($("#templateGraphDiv"), 2, value, generate_parent_data(data_points));
 }
+
+// =======================================================================
+// =                        Test page functionality                      =
+// =======================================================================
+
+testing_page_timer = null;
+wait_page_timer = null;
+
+function testing_page_timeout() {
+
+    if (parseInt($("#test-time").html()) <= 0){
+        window.clearInterval(testing_page_timer);
+        continue_to_wait_page_handler();
+    }
+
+    $("#test-time").text(parseInt($("#test-time").html()) - 1);
+}
+
+function wait_page_timeout(){
+
+    if (parseInt($("#wait-time").html()) <= 0){
+        window.clearInterval(wait_page_timer);
+        continue_testing_handler();
+    }
+
+    $("#wait-time").text(parseInt($("#wait-time").html()) - 1);
+}
+
+function start_testing_handler(){
+
+    // get next test
+    //get_next_test(login_code[0].value).done(function(value) {
+
+        // check to see if we need to end the test
+            // Transfer to end page
+
+        toggle_test_from_start();
+       testing_page_timer =  window.setInterval(testing_page_timeout, 1000);
+
+       $("#test-time").text(10);
+
+        build($("#graph-space-testing"), graph_context.TESTING, graph_type.STAR, generate_class_data(20));
+
+
+    //});
+}
+
+function continue_to_wait_page_handler(){
+
+    toggle_wait_from_test();
+    window.clearInterval(testing_page_timer);
+    wait_page_timer = window.setInterval(wait_page_timeout, 1000);
+
+    $("#wait-time").text(10);
+}
+
+function continue_testing_handler(){
+
+    toggle_test_from_wait();
+    testing_page_timer =  window.setInterval(testing_page_timeout, 1000);
+    build($("#graph-space-testing"), graph_context.TESTING, graph_type.STAR, generate_class_data(20));
+    $("#test-time").text(10);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

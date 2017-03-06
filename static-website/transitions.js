@@ -254,7 +254,7 @@ function toggle_test_from_wait(){
     // Keep track of time
 }
 
-function toggle_wait_from_test(){
+function toggle_finish_from_test(){
     $("#testing-test-panel").toggleClass("hidden");
     $("#testing-finish-panel").toggleClass("hidden");
 
