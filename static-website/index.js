@@ -171,7 +171,9 @@ function new_test_set_handler() {
         alert("You are not logged in. Try logging in again");
     }
     else {
-
+        get_template_ids(credentials.auth_token, 0).done(function (value) {
+            populate_admin_page_new_test_set_templates(value);
+        });
         toggle_new_test_set();
     }
 }
@@ -260,9 +262,9 @@ function populate_view_template_page(template_details) {
     $("#view-template-center").empty();
 
     // Now fill in the other details
-
     $("#view-template-center").append('<p id="viewTC_Header">Details Of The Template</p>');
     $("#view-template-center").append('<p id="viewTC_para">data points in graph  : ' + template_details.total_data_points[0] + '<br>type of graph   : ' + template_details.graph_type[0]);
+
 }
 
 // Takes the response from the [get_test_set_statuses] API call and parses it into the
@@ -415,7 +417,6 @@ function set_trial_selection(trial_name) {
 }
 
 function populate_admin_page_new_test_set_templates(test_templates) {
-
     // Remove all the old data
     $("#CurrentTemplatesID").empty();
 
@@ -423,17 +424,15 @@ function populate_admin_page_new_test_set_templates(test_templates) {
     if (test_templates == undefined)
         return;
 
-    for (let i = 0; i < test_templates.template_data.length; i++){
-        let val = test_templates.template_data[i][0];
-    }
+    for (let i = 0; i < test_templates.template_data.length; i++) {
+        var val = test_templates.template_data[i][0];
+            $('#CurrentTemplatesID').append($('<option>',
+                {
+                    value: val,
+                    text: val
+                }));
 
-    $.each(test_templates, function (key, value) {
-        var ms = $('#CurrentTemplatesID')
-        ms.append($("<option></option>")
-                   .attr("value", key)
-                   .text(value));
-    });
-    
+    }
 }
 
 
@@ -530,15 +529,15 @@ function create_new_test_set_handler() {
     } else {
         var test_set_id = $('#test_set_id_name').val();
         var alloted_test_time = $("#test_set_alloted_time").val();
+        var template_list = $('#SelectedTemplatesID').val();
+        var wait_time = $('#test_set_wait_time').val();
         var close_time = $('#test_set_close_time').val();
         var uuid_count = $("#test_set_num_of_AC").val();
-        var wait_time = $('#test_set_wait_time').val();
         //Need to make a list from #SelectedTemplatesID
-        var setOfTests = $('#test_set_wait_time').val();
 
-        new_test_set(credentials.auth_token, test_set_id, alloted_test_time, close_time, uuid_count, wait_time, setOfTests).done(function (value) {
+        new_test_set(credentials.auth_token, test_set_id, alloted_test_time, template_list, wait_time, close_time, uuid_count).done(function (value) {
 
-            toggle_new_template();
+        toggle_new_template();
         });
     }
 }
