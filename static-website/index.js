@@ -87,7 +87,7 @@ function new_admin_submit_handler(){
 }
 
 // When the user clicks [Login] on the [testing login page]
-function trial_login_handler() {
+function test_login_handler() {
 
     // Get the login token from the user and get the trial data associated with that login
     let login_uuid = $("#trial-login-form").serializeArray()[0].value;
