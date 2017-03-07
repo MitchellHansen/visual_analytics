@@ -4,10 +4,18 @@ let credentials = {
     "auth_token": ""
 };
 
-let login_uuid = "345634563-erth3--dfgsdfg";
+let login_uuid = "19e5c4e6-aedb-416e-8254-27895eec2167";
 
 var selected_trial = "";
 var selected_template = "";
+
+function test(){
+
+    get_next_test(login_uuid).done(function(value) {
+        console.log(value);
+    });
+
+}
 
 window.onload = function(e) {
 
@@ -286,7 +294,7 @@ function populate_view_test_page(test_details) {
     $("#trial-view-admin-panel-details").append("<p>Trial Name  : " + test_details.test_details[0][0] + "<p>");
     $("#trial-view-admin-panel-details").append("<p>Wait time   : " + test_details.test_details[0][1] + "<p>");
     $("#trial-view-admin-panel-details").append("<p>Close time  : " + test_details.test_details[0][2] + "<p>");
-    $("#trial-view-admin-panel-details").append("<p>Total tests : " + test_details.test_details[0][3] + "<p>");
+    $("#trial-view-admin-panel-details").append("<p>Test Status : " + test_details.test_details[0][3] + "<p>");
 
     $("#trial-view-admin-panel-details").append("<p>Templates used : <br>");
 

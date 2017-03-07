@@ -210,9 +210,12 @@ function submit_user_trial_results(){
         async: true,
 
         data : JSON.stringify({
-            "login_uuid": login_uuid,
-            "results"   : training_graph_arr,
-            "time"      : "0"
+            "login_uuid"       : login_uuid,
+            "selected_point"   : "[1, 2, 3, 4, 5, 6]",
+            "selected_class"   : "[1, 2, 3, 4, 5, 6]",
+            "template_id"      : "Template1",
+            "result"           : "99",
+            "time"             : "0"
         }),
 
         dataType: "json",
@@ -406,13 +409,13 @@ function get_next_test(login_uuid){
 
     return $.ajax({
 
-        url: "http://68.186.100.115/auth/generate_graphs_with_template",
+        url: "http://68.186.100.115/auth/get_next_test",
         contentType: "application/json;charset=UTF-8",
         type: "POST",
         async: true,
 
         data : JSON.stringify({
-            "login_token" : login_uuid,
+            "login_uuid" : login_uuid,
         }),
 
         dataType: "json",
