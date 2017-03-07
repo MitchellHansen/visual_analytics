@@ -28,6 +28,11 @@
                     onclick="refresh_admin_page_lists()">Refresh
             </button>
         </li>
+        <li>
+            <button id="new-admin-button" type="button" class="w3-btn w3-btn-block w3-hover-teal w3-padding-16"
+                    onclick="new_admin_handler()">Add New Admin
+            </button>
+        </li>
     </ul>
 </div>
 
@@ -609,11 +614,52 @@
 
     </div>
 
+        <!-- Admin panel for adding admins -->
+    <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="new-admin-admin-panel">
+        <!--Used for left w3-quarter spaceing to make the page look nice-->
+        <div class="w3-dark-grey w3-center w3-quarter hide-scrollbar" style="height:800px;"></div>
+        <!--Used for ceneter w3-half spaceing to make the page look nice-->
+        <div class="w3-dark-grey w3-center w3-half  hide-scrollbar" style="height:800px;">
+
+            <!--Form to pass the values for the test-->
+            <form id="new_admin_form" onsubmit="new_admin_submit_handler();return false;">
+
+                <div class="w3-blue-grey w3-row w3-padding-16 w3-margin">
+                    <div class="w3-col">
+                        Admin Username
+                    </div>
+                    <div class="w3-col">
+                        <input type="text" name="admin_username" id="admin_email" onchange='noSpaces($("#admin_username"))'><br>
+                    </div>
+                </div>
+
+                <div class="w3-blue-grey w3-row w3-padding-16 w3-margin">
+                    <div class="w3-col">
+                        Admin Password
+                    </div>
+                    <div class="w3-col">
+                        <input type="text" name="admin_password" id="admin_password" onchange='noSpaces($("#admin_password"))'><br>
+                    </div>
+                </div>
+
+                <div class="w3-dark-grey w3-row w3-padding-16">
+                    <input type="submit" class="w3-btn" value="Create Admin">
+                </div>
+            </form>
+
+
+        </div>
+
+        <!--Used for right w3-quarter spaceing to make the page look nice-->
+        <div class="w3-dark-grey w3-center w3-quarter hide-scrollbar" style="height:800px;"></div>
+
+    </div>
+
     <!-- Admin panel for viewing the details of a test set -->
     <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="view-test-set-admin-panel">
 
         <div class="w3-half w3-dark-gray w3-center w3-padding-64 w3-padding-jumbo" style="height: 800px;" >
-            <div class="w3-white w3-padding-large w3-padding-64 w3-center" style="font-size: small;" id="trial-view-admin-panel-id-list">
+            <div class="w3-white w3-padding-large w3-padding-64 w3-center" style="font-size: small;overflow-y: scroll;max-height: 675px;" id="trial-view-admin-panel-id-list">
 
             </div>
         </div>
@@ -627,9 +673,9 @@
 
     <!-- Admin panel for creating new test sets -->
     <div class="w3-dark-grey w3-center hidden" style="min-height:800px" id="new-test-set-admin-panel">
-    <!--Used for left w3-quarter spaceing to make the page look nice-->
+    <!--Used for left w3-quarter spacing to make the page look nice-->
     <div class="w3-dark-grey w3-center w3-quarter hide-scrollbar" style="height:800px;"></div>
-    <!--Used for ceneter w3-half spaceing to make the page look nice-->
+    <!--Used for center w3-half spacing to make the page look nice-->
     <div class="w3-dark-grey w3-center w3-half  hide-scrollbar" style="height:800px;">
         <form id="new_test_set_form" onsubmit="create_new_test_set_handler();return false;">
             <!--/////////////////////////////////////////////////////////////////////////////////////////////////////-->
@@ -680,7 +726,6 @@
                 </div>
             </div>
 
-
             <div class=" w3-light-grey w3-row " id="newTestSetsDiv">
                 <table border="1" class="w3-col">
                     <tr>
@@ -715,6 +760,7 @@
             <!--////////////////////////////////////////////////////////////////////////////////////////////////////-->
 
 </div>
+
   </div>
 
 

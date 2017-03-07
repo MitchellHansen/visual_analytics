@@ -25,7 +25,8 @@ var screen_enum = {
                     TESTING_START:11,
                     TESTING_TEST:12,
                     TESTING_WAIT:13,
-                    TESTING_FINISH:14
+                    TESTING_FINISH:14,
+                    NEW_ADMIN:15
                   };
 
 var screen = screen_enum.HOME;
@@ -91,6 +92,10 @@ function transfer_back(){
     }
     else if (screen == screen_enum.TEMPLATE_VIEW) {
         toggle_view_template();
+        screen = screen_enum.ADMIN_HOME;
+    }
+    else if (screen == screen_enum.NEW_ADMIN) {
+        toggle_new_admin();
         screen = screen_enum.ADMIN_HOME;
     }
     else if (screen == screen_enum.ADMIN_HOME){
@@ -190,6 +195,17 @@ function toggle_new_template(){
         screen = screen_enum.TEMPLATE_NEW;
 }
 
+// Open and close the new template page
+function toggle_new_admin(){
+
+    $("#main-admin-panel").toggle();
+    $("#new-admin-admin-panel").toggle();
+
+    if (screen == screen_enum.NEW_ADMIN)
+        screen = screen_enum.HOME;
+    else
+        screen = screen_enum.NEW_ADMIN;
+}
 
 // Open and close the new template page
 function toggle_view_template(){

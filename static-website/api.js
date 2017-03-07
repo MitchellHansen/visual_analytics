@@ -600,3 +600,39 @@ function new_test_template(auth_token, template_id, graph_type, total_data_point
     });
 }
 
+
+function new_admin(auth_token, email, password) {
+    //The alert shows that the values passed in are correct it works
+    //alert("auth_token " + auth_token + " Template Id " + template_id + " graphtype " + graph_type + " num of points " + total_data_points);
+
+    return $.ajax({
+
+        url: "http://68.186.100.115/auth/new_admin",
+        contentType: "application/json;charset=UTF-8",
+        type: "POST",
+        async: true,
+
+        data : JSON.stringify({
+            "login_token": auth_token,
+            "email": email,
+            "password" : password
+        }),
+
+        dataType: "json",
+        success: function(result){
+
+            console.log(result);
+        },
+
+        error: function(e) {
+
+            if (e.responseText == ""){
+
+            } else {
+                alert("Api call failed");
+                console.log(e);
+            }
+        },
+    });
+}
+

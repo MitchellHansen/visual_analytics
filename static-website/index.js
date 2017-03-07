@@ -72,6 +72,20 @@ function admin_login_handler() {
     });
 }
 
+function new_admin_handler(){
+    toggle_new_admin();
+}
+
+function new_admin_submit_handler(){
+
+    new_admin(credentials.auth_token, $('#admin_email').val(), $('#admin_password').val()).done(function(value) {
+
+        // check success
+        toggle_new_admin();
+    });
+
+}
+
 // When the user clicks [Login] on the [testing login page]
 function trial_login_handler() {
 
@@ -299,10 +313,11 @@ function populate_view_test_page(test_details) {
     $("#trial-view-admin-panel-details").empty();
 
     // Now fill in the other details
-    $("#trial-view-admin-panel-details").append("<p>Trial Name  : " + test_details.test_details[0][0] + "<p>");
-    $("#trial-view-admin-panel-details").append("<p>Wait time   : " + test_details.test_details[0][1] + "<p>");
-    $("#trial-view-admin-panel-details").append("<p>Close time  : " + test_details.test_details[0][2] + "<p>");
-    $("#trial-view-admin-panel-details").append("<p>Test Status : " + test_details.test_details[0][3] + "<p>");
+    $("#trial-view-admin-panel-details").append("<p>Trial Name    : " + test_details.test_details[0][0] + "<p>");
+    $("#trial-view-admin-panel-details").append("<p>Wait time     : " + test_details.test_details[0][1] + "<p>");
+    $("#trial-view-admin-panel-details").append("<p>Close time    : " + test_details.test_details[0][2] + "<p>");
+    $("#trial-view-admin-panel-details").append("<p>Test Status   : " + test_details.test_details[0][3] + "<p>");
+    $("#trial-view-admin-panel-details").append("<p>Test Duration : " + test_details.test_details[0][4] + "<p>");
 
     $("#trial-view-admin-panel-details").append("<p>Templates used : <br>");
 
