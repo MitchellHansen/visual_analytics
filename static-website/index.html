@@ -576,8 +576,8 @@
                 </div>
 
                 <div id="graph_type">
-                    <input type="radio" name="GraphType" value="1" onclick="graph_type_radio_handler(1, total_data_points.value)"> STAR
-                    <input type="radio" name="GraphType" value="2" onclick="graph_type_radio_handler(2, total_data_points.value)"> LINEAR<br>
+                    <input type="radio" name="GraphType" value="1" onclick="graph_type_radio_handler(0, total_data_points.value)"> STAR
+                    <input type="radio" name="GraphType" value="2" onclick="graph_type_radio_handler(1, total_data_points.value)"> LINEAR<br>
                 </div>
 
                 <div class="w3-blue-grey w3-row w3-padding-16 w3-margin">
@@ -599,7 +599,7 @@
                 </div>
             </form>
 
-            <div class="w3-dark-grey w3-row" id="templateGraphDiv">
+            <div class="w3-grey w3-row w3-padding-64" id="templateGraphDiv">
             </div>
 
         </div>
@@ -638,7 +638,7 @@
                     New TestSet ID(Name):
                 </div>
                 <div class="w3-col">
-                    <input type="text" name="test_set_id_name" id="test_set_id_name"><br>
+                    <input type="text" name="test_set_id_name" id="test_set_id_name" onchange='noSpaces($("#test_set_id_name"))'><br>
                 </div>
             </div>
 

@@ -556,8 +556,8 @@ function create_new_test_set_handler() {
         }
 
         new_test_set(credentials.auth_token, test_set_id, test_duration, list, wait_time, close_time, uuid_count).done(function (value) {
-
-        toggle_new_template();
+            alert("New Test Set submitted. \nPlease wait a few seconds for the database to accept the test after closing this alert!")
+            toggle_new_test_set();
         });
     }
 }
@@ -567,7 +567,7 @@ function graph_type_radio_handler(value, data_points){
 }
 
 function data_point_change_handler(value, data_points){
-    build($("#templateGraphDiv"), 2, value, generate_parent_data(data_points));
+    build($("#templateGraphDiv"), 2, value - 1, generate_parent_data(data_points));
 }
 
 // =======================================================================

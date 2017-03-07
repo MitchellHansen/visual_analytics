@@ -93,3 +93,7 @@
 
 }
 
+#templateGraphDiv{
+    border-color: CadetBlue;
+    border-style: solid;
+}
