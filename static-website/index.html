@@ -2,9 +2,7 @@
 <html>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script src="svg_builder.js"></script>
 <script src="graph_rendering.js"></script>
-<script src="template_graph_rendering.js"></script>
 <script src="index.js"></script>
 <script src="transitions.js"></script>
 <script src="api.js"></script>
@@ -27,7 +25,12 @@
         </li>
         <li>
             <button id="refresh-button" type="button" class="w3-btn w3-btn-block w3-hover-teal w3-padding-16"
-                    onclick="get_test_set_statuses(); get_template_ids();">Refresh
+                    onclick="refresh_admin_page_lists()">Refresh
+            </button>
+        </li>
+        <li>
+            <button id="new-admin-button" type="button" class="w3-btn w3-btn-block w3-hover-teal w3-padding-16"
+                    onclick="new_admin_handler()">Add New Admin
             </button>
         </li>
     </ul>
@@ -65,19 +68,19 @@
 
         <div class="w3-padding-64 w3-center hidden" id="trial-login-div">
 
-            <h5>Trial Login</h5>
+            <h5>Test Login</h5>
 
             <div class="w3-row w3-padding">
                 <form class="w3-container" id="trial-login-form">
 
-                    <label>Trial Code</label>
+                    <label>Login code</label>
                     <input class="w3-input" type="text" name="trial-code">
 
                 </form>
             </div>
             <div class="w3-row w3-padding">
                 <button type="button" class="w3-btn w3-btn-block w3-hover-blue-grey w3-padding-16"
-                        onclick="trial_login_handler()">Login
+                        onclick="test_login_handler()">Login
                 </button>
             </div>
         </div>
@@ -175,6 +178,7 @@
         </div>
 
     </div>
+
 </div>
 
 <!--  The bottom app container  -->
@@ -221,7 +225,7 @@
         </p>
 
         <div class="button-placement w3-row">
-            <button class="w3-btn" style="" onclick="toggle_test_from_start()">
+            <button class="w3-btn" style="" onclick="start_testing_handler()">
                 Start the Test
             </button>
         </div>
@@ -231,20 +235,22 @@
     <!-- Main testing panel which contains the graphs -->
     <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="testing-test-panel">
 
-        <div class="w3-row" id="svg-row">
-
-        </div>
-
         <h1>TESTING</h1>
 
-        <div class="w3-row" id="graph_space">
+        <div class="w3-row">
+            <div class="w3-col">
+                <p>You have <b id="test-time">5</b> seconds to finish this quiz</p>
+            </div>
+        </div>
+
+        <div class="w3-row" id="graph-space-testing">
 
         </div>
 
-        <div class="w3-row" id="practice_button_space"  style="">
+        <div class="w3-row" style="">
 
             <div class="button-placement">
-                <button class="w3-btn" style="" onclick="toggle_wait_from_test()">
+                <button class="w3-btn" style="" onclick="continue_to_wait_page_handler()">
                     Continue
                 </button>
             </div>
@@ -255,25 +261,21 @@
     <!-- Testing wait panel, which a timer counts down until the next test -->
     <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="testing-wait-panel">
 
-        <div class="w3-row" id="svg-row">
-
-        </div>
-
         <h1>TESTING WAIT</h1>
-
+        <div class="w3-row">
+            <div class="w3-col">
+                <p>Please wait for <b id="wait-time">5</b> seconds</p>
+            </div>
+        </div>
     </div>
 
     <!-- When there are no more tests, the users gets this page -->
     <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="testing-finish-panel">
 
-        <div class="w3-row" id="svg-row">
-
-        </div>
-
         <h1>TESTING FINISH</h1>
         <h3>THANKS FOR PLAYING BITCHES</h3>
 
-        <div class="w3-row" id="practice_button_space"  style="">
+        <div class="w3-row"  style="">
 
             <div class="button-placement">
                 <button class="w3-btn" style="" onclick="stop_testing()">
@@ -362,12 +364,9 @@
     <!-- Third Training Window-->
     <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="training-practice">
 
-        <div class="w3-row" id="svg-row">
-
-        </div>
-
         <h1>Training: Practice</h1>
-        <div class="w3-row" id="graph_space">
+
+        <div class="w3-row" id="graph-space-training">
 
         </div>
 
@@ -537,7 +536,7 @@
                             <button type="button"
                                     class="w3-btn w3-left w3-threequarter w3-btn-block w3-hover-blue-grey w3-padding-16"
                                     onclick="">
-                                
+
                             </button>
                             <div class="w3-card w3-right w3-quarter">
                                 <p></p>
@@ -551,89 +550,108 @@
 
     <!-- Admin panel for viewing template details -->
     <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="view-template-admin-panel">
-
-        <div class="w3-half w3-dark-gray w3-center w3-padding-64 w3-padding-jumbo" style="height: 800px;" >
-            <div class="w3-white w3-padding-large w3-padding-64 w3-center" style="" id="view-template-left">
-
-            </div>
+        <!---->
+        <div class="w3-dark-grey w3-center w3-quarter hide-scrollbar" style="height: 800px;" id="view-template-left"></div>
+        <div class="w3-dark-grey w3-center w3-half hide-scrollbar" style="height:800px;" id="view-template-center">
+            <p>
+                The Make Up Of The Template
+            </p>
         </div>
-
-        <div class="w3-half w3-dark-gray w3-left-align w3-padding-64" style="height: 800px;"
-             id="view-template-right">
-
-        </div>
+        <div class="w3-dark-grey w3-center w3-quarter hide-scrollbar" style="height: 800px;" id="view-template-right"></div>
 
     </div>
 
     <!-- Admin panel for creating new templates -->
     <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="new-template-admin-panel">
-        <div class="w3-dark-grey w3-center w3-threequarter hide-scrollbar" style="height:800px;">
+        <!--Used for left w3-quarter spaceing to make the page look nice-->
+        <div class="w3-dark-grey w3-center w3-quarter hide-scrollbar" style="height:800px;"></div>
+        <!--Used for ceneter w3-half spaceing to make the page look nice-->
+        <div class="w3-dark-grey w3-center w3-half  hide-scrollbar" style="height:800px;">
 
             <!--Form to pass the values for the test-->
-            <form id="template_form" onsubmit="serialize_and_pass()">
+            <form id="template_form" onsubmit="create_new_template_handler();return false;">
 
                 <div class="w3-blue-grey w3-row w3-padding-16 w3-margin">
                     <div class="w3-col">
-                        Test ID(Name):
+                        Template ID(Name):
                     </div>
                     <div class="w3-col">
-                        <input type="text" name="fname" id="fname"><br>
+                        <input type="text" name="template_id_name" id="template_id" onchange='noSpaces($("#template_id"))'><br>
                     </div>
+                </div>
+
+                <div id="graph_type">
+                    <input type="radio" name="GraphType" value="1" onclick="graph_type_radio_handler(0, total_data_points.value)"> STAR
+                    <input type="radio" name="GraphType" value="2" onclick="graph_type_radio_handler(1, total_data_points.value)"> LINEAR<br>
                 </div>
 
                 <div class="w3-blue-grey w3-row w3-padding-16 w3-margin">
                     <div class="w3-col" id="template_Section_Length">
-                        Amount Of Datapoints :
+                        Amount Of Datapoints  :
                     </div>
                     <div class="w3-col">
-                        <input id="rangeinput1" name="rangeinput1" style="width:60%;" type="range" min="0" max="100" value="20"
+                        <input id="total_data_points" name="total_data_points" style="width:60%;" type="range" min="5" max="100" value="20"
                                oninput="
-                               amt_of_data_points.value = value;
-                               reBuild_DatapointsLen(amt_of_data_points.value, $('#template-graph-row'))">
+                               data_point_change_handler($('input[name=GraphType]:checked', '#template_form').val(), total_data_points.value);
+                               amt_of_data_points.value = value;">
                         <!--reBuild_DatapointsLen passed num of points and the id to refresh the graph for the user  -->
                         <output id="amt_of_data_points">20</output>
                     </div>
                 </div>
 
-                <!--WHEN BACKEND FIXES GRAPH CREATION NEED TO ADD TEMPLATE MSM AND WND MANIPULATION FUNCTIONALITY-->
-                <div class="w3-blue-grey w3-row w3-padding-16 w3-margin">
-                    <div class="w3-col">
-                        Amount Of Major Section Manipulation:
-                    </div>
-                    <div class="w3-col">
-                        <input id="rangeinput2" name="rangeinput2" style="width:60%;" type="range" min="0" max="100" value="50"
-                               oninput="amt_of_mjr_sections.value = value">
-                        <output id="amt_of_mjr_sections">50</output>
-                    </div>
+                <div class="w3-dark-grey w3-row w3-padding-16">
+                    <input type="submit" class="w3-btn" value="Create Template">
                 </div>
-
-                <div class="w3-blue-grey w3-row w3-padding-16 w3-margin">
-                    <div class="w3-col">
-                        Amount Of White Noise Data:
-                    </div>
-                    <div class="w3-col">
-                        <input id="rangeinput3" name="rangeinput3" style="width:60%;" type="range" min="0" max="100" value="50"
-                               oninput="amt_of_white_noise.value = value">
-                        <output id="amt_of_white_noise">50</output>
-                    </div>
-                </div>
-
-                <!--WHEN BACKEND FIXES GRAPH CREATION NEED TO ADD TEMPLATE MSM AND WND MANIPULATION FUNCTIONALITY-->
-                <div class="w3-dark-grey w3-row">
-                    <input type="submit" class="w3-btn" value="Create Exam">
-                </div>
-
             </form>
-        </div>
 
-        <!-- The Template Graph is generated here-->
-        <div id="template-graph-row">
-
-        </div>
-
-        <div class="w3-dark-grey w3-center w3-quarter hide-scrollbar" style="height:800px;">
+            <div class="w3-grey w3-row w3-padding-64" id="templateGraphDiv">
+            </div>
 
         </div>
+
+        <!--Used for right w3-quarter spaceing to make the page look nice-->
+        <div class="w3-dark-grey w3-center w3-quarter hide-scrollbar" style="height:800px;"></div>
+
+    </div>
+
+        <!-- Admin panel for adding admins -->
+    <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="new-admin-admin-panel">
+        <!--Used for left w3-quarter spaceing to make the page look nice-->
+        <div class="w3-dark-grey w3-center w3-quarter hide-scrollbar" style="height:800px;"></div>
+        <!--Used for ceneter w3-half spaceing to make the page look nice-->
+        <div class="w3-dark-grey w3-center w3-half  hide-scrollbar" style="height:800px;">
+
+            <!--Form to pass the values for the test-->
+            <form id="new_admin_form" onsubmit="new_admin_submit_handler();return false;">
+
+                <div class="w3-blue-grey w3-row w3-padding-16 w3-margin">
+                    <div class="w3-col">
+                        Admin Username
+                    </div>
+                    <div class="w3-col">
+                        <input type="text" name="admin_username" id="admin_email" onchange='noSpaces($("#admin_username"))'><br>
+                    </div>
+                </div>
+
+                <div class="w3-blue-grey w3-row w3-padding-16 w3-margin">
+                    <div class="w3-col">
+                        Admin Password
+                    </div>
+                    <div class="w3-col">
+                        <input type="text" name="admin_password" id="admin_password" onchange='noSpaces($("#admin_password"))'><br>
+                    </div>
+                </div>
+
+                <div class="w3-dark-grey w3-row w3-padding-16">
+                    <input type="submit" class="w3-btn" value="Create Admin">
+                </div>
+            </form>
+
+
+        </div>
+
+        <!--Used for right w3-quarter spaceing to make the page look nice-->
+        <div class="w3-dark-grey w3-center w3-quarter hide-scrollbar" style="height:800px;"></div>
 
     </div>
 
@@ -641,8 +659,8 @@
     <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="view-test-set-admin-panel">
 
         <div class="w3-half w3-dark-gray w3-center w3-padding-64 w3-padding-jumbo" style="height: 800px;" >
-            <div class="w3-white w3-padding-large w3-padding-64 w3-center" id="trial-view-admin-panel-id-list">
-                <p>asdfoijadsfio</p>
+            <div class="w3-white w3-padding-large w3-padding-64 w3-center" style="font-size: small;overflow-y: scroll;max-height: 675px;" id="trial-view-admin-panel-id-list">
+
             </div>
         </div>
 
@@ -654,57 +672,111 @@
     </div>
 
     <!-- Admin panel for creating new test sets -->
-    <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="new-test-set-admin-panel">
+    <div class="w3-dark-grey w3-center hidden" style="min-height:800px" id="new-test-set-admin-panel">
+    <!--Used for left w3-quarter spacing to make the page look nice-->
+    <div class="w3-dark-grey w3-center w3-quarter hide-scrollbar" style="height:800px;"></div>
+    <!--Used for center w3-half spacing to make the page look nice-->
+    <div class="w3-dark-grey w3-center w3-half  hide-scrollbar" style="height:800px;">
+        <form id="new_test_set_form" onsubmit="create_new_test_set_handler();return false;">
+            <!--/////////////////////////////////////////////////////////////////////////////////////////////////////-->
+            <div class="w3-blue-grey w3-row w3-padding-16 w3-margin">
+                <div class="w3-col">
+                    New TestSet ID(Name):
+                </div>
+                <div class="w3-col">
+                    <input type="text" name="test_set_id_name" id="test_set_id_name" onchange='noSpaces($("#test_set_id_name"))'><br>
+                </div>
+            </div>
 
-        <!--/////////////////////////////////////////////////////////////////////////////////////////////////////-->
-        <div class="w3-left-align" id="newTestSetsDiv">
-            <table border=0>
-                <tr>
-                    <td>
-                        <select name="CurrentTemplates" id="CurrentTemplatesID" multiple size=10 onchange="addToSelectedTemplates()">
-                            <!-- Need to populate with the templates-->
-                            <option value="George">George</option>
-                            <option value="Fred">Fred</option>
-                            <option value="Ryan">Ryan</option>
-                            <option value="Angela">Angela</option>
-                            <option value="Jill">Jill</option>
-                        </select>
-                    </td>
-                    <td valign=MIDDLE align=CENTER>
-                        <input type="button" name="right" value="&gt;&gt;" onclick="addToSelectedTemplates()"><br><br>
-                        <input type="button" name="right" value="All &gt;&gt;" onclick="opt.transferAllRight()"><br><br>
-                        <input type="button" name="left" value="&lt;&lt;" onclick="opt.transferLeft()"><br><br>
-                        <input type="button" name="left" value="All &lt;&lt;" onclick="opt.transferAllLeft()">
-                    </td>
-                    <td>
-                        <select name="SelectedTemplates" id="SelectedTemplatesID" multiple size=10 ondblclick="opt.transferLeft()">
-                            <!--Need to allow multiple of the same template-->
+            <div class="w3-blue-grey w3-row w3-padding-16 w3-margin">
+                <div class="w3-col">
+                    Alloted Test Time(in seconds):
+                </div>
+                <div class="w3-col">
+                    <input type="number" name="test_set_alloted_time" id="test_set_alloted_time" onchange="timeAllotedChangeSecToMin()"><br>
+                    Time In min: <p style="display:inline" id="alloted_time_in_min"></p>
+                </div>
+            </div>
 
-                        </select>
-                    </td>
-                </tr>
-            </table>
-        </div>
+            <div class="w3-blue-grey w3-row w3-padding-16 w3-margin">
+                <div class="w3-col">
+                    Time the Test Set Will Close:
+                </div>
+                <div class="w3-col">
+                    <input type="datetime-local" name="test_set_close_time" id="test_set_close_time" onfocus="setMinTime()"><br>
+                </div>
+            </div>
 
-        <!--////////////////////////////////////////////////////////////////////////////////////////////////////-->
+            <div class="w3-blue-grey w3-row w3-padding-16 w3-margin">
+                <div class="w3-col">
+                    Number of Access Codes to Generate:
+                </div>
+                <div class="w3-col">
+                    <input type="number" max="60" name="test_set_num_of_AC" id="test_set_num_of_AC" onblur="dropToMax()"><br>
+                </div>
+            </div>
 
+            <div class="w3-blue-grey w3-row w3-padding-16 w3-margin">
+                <div class="w3-col">
+                    Wait time between tests(in seconds):
+                </div>
+                <div class="w3-col">
+                    <input type="number" name="test_set_wait_time" id="test_set_wait_time" onchange="timeChangeSecToMin()"><br>
+                    Time In min: <p style="display:inline" id="time_in_min"></p>
+                </div>
+            </div>
 
-    </div>
+            <div class=" w3-light-grey w3-row " id="newTestSetsDiv">
+                <table border="1" class="w3-col">
+                    <tr>
+                        <td>
+                            <select name="CurrentTemplates" id="CurrentTemplatesID" multiple size=10 ondblclick="addToSelectedTemplates()">
+                                <!-- Need to populate with the templates-->
+                                <option value="George">George</option>
+                                <option value="Fred">Fred</option>
+                                <option value="Ryan">Ryan</option>
+                                <option value="Angela">Angela</option>
+                                <option value="Jill">Jill</option>
+                            </select>
+                        </td>
+                        <td valign=MIDDLE align=CENTER>
+                            <input type="button" name="right" value="&gt;&gt;" onclick="addToSelectedTemplates()"><br><br>
+                            <input type="button" name="right" value="All &gt;&gt;" onclick="addALLToSelectedTemplates()"><br><br>
+                            <input type="button" name="left" value="&lt;&lt;" onclick="removeFromSelectedTemplates()"><br><br>
+                            <input type="button" name="left" value="All &lt;&lt;" onclick="removeALLFromSelectedTemplates()">
+                        </td>
+                        <td>
+                            <select name="SelectedTemplates" id="SelectedTemplatesID" multiple size=10 ondblclick="removeFromSelectedTemplates()">
 
-
-
-        <!--////////////////////////////////////////////////////////////////////////////////////////////////////-->
-        <div class="w3-half w3-dark-gray w3-center w3-padding-64 w3-padding-jumbo" style="height: 800px;" >
-            <select id="template-selector"></select>
-        </div>
-
-        <div class="w3-half w3-dark-gray w3-left-align w3-padding-64" style="height: 800px;">
-
-        </div>
-
-    </div>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="w3-dark-grey w3-row w3-padding-4">
+                <input type="submit" class="w3-btn" value="Create New Test Set">
+            </div>
+            </form>
+            <!--////////////////////////////////////////////////////////////////////////////////////////////////////-->
 
 </div>
+
+  </div>
+
+
+
+            <!--////////////////////////////////////////////////////////////////////////////////////////////////////-->
+            <!--  <div class="w3-half w3-dark-gray w3-center w3-padding-64 w3-padding-jumbo" style="height: 800px;" >
+                  <select id="template-selector"></select>
+              </div>
+
+              <div class="w3-half w3-dark-gray w3-left-align w3-padding-64" style="height: 800px;">
+
+              </div> -->
+
+        </div>
+
+    </div>
 
 <li id="test-status-list-element-template" class="hidden">
     <div style="display:flex;">

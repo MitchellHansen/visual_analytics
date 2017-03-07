@@ -4,14 +4,14 @@
 //
 // The flow section relies on keeping track of what page the user is currently on
 // and handling the possible options the user has to navigate forward and backwards.
-// 
+//
 // The toggle section handles each individual page toggle. We have used toggle functions
 // to allow esay single function hiding and showing of pages. It's recommended that this
 // is continued to remove the extra code needed to determine if the page is opening or closing
 
 // To do a back button I think I'm just gonna do this jank jumplist
 
-var screen_enum = { 
+var screen_enum = {
                     HOME: 1,
                     ADMIN_HOME:2,
                     TEST_NEW:3,
@@ -25,7 +25,8 @@ var screen_enum = {
                     TESTING_START:11,
                     TESTING_TEST:12,
                     TESTING_WAIT:13,
-                    TESTING_FINISH:14
+                    TESTING_FINISH:14,
+                    NEW_ADMIN:15
                   };
 
 var screen = screen_enum.HOME;
@@ -91,6 +92,10 @@ function transfer_back(){
     }
     else if (screen == screen_enum.TEMPLATE_VIEW) {
         toggle_view_template();
+        screen = screen_enum.ADMIN_HOME;
+    }
+    else if (screen == screen_enum.NEW_ADMIN) {
+        toggle_new_admin();
         screen = screen_enum.ADMIN_HOME;
     }
     else if (screen == screen_enum.ADMIN_HOME){
@@ -190,6 +195,17 @@ function toggle_new_template(){
         screen = screen_enum.TEMPLATE_NEW;
 }
 
+// Open and close the new template page
+function toggle_new_admin(){
+
+    $("#main-admin-panel").toggle();
+    $("#new-admin-admin-panel").toggle();
+
+    if (screen == screen_enum.NEW_ADMIN)
+        screen = screen_enum.HOME;
+    else
+        screen = screen_enum.NEW_ADMIN;
+}
 
 // Open and close the new template page
 function toggle_view_template(){
@@ -254,7 +270,7 @@ function toggle_test_from_wait(){
     // Keep track of time
 }
 
-function toggle_wait_from_test(){
+function toggle_finish_from_test(){
     $("#testing-test-panel").toggleClass("hidden");
     $("#testing-finish-panel").toggleClass("hidden");
 
@@ -305,16 +321,11 @@ function toggle_training_selection_view() {
 }
 function toggle_training_practice_view() {
 
-    $("#svg-row").empty();
+    $("#graph-space-training").empty();
 
-    for (let i = 0; i < 10; i++){
-        build($("#svg-row"), graph_context.TRAINING, graph_type.LINEAR)
-    }
-  
-    for (let i = 0; i < 10; i++){
-        build($("#svg-row"), graph_context.TRAINING, graph_type.STAR)
-    }
-  
+    build($("#graph-space-training"), graph_context.TRAINING, graph_type.LINEAR, generate_class_data(20))
+
+
     $("#training-selection").toggleClass("hidden");
     $("#training-practice").toggleClass("hidden");
 }
@@ -328,5 +339,3 @@ function toggle_back_to_home() {
     $("#training-results").toggleClass("hidden");
     $("#home-row").slideToggle();
 }
-
-

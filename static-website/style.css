@@ -3,9 +3,17 @@
     opacity: 0.4;
 }
 
+.parent-class-1{
+    stroke: green !important;
+}
+
 .selected-class-2 {
     fill: red !important;
     opacity: 0.4;
+}
+
+.parent-class-2{
+    stroke: red !important;
 }
 
 .hover_group:hover {
@@ -65,4 +73,27 @@
 }
 #SelectedTemplatesID{
     width:150px;
+}
+#viewTC_Header{
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 3.0;
+}
+#viewTC_para{
+    color: black;
+    text-align: justify;
+    font: 15px;
+    border-color:white;
+    border-style: solid;
+    line-height: 3.0;
+    padding-bottom: 100%;
+    padding-left: 5%;
+    background-color: LightGray;
+
+}
+
+#templateGraphDiv{
+    border-color: CadetBlue;
+    border-style: solid;
 }

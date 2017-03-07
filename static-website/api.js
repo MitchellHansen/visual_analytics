@@ -210,9 +210,12 @@ function submit_user_trial_results(){
         async: true,
 
         data : JSON.stringify({
-            "login_uuid": login_uuid,
-            "results"   : training_graph_arr,
-            "time"      : "0"
+            "login_uuid"       : login_uuid,
+            "selected_point"   : "[1, 2, 3, 4, 5, 6]",
+            "selected_class"   : "[1, 2, 3, 4, 5, 6]",
+            "template_id"      : "Template1",
+            "result"           : "99",
+            "time"             : "0"
         }),
 
         dataType: "json",
@@ -346,7 +349,7 @@ function delete_template(auth_token, template_id){
 //  RECEIVES    : Success or fail
 // ============================================================================================================
 
-function new_test_set(test_set_id, template_list, wait_time, close_time, uuid_count, auth_token){
+function new_test_set(auth_token, test_set_id, alloted_test_time, template_list, wait_time, close_time, uuid_count){
 
     return $.ajax({
 
@@ -358,10 +361,11 @@ function new_test_set(test_set_id, template_list, wait_time, close_time, uuid_co
         data : JSON.stringify({
             "login_token" : auth_token,
             "test_set_id" : test_set_id,
+            "test_duration": alloted_test_time,
             "template_ids": template_list,
             "wait_time"   : wait_time,
             "close_time"  : close_time,
-            "uuid_count"  : uuid_count
+            "uuid_count": uuid_count
         }),
 
         dataType: "json",
@@ -405,13 +409,13 @@ function get_next_test(login_uuid){
 
     return $.ajax({
 
-        url: "http://68.186.100.115/auth/generate_graphs_with_template",
+        url: "http://68.186.100.115/auth/get_next_test",
         contentType: "application/json;charset=UTF-8",
         type: "POST",
         async: true,
 
         data : JSON.stringify({
-            "login_token" : login_uuid,
+            "login_uuid" : login_uuid,
         }),
 
         dataType: "json",
@@ -526,6 +530,92 @@ function get_template_details(auth_token, template_id){
         data : JSON.stringify({
             "login_token" : auth_token,
             "template_id" : template_id
+        }),
+
+        dataType: "json",
+        success: function(result){
+
+            console.log(result);
+        },
+
+        error: function(e) {
+
+            if (e.responseText == ""){
+
+            } else {
+                alert("Api call failed");
+                console.log(e);
+            }
+        },
+    });
+}
+
+// ============================================================================================================
+//  API CALL TO :  "/auth/new_test_template"
+//  SENDS       : A JSON object specifying the template variables
+//                JSON = {
+//                         "login_token"  : credentials.auth_token,
+//                         "test_set_id"  : "trial-1",
+//                         "template_ids" : ["template-1" , "template-1", "template-2"],
+//                         "wait_time"    : "60",
+//                         "close_time"   : "timestamp of some sort",
+//                         "uuid_count"   : 30
+//                };
+//  RECEIVES    : Success or fail
+// ============================================================================================================
+
+function new_test_template(auth_token, template_id, graph_type, total_data_points) {
+    //The alert shows that the values passed in are correct it works
+    //alert("auth_token " + auth_token + " Template Id " + template_id + " graphtype " + graph_type + " num of points " + total_data_points);
+
+    return $.ajax({
+
+        url: "http://68.186.100.115/auth/new_template",
+        contentType: "application/json;charset=UTF-8",
+        type: "POST",
+        async: true,
+
+        data : JSON.stringify({
+            "login_token": auth_token,
+            "template_id": template_id,
+            "graph_type": graph_type,
+            "total_data_points": total_data_points
+        }),
+
+        dataType: "json",
+        success: function(result){
+
+            console.log(result);
+        },
+
+        error: function(e) {
+
+            if (e.responseText == ""){
+
+            } else {
+                alert("Api call failed");
+                console.log(e);
+            }
+        },
+    });
+}
+
+
+function new_admin(auth_token, email, password) {
+    //The alert shows that the values passed in are correct it works
+    //alert("auth_token " + auth_token + " Template Id " + template_id + " graphtype " + graph_type + " num of points " + total_data_points);
+
+    return $.ajax({
+
+        url: "http://68.186.100.115/auth/new_admin",
+        contentType: "application/json;charset=UTF-8",
+        type: "POST",
+        async: true,
+
+        data : JSON.stringify({
+            "login_token": auth_token,
+            "email": email,
+            "password" : password
         }),
 
         dataType: "json",
