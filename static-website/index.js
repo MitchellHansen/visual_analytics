@@ -257,6 +257,14 @@ function training_fwd_movement() {
     transfer_through_training();
 }
 
+function noSpaces(idName) {
+    var str = idName.val();
+    str = str.replace(/\s+/g, '-');
+    //alert(str);
+    idName.val(str);
+    //alert(idName.val());
+}
+
 // ===============================================================
 // = Populate functions take the *RAW* response from an API call =
 // = and populate the page which the data is intended for        =
