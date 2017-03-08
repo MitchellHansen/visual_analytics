@@ -1,4 +1,4 @@
-#Created by Anthony Armatas for CS 481 Visual Analytics
+﻿#Created by Anthony Armatas for CS 481 Visual Analytics
 #Imports the randint function from random. Could have also done import random,randint
 from random import randint
 import copy
@@ -11,7 +11,7 @@ class gen_two:
     @staticmethod
     def genList(dLst,amountOfDP):
         for i in range(amountOfDP):
-            dataPnt = randint(0, amountOfDP)
+            dataPnt = randint(0, 100)
             dLst[i] = dataPnt
         return dLst
 
