@@ -89,6 +89,9 @@ function build(container, context, type, data){
 
     $(container).empty();
 
+    testing_graph_arr = [];
+    training_graph_arr = [];
+
     if (context != graph_context.TRAINING &&
         context != graph_context.TESTING &&
         context != graph_context.NOP){

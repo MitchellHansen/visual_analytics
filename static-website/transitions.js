@@ -313,6 +313,7 @@ function toggle_practice_from_results() {
 function toggle_training_intro_view() {
     $("#home-row").slideToggle();
     $("#training-panel").toggleClass("hidden");
+    $("#training-time").text(parseInt(120));
 
     screen = screen_enum.TRAINING_INFO;
 }
