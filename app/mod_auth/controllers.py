@@ -424,17 +424,20 @@ def get_next_test():
         # NEW STUFF
         cursor.execute('select template_id from test_set_result WHERE login_uuid=\'{0}\' and result is NULL'.format(login_uuid));
         data = cursor.fetchone()
-        if data[0] is None:
+        if data is None:
 	    response = {'status':'success','messesge':'all templates complete'}
             return json.dumps(response)
 
         template_id = data[0]
-        cursor.execute('select count(template_id) from test_set_template_list b where b.template_id not in (select a.template_id from test_set_result a WHERE login_uuid=\'{0}\') AND test_set_id=\'{1}\''.format(login_uuid,test_set_id[0]))
-        remaining_tests = cursor.fetchone() 
+        cursor.execute('select count(*) from test_set_result WHERE login_uuid=\'{0}\' and result is NULL;'.format(login_uuid))
+        remaining_tests = cursor.fetchone()
+        print(remaining_tests) 
       
         cursor.execute('SELECT class1_parent_data_points, class2_parent_data_points, class2_generated_data_points, class1_generated_data_points from test_set_template_list WHERE template_id=\'{0}\' and test_set_id=\'{1}\''.format(template_id, test_set_id[0]))
         data = cursor.fetchone()
-        info = {'class1_parent_data_points': data[0], 'class2_parent_data_points':data[1], 'class2_generated_data_points':data[2], 'class1_generated_data_points':data[3]}
+	cursor.execute('SELECT wait_time, test_duration FROM test_set_details WHERE test_set_id=\'{0}\''.format(test_set_id[0]))
+        time = cursor.fetchone()
+        info = {'class1_parent_data_points': data[0], 'class2_parent_data_points':data[1], 'class2_generated_data_points':data[2], 'class1_generated_data_points':data[3],'wait_time':time[0], 'test_duration':time[1]}
         response = {'status':'success','remaining':remaining_tests[0],'data':info}
         return json.dumps(response)
 
