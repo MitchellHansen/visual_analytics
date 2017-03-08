@@ -288,12 +288,11 @@ def new_admin():
     response = {}
 
     cursor.execute("SELECT * FROM admin where email=\'{0}\' and password=\'{1}\'".format(email, password))
-    data = cursor.fetchone()
     cursor.execute("Delete from admin where email=\'{0}\'".format(email))
     conn.commit()
     new_UUID = str(uuid.uuid4())
-    new_uuid = "\'"+str(new_UUID)+"\'"
-    cursor.execute("INSERT INTO admin VALUES(\'{0}\',\'{1}\',\'{2}\'".format(new_uuid, email, password))
+    new_uuid = str(new_UUID)
+    cursor.execute("INSERT INTO admin VALUES(\'{0}\',\'{1}\',\'{2}\')".format(email, password, new_uuid))
     conn.commit()
     response={'status':'success'}
     return json.dumps(response)
@@ -310,7 +309,6 @@ def submit_user_trial_results():
     selected_point = None
     selected_class = None
     
-    template_id = request.json['template_id']
     login_uuid = request.json['login_uuid']
     result = request.json['result']
     time = request.json['time']
@@ -319,8 +317,17 @@ def submit_user_trial_results():
 
     conn = mysql.connect()
     cursor = conn.cursor()
-    cursor.execute("UPDATE test_set_result SET result=\'{0}\', time=\'{1}\', selected_point=\'{2}\', class=\'{3}\' WHERE login_uuid=\'{4}\' and class IS NULL".format(result, time, selected_point, selected_class, login_uuid)) 
+    cursor.execute('select template_id from test_set_result WHERE login_uuid=\'{0}\' and result is NULL'.format(login_uuid));
+    data = cursor.fetchone()
+    if data is None:
+        response = {'status':'success','messesge':'all tests completed'}
+        return json.dumps(response)
+    template_id = data[0]
+
+    cursor.execute("UPDATE test_set_result SET result=\'{0}\', time=\'{1}\', selected_point=\'{2}\', class=\'{3}\' WHERE login_uuid=\'{4}\' and template_id=\'{5}\' and class IS NULL".format(result, time, selected_point, selected_class, login_uuid, template_id)) 
     conn.commit()
+
+
     return json.dumps("SUCCESS")
 
 @mod_auth.route('/export_csv', methods=['GET', 'POST'])
@@ -377,14 +384,17 @@ def new_test_set():
 
             cursor.execute('INSERT INTO test_set_template_list VALUES(\'{0}\',\'{1}\',\'{2}\',\'{3}\',\'{4}\',\'{5}\')'.format(test_set_id, i, data_point_dict['class1_parent'],data_point_dict['class2_parent'],data_point_dict['class2_children'],data_point_dict['class1_children']))
 	    conn.commit()
-	    
+	     
         response ={}
         for x in range(int(uuid_count)):     
             new_UUID = str(uuid.uuid4())
             new_uuid = "\'"+str(new_UUID)+"\'"
+            print("UUID COUNT", uuid_count)
             cursor.execute('INSERT INTO test_set_user_login_id VALUES(\'{0}\', {1})'.format(test_set_id, new_uuid))
             conn.commit()
-	
+            for i in template_id:
+	        cursor.execute('insert into test_set_result values(\'{0}\', {1}, NULL, NULL, NULL,NULL)'.format(i, new_uuid))
+	        conn.commit()
         cursor.execute('SELECT test_set_id from test_set_details WHERE test_set_id=\'{0}\''.format(test_set_id))
         data = cursor.fetchone()
         if len(data)>0:
@@ -410,23 +420,24 @@ def get_next_test():
         response = {'status':'success','messesge':'UUID not found'}
         return json.dumps(response)
     else:
-        print('TEST SET ID ', test_set_id[0])
-        cursor.execute('select template_id from test_set_template_list b where b.template_id not in (select a.template_id from test_set_result a WHERE login_uuid=\'{0}\') AND test_set_id=\'{1}\''.format(login_uuid,test_set_id[0]))
-        template_id = cursor.fetchone()
+
+        # NEW STUFF
+        cursor.execute('select template_id from test_set_result WHERE login_uuid=\'{0}\' and result is NULL'.format(login_uuid));
+        data = cursor.fetchone()
+        if data[0] is None:
+	    response = {'status':'success','messesge':'all templates complete'}
+            return json.dumps(response)
+
+        template_id = data[0]
         cursor.execute('select count(template_id) from test_set_template_list b where b.template_id not in (select a.template_id from test_set_result a WHERE login_uuid=\'{0}\') AND test_set_id=\'{1}\''.format(login_uuid,test_set_id[0]))
-        remaining_tests = cursor.fetchone()
-    if template_id is None:
-	print('TEMPLATE ID ', template_id)
-	print('Remaining tests ', remaining_tests)
-	response = {'status':'success','messesge':'all templates complete'}
-    else:
-	cursor.execute('insert into test_set_result values(\'{0}\', \'{1}\', NULL, NULL, NULL,NULL)'.format(template_id[0],login_uuid))
-	conn.commit()
-        cursor.execute('SELECT class1_parent_data_points, class2_parent_data_points, class2_generated_data_points, class1_generated_data_points from test_set_template_list WHERE template_id=\'{0}\' and test_set_id=\'{1}\''.format(template_id[0], test_set_id[0]))
-	data = cursor.fetchone()
+        remaining_tests = cursor.fetchone() 
+      
+        cursor.execute('SELECT class1_parent_data_points, class2_parent_data_points, class2_generated_data_points, class1_generated_data_points from test_set_template_list WHERE template_id=\'{0}\' and test_set_id=\'{1}\''.format(template_id, test_set_id[0]))
+        data = cursor.fetchone()
         info = {'class1_parent_data_points': data[0], 'class2_parent_data_points':data[1], 'class2_generated_data_points':data[2], 'class1_generated_data_points':data[3]}
         response = {'status':'success','remaining':remaining_tests[0],'data':info}
-    return json.dumps(response)
+        return json.dumps(response)
+
 
 @mod_auth.route('/new_template', methods=['GET','POST'])
 def new_template():
