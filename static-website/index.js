@@ -366,19 +366,19 @@ function populate_admin_page_active_tests(test_statuses) {
         if (test_set_status == 1){
 
             // Set the right hand symbol text & the left hand test name text
-            $(elem).children().children().last().text("ACTIVE");
+            $(elem).children().children().last().text("ACT");
         }
         else  if (test_set_status == 3){
 
-            $(elem).children().children().last().text("WAITING");
+            $(elem).children().children().last().text("WAIT");
         }
         else  if (test_set_status == 2){
 
-            $(elem).children().children().last().text("STOPPED");
+            $(elem).children().children().last().text("STOP");
         }
         else {
 
-            $(elem).children().children().last().text("ERROR");
+            $(elem).children().children().last().text("ERR");
         }
 
         // Set the button text
@@ -654,8 +654,9 @@ function start_testing_handler(){
         $("#wait-time").text(value.data.wait_time);
         $("#test-count-remaining").text(parseInt(value.remaining)-1);
 
-
-        build($("#graph-space-testing"), graph_context.TESTING, graph_type.STAR, graph_data);
+        // graph-type on the server doesn't represent the same on the client, bandaid this by subtracting
+        // 1. Reeeaalll ghetto
+        build($("#graph-space-testing"), graph_context.TESTING, parseInt(value.data.graph_type[0])-1, graph_data);
 
     });
 }
@@ -720,7 +721,7 @@ function continue_testing_handler() {
         $("#wait-time").text(value.data.wait_time);
         $("#test-count-remaining").text(parseInt(value.remaining)-1);
 
-        build($("#graph-space-testing"), graph_context.TESTING, graph_type.STAR, graph_data);
+        build($("#graph-space-testing"), graph_context.TESTING, parseInt(value.data.graph_type[0])-1, graph_data);
     });
 }
 
