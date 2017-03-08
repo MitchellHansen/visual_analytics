@@ -598,6 +598,7 @@ function data_point_change_handler(value, data_points){
 // =======================================================================
 
 testing_page_timer = null;
+training_page_timer = null;
 wait_page_timer = null;
 
 function testing_page_timeout() {
@@ -608,6 +609,16 @@ function testing_page_timeout() {
     }
 
     $("#test-time").text(parseInt($("#test-time").html()) - 1);
+}
+
+function training_page_timeout() {
+
+    if (parseInt($("#training-time").html()) <= 1){
+        window.clearInterval(training_page_timer);
+        toggle_training_results_view();
+    }
+
+    $("#training-time").text(parseInt($("#training-time").html()) - 1);
 }
 
 function wait_page_timeout(){
