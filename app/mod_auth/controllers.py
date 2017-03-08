@@ -16,6 +16,8 @@ import csv
 import StringIO
 # Define the blueprint: 'auth', set its url prefix: app.url/auth
 mod_auth = Blueprint('auth', __name__, url_prefix='/auth')
+import time
+
 
 @mod_auth.route('/home')
 def index():
@@ -201,6 +203,9 @@ def close_test():
     conn.commit()    
     cursor.execute('SELECT status FROM test_set_details WHERE test_set_id=\'{0}\''.format(test_set_id))
     data=cursor.fetchone()[0]
+    #d1 = datetime.datetime.strptime('2018-05-05T17:05', "%Y-%d-%mT%H:%M").date()
+    #d2 = datetime.datetime.strptime('2019-05-05T17:05', "%Y-%d-%mT%H:%M").date()
+    #print(d2<d1)
     if data==2:
         response={'status':'success'}
     else:
@@ -323,8 +328,12 @@ def submit_user_trial_results():
         response = {'status':'success','messesge':'all tests completed'}
         return json.dumps(response)
     template_id = data[0]
+    
+    cursor.execute("UPDATE test_set_result SET result=\'{0}\', time=\'{1}\', selected_point=\'{2}\', class=\'{3}\' WHERE login_uuid=\'{4}\' and template_id=\'{5}\' and class IS NULL LIMIT 1".format(result, time, selected_point, selected_class, login_uuid, template_id)) 
 
-    cursor.execute("UPDATE test_set_result SET result=\'{0}\', time=\'{1}\', selected_point=\'{2}\', class=\'{3}\' WHERE login_uuid=\'{4}\' and template_id=\'{5}\' and class IS NULL".format(result, time, selected_point, selected_class, login_uuid, template_id)) 
+
+    
+    #cursor.execute("UPDATE test_set_result SET result=\'{0}\', time=\'{1}\', selected_point=\'{2}\', class=\'{3}\' WHERE login_uuid=\'{4}\' and template_id=\'{5}\' and class IS NULL".format(result, time, selected_point, selected_class, login_uuid, template_id)) 
     conn.commit()
 
 
@@ -420,8 +429,6 @@ def get_next_test():
         response = {'status':'success','messesge':'UUID not found'}
         return json.dumps(response)
     else:
-
-        # NEW STUFF
         cursor.execute('select template_id from test_set_result WHERE login_uuid=\'{0}\' and result is NULL'.format(login_uuid));
         data = cursor.fetchone()
         if data is None:
