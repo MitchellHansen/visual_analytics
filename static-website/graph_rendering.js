@@ -126,7 +126,7 @@ function build(container, context, type, data){
         if ($(container).children().length == 0)
             $(container).append(graph.svg_g);
         else
-            $(container).children().eq(Math.floor(Math.random() * $(container).length)).after(graph.svg_g);
+            $(container).children().eq(Math.floor(Math.random() * $(container).children().length)).after(graph.svg_g);
     });
 
     // Init and add the class 1 parent
@@ -144,7 +144,7 @@ function build(container, context, type, data){
     if ($(container).children().length == 0)
         $(container).append(parent_graph.svg_g);
     else
-        $(container).children().eq(Math.floor(Math.random() * $(container).length)).after(parent_graph.svg_g);
+        $(container).children().eq(Math.floor(Math.random() * $(container).children().length)).after(parent_graph.svg_g);
 
 
     // Init and add all the class 2 children
@@ -162,7 +162,7 @@ function build(container, context, type, data){
 
         if (context == graph_context.TRAINING)
             training_graph_arr.push(graph);
-        else if (context == graph_context.TRAINING)
+        else if (context == graph_context.TESTING)
             testing_graph_arr.push(graph);
 
         // insert in a random position
@@ -171,7 +171,7 @@ function build(container, context, type, data){
             $(container).append(graph.svg_g);
         else
             // In the most disgusting way possible
-            $(container).children().eq(Math.floor(Math.random() * $(container).length)).after(graph.svg_g);
+            $(container).children().eq(Math.floor(Math.random() * $(container).children().length)).after(graph.svg_g);
 
     });
 
@@ -190,7 +190,7 @@ function build(container, context, type, data){
     if ($(container).children().length == 0)
         $(container).append(parent_graph.svg_g);
     else
-        $(container).children().eq(Math.floor(Math.random() * $(container).length)).after(parent_graph.svg_g);
+        $(container).children().eq(Math.floor(Math.random() * $(container).children().length)).after(parent_graph.svg_g);
 
 }
 
@@ -262,10 +262,10 @@ function build_linear(context, data_array){
           onclick_string += "training_graph_click(" + training_graph_arr.length + "," + (i) + ")";
 
         } else if (context == graph_context.TESTING){
-          onclick_string += "testing_graph_click(" + training_graph_arr.length + "," + (i) + ")";
+          onclick_string += "testing_graph_click(" + testing_graph_arr.length + "," + (i) + ")";
 
         } else if (context == graph_context.NOP){
-          onclick_string += "console.log(" + training_graph_arr.length + "," + (i) + ")";
+          onclick_string += "console.log(\"CLICK\")";
         }
 
         dom_object.children().first().attr("onclick", onclick_string);
@@ -352,9 +352,9 @@ function build_star(context, data_array){
       	if (context == graph_context.TRAINING){
       		onclick_string += "training_graph_click(" + training_graph_arr.length + "," + i + ")";
       	} else if (context == graph_context.TESTING){
-      		onclick_string += "testing_graph_click(" + training_graph_arr.length + "," + i + ")";
+      		onclick_string += "testing_graph_click(" + testing_graph_arr.length + "," + i + ")";
       	} else if (context == graph_context.NOP){
-      		onclick_string += "console.log(" + training_graph_arr.length + "," + i + ")";
+      		onclick_string += "console.log(\"CLICK\")";
       	}
 
         dom_object.children().first().attr("onclick", onclick_string);

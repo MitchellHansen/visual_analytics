@@ -199,8 +199,7 @@ function get_template_ids(auth_token, filter) {
 //  RECEIVES    : Success or fail
 // ============================================================================================================
 
-// THIS FUNCTION USES GLOBAL VARS
-function submit_user_trial_results(){
+function submit_user_trial_results(login_uuid, selected_points, selected_classes, result, time){
 
     return $.ajax({
 
@@ -211,11 +210,10 @@ function submit_user_trial_results(){
 
         data : JSON.stringify({
             "login_uuid"       : login_uuid,
-            "selected_point"   : "[1, 2, 3, 4, 5, 6]",
-            "selected_class"   : "[1, 2, 3, 4, 5, 6]",
-            "template_id"      : "Template1",
-            "result"           : "99",
-            "time"             : "0"
+            "selected_point"   : selected_points,
+            "selected_class"   : selected_classes,
+            "result"           : result,
+            "time"             : time
         }),
 
         dataType: "json",
