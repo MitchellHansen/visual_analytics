@@ -323,20 +323,50 @@ function toggle_training_selection_view() {
 
     //screen = screen_enum.TRAINING_HOW_WORK;
 }
+
 function toggle_training_practice_view() {
 
     $("#graph-space-training").empty();
 
-    build($("#graph-space-training"), graph_context.TRAINING, graph_type.LINEAR, generate_class_data(20))
-
+    training_page_timer =  window.setInterval(training_page_timeout, 1000);
+    build($("#graph-space-training"), graph_context.TRAINING, graph_type.STAR, generate_class_data(20))
 
     $("#training-selection").toggleClass("hidden");
     $("#training-practice").toggleClass("hidden");
 }
 
 function toggle_training_results_view() {
+
+    window.clearInterval(training_page_timer);
+
     $("#training-practice").toggleClass("hidden");
     $("#training-results").toggleClass("hidden");
+
+    let time = $("#training-time").text();
+    $("#practice-time").text(time);
+
+    let selected_points_arr = [];
+    let selected_class_arr = [];
+
+    for (let i = 0; i < training_graph_arr.length; i++){
+        selected_points_arr.push(training_graph_arr[i].selected_point);
+        selected_class_arr.push(training_graph_arr[i].class);
+    }
+
+    let score = 0;
+    for (let i = 0; i < training_graph_arr.length/2; i++) {
+        if (training_graph_arr[i].class == 1)
+            score++;
+    }
+    for (let i = training_graph_arr.length/2; i < training_graph_arr.length; i++) {
+        if (training_graph_arr[i].class == 2)
+            score++;
+    }
+
+    score = (score / training_graph_arr.length) * 100;
+
+    $("#practice-score").text(score + "%");
+
 }
 
 function toggle_back_to_home() {
