@@ -289,24 +289,28 @@ function stop_testing(){
 function toggle_home_from_training() {
     $("#training-panel").toggleClass("hidden");
     $("#home-row").slideToggle();
+    window.clearInterval(training_page_timer);
 }
 
 //Brings the user back from the selection training to the training info
 function toggle_intro_from_selection() {
     $("#training-selection").toggleClass("hidden");
     $("#training-panel").toggleClass("hidden");
+    window.clearInterval(training_page_timer);
 }
 
 //Brings the user back from the practice training to the selection training
 function toggle_selection_from_practice() {
     $("#training-practice").toggleClass("hidden");
     $("#training-selection").toggleClass("hidden");
+    window.clearInterval(training_page_timer);
 }
 
 //Brings the user back from the practice training to the selection training
 function toggle_practice_from_results() {
     $("#training-results").toggleClass("hidden");
     $("#training-practice").toggleClass("hidden");
+    window.clearInterval(training_page_timer);
 }
 
 //This is the function which brings the training screen to the front
@@ -315,13 +319,14 @@ function toggle_training_intro_view() {
     $("#training-panel").toggleClass("hidden");
     $("#training-time").text(parseInt(120));
 
+    window.clearInterval(training_page_timer);
     screen = screen_enum.TRAINING_INFO;
 }
 
 function toggle_training_selection_view() {
     $("#training-panel").toggleClass("hidden");
     $("#training-selection").toggleClass("hidden");
-
+    window.clearInterval(training_page_timer);
     //screen = screen_enum.TRAINING_HOW_WORK;
 }
 
@@ -371,6 +376,7 @@ function toggle_training_results_view() {
 }
 
 function toggle_back_to_home() {
+    window.clearInterval(training_page_timer);
     $("#training-results").toggleClass("hidden");
     $("#home-row").slideToggle();
 }
