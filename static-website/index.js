@@ -291,8 +291,14 @@ function populate_view_template_page(template_details) {
     $("#view-template-center").empty();
 
     // Now fill in the other details
+    var tDP = template_details.total_data_points[0];
+    var gtype = template_details.graph_type[0];
+
+
     $("#view-template-center").append('<p id="viewTC_Header">Details Of The Template</p>');
     $("#view-template-center").append('<p id="viewTC_para">data points in graph  : ' + template_details.total_data_points[0] + '<br>type of graph   : ' + template_details.graph_type[0]);
+    $("#view-template-center").append('<p id="viewTC_para2">');
+    build($('#viewTC_para2'), 2, gtype - 1, generate_class_data_viewTemplate_ed(tDP));
 
 }
 
