@@ -271,13 +271,43 @@
                 <p>Please wait for <b id="wait-time">5</b> seconds</p>
             </div>
         </div>
+<div id="muteYouTubeVideoPlayer"></div>
+<script async src="https://www.youtube.com/iframe_api"></script>
+<script>
+ function onYouTubeIframeAPIReady() {
+  var player;
+  player = new YT.Player('muteYouTubeVideoPlayer', {
+    videoId: 'MBVKeli0MWY', // YouTube Video ID
+    width: 560,               // Player width (in px)
+    height: 316,              // Player height (in px)
+    playerVars: {
+      autoplay: 0,        // Auto-play the video on load
+      controls: 1,        // Show pause/play buttons in player
+      showinfo: 0,        // Hide the video title
+      modestbranding: 1,  // Hide the Youtube Logo
+      loop: 1,            // Run the video in a loop
+      fs: 0,              // Hide the full screen button
+      cc_load_policy: 0, // Hide closed captions
+      iv_load_policy: 3,  // Hide the Video Annotations
+      autohide: 0         // Hide video controls when playing
+    },
+    events: {
+      onReady: function(e) {
+        e.target.mute();
+      }
+    }
+  });
+ }
+
+ // Written by @labnol
+</script>
     </div>
 
     <!-- When there are no more tests, the users gets this page -->
     <div class="w3-light-grey w3-center hidden" style="min-height:800px" id="testing-finish-panel">
 
         <h1>TESTING FINISH</h1>
-        <h3>THANKS FOR PLAYING BITCHES</h3>
+        <h3>THANKS FOR PLAYING!!</h3>
 
         <div class="w3-row"  style="">
 
