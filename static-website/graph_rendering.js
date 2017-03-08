@@ -471,6 +471,25 @@ function generate_class_data(data_point_count){
     return ret_data;
 
 }
+function generate_class_data_viewTemplate_ed(data_point_count){
+
+    let ret_data = {
+
+        class_1_parent: [],
+        class_2_parent: [],
+        class_1_child: [],
+        class_2_child: []
+    };
+
+    for (let i = 0; i < data_point_count; i++){
+
+        ret_data.class_1_parent.push(rand());
+        ret_data.class_2_parent.push(rand());
+    }
+
+    return ret_data;
+
+}
 
 function generate_parent_data(data_point_count){
 

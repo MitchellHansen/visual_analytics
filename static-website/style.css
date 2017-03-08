@@ -87,13 +87,21 @@
     border-color:white;
     border-style: solid;
     line-height: 3.0;
-    padding-bottom: 100%;
     padding-left: 5%;
     background-color: LightGray;
-
+}
+#viewTC_para2{
+    color: black;
+    font: 15px;
+    border-color:white;
+    border-style: solid;
+    line-height: 3.0;
+    padding-top: 5%;
+    background-color: LightGray;
 }
 
 #templateGraphDiv{
     border-color: CadetBlue;
     border-style: solid;
 }
+
