@@ -16,6 +16,8 @@ import csv
 import StringIO
 # Define the blueprint: 'auth', set its url prefix: app.url/auth
 mod_auth = Blueprint('auth', __name__, url_prefix='/auth')
+import time
+
 
 @mod_auth.route('/home')
 def index():
@@ -201,6 +203,9 @@ def close_test():
     conn.commit()    
     cursor.execute('SELECT status FROM test_set_details WHERE test_set_id=\'{0}\''.format(test_set_id))
     data=cursor.fetchone()[0]
+    #d1 = datetime.datetime.strptime('2018-05-05T17:05', "%Y-%d-%mT%H:%M").date()
+    #d2 = datetime.datetime.strptime('2019-05-05T17:05', "%Y-%d-%mT%H:%M").date()
+    #print(d2<d1)
     if data==2:
         response={'status':'success'}
     else:
@@ -323,8 +328,12 @@ def submit_user_trial_results():
         response = {'status':'success','messesge':'all tests completed'}
         return json.dumps(response)
     template_id = data[0]
+    
+    cursor.execute("UPDATE test_set_result SET result=\'{0}\', time=\'{1}\', selected_point=\'{2}\', class=\'{3}\' WHERE login_uuid=\'{4}\' and template_id=\'{5}\' and class IS NULL LIMIT 1".format(result, time, selected_point, selected_class, login_uuid, template_id)) 
 
-    cursor.execute("UPDATE test_set_result SET result=\'{0}\', time=\'{1}\', selected_point=\'{2}\', class=\'{3}\' WHERE login_uuid=\'{4}\' and template_id=\'{5}\' and class IS NULL".format(result, time, selected_point, selected_class, login_uuid, template_id)) 
+
+    
+    #cursor.execute("UPDATE test_set_result SET result=\'{0}\', time=\'{1}\', selected_point=\'{2}\', class=\'{3}\' WHERE login_uuid=\'{4}\' and template_id=\'{5}\' and class IS NULL".format(result, time, selected_point, selected_class, login_uuid, template_id)) 
     conn.commit()
 
 
@@ -342,7 +351,7 @@ def export_csv():
     cw = csv.writer(si)
     conn = mysql.connect()
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM  test_set_result INNER JOIN test_set_user_login_id on test_set_result.login_uuid = test_set_user_login_id.login_uuid WHERE test_set_id=\'{0}\''.format(test_set_id))
+    cursor.execute('SELECT * FROM  test_set_result INNER JOIN test_set_user_login_id on test_set_result.login_uuid = test_set_user_login_id.login_uuid WHERE test_set_id=\'{0}\' and result is not NULL'.format(test_set_id))
     data = cursor.fetchall()
     cw.writerow([i[0] for i in cursor.description])
     cw.writerows(data)
@@ -420,8 +429,6 @@ def get_next_test():
         response = {'status':'success','messesge':'UUID not found'}
         return json.dumps(response)
     else:
-
-        # NEW STUFF
         cursor.execute('select template_id from test_set_result WHERE login_uuid=\'{0}\' and result is NULL'.format(login_uuid));
         data = cursor.fetchone()
         if data is None:
@@ -435,9 +442,11 @@ def get_next_test():
       
         cursor.execute('SELECT class1_parent_data_points, class2_parent_data_points, class2_generated_data_points, class1_generated_data_points from test_set_template_list WHERE template_id=\'{0}\' and test_set_id=\'{1}\''.format(template_id, test_set_id[0]))
         data = cursor.fetchone()
+        cursor.execute('SELECT graph_type from templates WHERE template_id=\'{0}\''.format(template_id))
+        graph_type = cursor.fetchone()
 	cursor.execute('SELECT wait_time, test_duration FROM test_set_details WHERE test_set_id=\'{0}\''.format(test_set_id[0]))
         time = cursor.fetchone()
-        info = {'class1_parent_data_points': data[0], 'class2_parent_data_points':data[1], 'class2_generated_data_points':data[2], 'class1_generated_data_points':data[3],'wait_time':time[0], 'test_duration':time[1]}
+        info = {'class1_parent_data_points': data[0], 'class2_parent_data_points':data[1], 'class2_generated_data_points':data[2], 'class1_generated_data_points':data[3],'wait_time':time[0], 'test_duration':time[1], 'graph_type':graph_type}
         response = {'status':'success','remaining':remaining_tests[0],'data':info}
         return json.dumps(response)
 
