@@ -270,10 +270,14 @@ function toggle_test_from_wait(){
     // Keep track of time
 }
 
-function toggle_finish_from_test(){
-    $("#testing-test-panel").toggleClass("hidden");
+function toggle_finish_from_wait(){
+    $("#testing-wait-panel").toggleClass("hidden");
     $("#testing-finish-panel").toggleClass("hidden");
+}
 
+function toggle_finish_from_test_start(){
+    $("#testing-start-panel").toggleClass("hidden");
+    $("#testing-finish-panel").toggleClass("hidden");
 }
 
 function stop_testing(){

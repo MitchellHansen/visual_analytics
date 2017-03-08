@@ -4,7 +4,7 @@ let credentials = {
     "auth_token": ""
 };
 
-let login_uuid = "19e5c4e6-aedb-416e-8254-27895eec2167";
+let login_uuid = "7df95981-904c-4e77-9d11-e83ed2b190ba";
 
 var selected_trial = "";
 var selected_template = "";
@@ -90,7 +90,7 @@ function new_admin_submit_handler(){
 function trial_login_handler() {
 
     // Get the login token from the user and get the trial data associated with that login
-    let login_uuid = $("#trial-login-form").serializeArray()[0].value;
+    login_uuid = $("#trial-login-form").serializeArray()[0].value;
 
     if (login_uuid == "") {
         // do nothing
@@ -272,11 +272,13 @@ function training_fwd_movement() {
 }
 
 function noSpaces(idName) {
-    var str = idName.val();
-    str = str.replace(/\s+/g, '-');
-    //alert(str);
-    idName.val(str);
-    //alert(idName.val());
+    if (!idName) {
+        var str = idName.val();
+        str = str.replace(/\s+/g, '-');
+        //alert(str);
+        idName.val(str);
+        //alert(idName.val());
+    }
 }
 
 // ===============================================================
@@ -594,7 +596,7 @@ wait_page_timer = null;
 
 function testing_page_timeout() {
 
-    if (parseInt($("#test-time").html()) <= 0){
+    if (parseInt($("#test-time").html()) <= 1){
         window.clearInterval(testing_page_timer);
         continue_to_wait_page_handler();
     }
@@ -604,7 +606,7 @@ function testing_page_timeout() {
 
 function wait_page_timeout(){
 
-    if (parseInt($("#wait-time").html()) <= 0){
+    if (parseInt($("#wait-time").html()) <= 1){
         window.clearInterval(wait_page_timer);
         continue_testing_handler();
     }
@@ -614,38 +616,95 @@ function wait_page_timeout(){
 
 function start_testing_handler(){
 
-    // get next test
-    //get_next_test(login_code[0].value).done(function(value) {
 
-        // check to see if we need to end the test
-            // Transfer to end page
+    get_next_test(login_uuid).done(function(value) {
+
+        if (value.messesge == "all templates complete"){
+            toggle_finish_from_test_start();
+        }
+
+        let graph_data = {
+            class_1_parent: eval(value.data.class1_parent_data_points),
+            class_2_parent: eval(value.data.class2_parent_data_points),
+            class_1_child: eval(value.data.class1_generated_data_points),
+            class_2_child: eval(value.data.class2_generated_data_points)
+        };
 
         toggle_test_from_start();
-       testing_page_timer =  window.setInterval(testing_page_timeout, 1000);
 
-       $("#test-time").text(10);
+        testing_page_timer =  window.setInterval(testing_page_timeout, 1000);
+        $("#test-time").text(value.data.test_duration);
+        $("#wait-time").text(value.data.wait_time);
+        $("#test-count-remaining").text(parseInt(value.remaining)-1);
 
-        build($("#graph-space-testing"), graph_context.TESTING, graph_type.STAR, generate_class_data(20));
 
+        build($("#graph-space-testing"), graph_context.TESTING, graph_type.STAR, graph_data);
 
-    //});
+    });
 }
 
 function continue_to_wait_page_handler(){
 
-    toggle_wait_from_test();
-    window.clearInterval(testing_page_timer);
-    wait_page_timer = window.setInterval(wait_page_timeout, 1000);
 
-    $("#wait-time").text(10);
+    // Parse the graph data to send to the server
+
+    let time = $("#test-time").text();
+
+    let selected_points_arr = [];
+    let selected_class_arr = [];
+
+    for (let i = 0; i < testing_graph_arr.length; i++){
+        selected_points_arr.push(testing_graph_arr[i].selected_point);
+        selected_class_arr.push(testing_graph_arr[i].class);
+    }
+
+    let score = 0;
+    for (let i = 0; i < testing_graph_arr.length/2; i++) {
+        if (testing_graph_arr[i].class == 1)
+            score++;
+    }
+    for (let i = testing_graph_arr.length/2; i < testing_graph_arr.length; i++) {
+        if (testing_graph_arr[i].class == 2)
+            score++;
+    }
+
+    score = (score / testing_graph_arr.length) * 100;
+
+    submit_user_trial_results(login_uuid, selected_points_arr, selected_class_arr, score, time).done(function(value) {
+
+        toggle_wait_from_test();
+
+        window.clearInterval(testing_page_timer);
+        wait_page_timer = window.setInterval(wait_page_timeout, 1000);
+
+    });
 }
 
-function continue_testing_handler(){
+function continue_testing_handler() {
 
-    toggle_test_from_wait();
-    testing_page_timer =  window.setInterval(testing_page_timeout, 1000);
-    build($("#graph-space-testing"), graph_context.TESTING, graph_type.STAR, generate_class_data(20));
-    $("#test-time").text(10);
+    get_next_test(login_uuid).done(function(value) {
+
+        if (value.messesge == "all templates complete"){
+            toggle_finish_from_wait();
+        }
+
+        let graph_data = {
+            class_1_parent: eval(value.data.class1_parent_data_points),
+            class_2_parent: eval(value.data.class2_parent_data_points),
+            class_1_child: eval(value.data.class1_generated_data_points),
+            class_2_child: eval(value.data.class2_generated_data_points)
+        };
+
+        // Transition the page
+        toggle_test_from_wait();
+
+        testing_page_timer = window.setInterval(testing_page_timeout, 1000);
+        $("#test-time").text(value.data.test_duration);
+        $("#wait-time").text(value.data.wait_time);
+        $("#test-count-remaining").text(parseInt(value.remaining)-1);
+
+        build($("#graph-space-testing"), graph_context.TESTING, graph_type.STAR, graph_data);
+    });
 }
 
 
