@@ -342,7 +342,7 @@ def export_csv():
     cw = csv.writer(si)
     conn = mysql.connect()
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM  test_set_result INNER JOIN test_set_user_login_id on test_set_result.login_uuid = test_set_user_login_id.login_uuid WHERE test_set_id=\'{0}\''.format(test_set_id))
+    cursor.execute('SELECT * FROM  test_set_result INNER JOIN test_set_user_login_id on test_set_result.login_uuid = test_set_user_login_id.login_uuid WHERE test_set_id=\'{0}\' and result is not NULL'.format(test_set_id))
     data = cursor.fetchall()
     cw.writerow([i[0] for i in cursor.description])
     cw.writerows(data)
@@ -435,9 +435,11 @@ def get_next_test():
       
         cursor.execute('SELECT class1_parent_data_points, class2_parent_data_points, class2_generated_data_points, class1_generated_data_points from test_set_template_list WHERE template_id=\'{0}\' and test_set_id=\'{1}\''.format(template_id, test_set_id[0]))
         data = cursor.fetchone()
+        cursor.execute('SELECT graph_type from templates WHERE template_id=\'{0}\''.format(template_id))
+        graph_type = cursor.fetchone()
 	cursor.execute('SELECT wait_time, test_duration FROM test_set_details WHERE test_set_id=\'{0}\''.format(test_set_id[0]))
         time = cursor.fetchone()
-        info = {'class1_parent_data_points': data[0], 'class2_parent_data_points':data[1], 'class2_generated_data_points':data[2], 'class1_generated_data_points':data[3],'wait_time':time[0], 'test_duration':time[1]}
+        info = {'class1_parent_data_points': data[0], 'class2_parent_data_points':data[1], 'class2_generated_data_points':data[2], 'class1_generated_data_points':data[3],'wait_time':time[0], 'test_duration':time[1], 'graph_type':graph_type}
         response = {'status':'success','remaining':remaining_tests[0],'data':info}
         return json.dumps(response)
 
