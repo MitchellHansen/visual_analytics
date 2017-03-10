@@ -138,7 +138,7 @@ function build(container, context, type, data){
     if (type == graph_type.STAR)
         parent_graph = build_star(graph_context.NOP, data.class_1_parent);
     else if (type == graph_type.LINEAR)
-        parent_graph = build_linear(graph_context.NOP, data.class_2_parent);
+        parent_graph = build_linear(graph_context.NOP, data.class_1_parent);
 
     parent_graph.svg_g.children().each(function(){
         $(this).toggleClass("parent-class-1")

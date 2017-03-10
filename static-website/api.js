@@ -1,4 +1,7 @@
 
+var SERVER_IP = "68.186.100.115";
+
+
 // ============================================================================================================
 // API call to  : "/auth/admin_login"
 // SENDS        : Username, Password
@@ -9,7 +12,7 @@ function admin_login(email, password){
 
     return $.ajax({
 
-        url: "http://68.186.100.115/auth/admin_login",
+        url: "http://" + SERVER_IP + "/auth/admin_login",
         contentType: "application/json;charset=UTF-8",
         type: "POST",
         async: true,
@@ -43,7 +46,7 @@ function trial_login(login_uuid){
 
     return $.ajax({
 
-        url: "http://68.186.100.115/auth/trial_login",
+        url: "http://" + SERVER_IP + "/auth/trial_login",
         contentType: "application/json;charset=UTF-8",
         type: "POST",
         async: false,
@@ -85,7 +88,7 @@ function get_test_set_statuses(auth_token, filter){
 
     return $.ajax({
 
-        url: "http://68.186.100.115/auth/get_test_set_statuses",
+        url: "http://" + SERVER_IP + "/auth/get_test_set_statuses",
         contentType: "application/json;charset=UTF-8",
         type: "POST",
         async: true,
@@ -126,7 +129,7 @@ function get_test_set_details(auth_token, test_set_id){
 
     return $.ajax({
 
-        url: "http://68.186.100.115/auth/get_test_set_details",
+        url: "http://" + SERVER_IP + "/auth/get_test_set_details",
         contentType: "application/json;charset=UTF-8",
         type: "POST",
         async: true,
@@ -169,7 +172,7 @@ function get_template_ids(auth_token, filter) {
 
     return $.ajax({
 
-        url: "http://68.186.100.115/auth/get_template_ids",
+        url: "http://" + SERVER_IP + "/auth/get_template_ids",
         contentType: "application/json;charset=UTF-8",
         type: "POST",
         async: true,
@@ -203,7 +206,7 @@ function submit_user_trial_results(login_uuid, selected_points, selected_classes
 
     return $.ajax({
 
-        url: "http://68.186.100.115/auth/submit_user_trial_results",
+        url: "http://" + SERVER_IP + "/auth/submit_user_trial_results",
         contentType: "application/json;charset=UTF-8",
         type: "POST",
         async: true,
@@ -241,7 +244,7 @@ function export_csv(auth_token, trial_id){
 
     return $.ajax({
 
-        url: "http://68.186.100.115/auth/export_csv",
+        url: "http://" + SERVER_IP + "/auth/export_csv",
         contentType: "application/json;charset=UTF-8",
         type: "POST",
         async: true,
@@ -275,7 +278,7 @@ function delete_test_set(auth_token, trial_id){
 
     return $.ajax({
 
-        url: "http://68.186.100.115/auth/delete_test_set",
+        url: "http://" + SERVER_IP + "/auth/delete_test_set",
         contentType: "application/json;charset=UTF-8",
         type: "POST",
         async: true,
@@ -309,7 +312,7 @@ function delete_template(auth_token, template_id){
 
     return $.ajax({
 
-        url: "http://68.186.100.115/auth/delete_template",
+        url: "http://" + SERVER_IP + "/auth/delete_template",
         contentType: "application/json;charset=UTF-8",
         type: "POST",
         async: true,
@@ -351,7 +354,7 @@ function new_test_set(auth_token, test_set_id, alloted_test_time, template_list,
 
     return $.ajax({
 
-        url: "http://68.186.100.115/auth/new_test_set",
+        url: "http://" + SERVER_IP + "/auth/new_test_set",
         contentType: "application/json;charset=UTF-8",
         type: "POST",
         async: true,
@@ -407,7 +410,7 @@ function get_next_test(login_uuid){
 
     return $.ajax({
 
-        url: "http://68.186.100.115/auth/get_next_test",
+        url: "http://" + SERVER_IP + "/auth/get_next_test",
         contentType: "application/json;charset=UTF-8",
         type: "POST",
         async: true,
@@ -444,7 +447,7 @@ function open_test(auth_token, test_set_id){
 
     return $.ajax({
 
-        url: "http://68.186.100.115/auth/open_test",
+        url: "http://" + SERVER_IP + "/auth/open_test",
         contentType: "application/json;charset=UTF-8",
         type: "POST",
         async: true,
@@ -482,7 +485,7 @@ function close_test(auth_token, test_set_id){
 
     return $.ajax({
 
-        url: "http://68.186.100.115/auth/close_test",
+        url: "http://" + SERVER_IP + "/auth/close_test",
         contentType: "application/json;charset=UTF-8",
         type: "POST",
         async: true,
@@ -520,7 +523,7 @@ function get_template_details(auth_token, template_id){
 
     return $.ajax({
 
-        url: "http://68.186.100.115/auth/get_template_details",
+        url: "http://" + SERVER_IP + "/auth/get_template_details",
         contentType: "application/json;charset=UTF-8",
         type: "POST",
         async: true,
@@ -568,7 +571,7 @@ function new_test_template(auth_token, template_id, graph_type, total_data_point
 
     return $.ajax({
 
-        url: "http://68.186.100.115/auth/new_template",
+        url: "http://" + SERVER_IP + "/auth/new_template",
         contentType: "application/json;charset=UTF-8",
         type: "POST",
         async: true,
@@ -605,7 +608,7 @@ function new_admin(auth_token, email, password) {
 
     return $.ajax({
 
-        url: "http://68.186.100.115/auth/new_admin",
+        url: "http://" + SERVER_IP + "/auth/new_admin",
         contentType: "application/json;charset=UTF-8",
         type: "POST",
         async: true,
@@ -633,4 +636,3 @@ function new_admin(auth_token, email, password) {
         },
     });
 }
-

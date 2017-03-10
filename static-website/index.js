@@ -4,7 +4,7 @@ let credentials = {
     "auth_token": ""
 };
 
-let login_uuid = "7df95981-904c-4e77-9d11-e83ed2b190ba";
+let login_uuid = "";
 
 var selected_trial = "";
 var selected_template = "";
@@ -145,7 +145,7 @@ function new_template_handler() {
         alert("You are not logged in. Try logging in again");
 
     } else {
-      
+
         toggle_new_template();
     }
 }
@@ -272,9 +272,9 @@ function training_fwd_movement() {
 }
 
 function noSpaces(idName) {
-    if (!idName) {
+    if (idName) {
         var str = idName.val();
-        str = str.replace(/\s+/g, '-');
+        str = str.replace(/\s+|[,'"<>/\\;()*&^%$#@!.\-+_?]/g, '-');
         //alert(str);
         idName.val(str);
         //alert(idName.val());
@@ -545,7 +545,7 @@ function create_new_template_handler() {
         alert("You are not logged in. Try logging in again");
 
     } else {
-        var templ_id = $('#template_id').val();
+        var templ_id = $('#test_set_id_name');
         var gtype = $("input[type='radio'][name='GraphType']:checked").val();
         var numofDP = $('#total_data_points').val();
         //alert("Template Id " + templ_id + " graphtype " + gtype + " num of points " + numofDP);
@@ -565,12 +565,12 @@ function create_new_test_set_handler() {
     } else {
         let test_set_id = $('#test_set_id_name').val();
         let test_duration = $("#test_set_alloted_time").val();
-        
+
         let wait_time = $('#test_set_wait_time').val();
         let close_time = $('#test_set_close_time').val();
         let uuid_count = $("#test_set_num_of_AC").val();
         //Need to make a list from #SelectedTemplatesID
-		
+
 		let template_list = $('#SelectedTemplatesID').children();
 		let list = [];
 
@@ -605,6 +605,7 @@ function testing_page_timeout() {
 
     if (parseInt($("#test-time").html()) <= 1){
         window.clearInterval(testing_page_timer);
+        testing_page_timer = null;
         continue_to_wait_page_handler();
     }
 
@@ -615,6 +616,7 @@ function training_page_timeout() {
 
     if (parseInt($("#training-time").html()) <= 1){
         window.clearInterval(training_page_timer);
+        training_page_timer = null;
         toggle_training_results_view();
     }
 
@@ -625,6 +627,7 @@ function wait_page_timeout(){
 
     if (parseInt($("#wait-time").html()) <= 1){
         window.clearInterval(wait_page_timer);
+        wait_page_timer = null;
         continue_testing_handler();
     }
 
@@ -636,7 +639,7 @@ function start_testing_handler(){
 
     get_next_test(login_uuid).done(function(value) {
 
-        if (value.messesge == "all templates complete"){
+        if (value.message == "all templates complete"){
             toggle_finish_from_test_start();
         }
 
@@ -649,7 +652,10 @@ function start_testing_handler(){
 
         toggle_test_from_start();
 
-        testing_page_timer =  window.setInterval(testing_page_timeout, 1000);
+        if (testing_page_timer == null){
+          testing_page_timer =  window.setInterval(testing_page_timeout, 1000);
+        }
+
         $("#test-time").text(value.data.test_duration);
         $("#wait-time").text(value.data.wait_time);
         $("#test-count-remaining").text(parseInt(value.remaining)-1);
@@ -667,6 +673,8 @@ function continue_to_wait_page_handler(){
     // Parse the graph data to send to the server
 
     let time = $("#test-time").text();
+    if (time < 0)
+      time = 0;
 
     let selected_points_arr = [];
     let selected_class_arr = [];
@@ -688,21 +696,25 @@ function continue_to_wait_page_handler(){
 
     score = (score / testing_graph_arr.length) * 100;
 
+    toggle_wait_from_test();
+
     submit_user_trial_results(login_uuid, selected_points_arr, selected_class_arr, score, time).done(function(value) {
 
-        toggle_wait_from_test();
-
         window.clearInterval(testing_page_timer);
-        wait_page_timer = window.setInterval(wait_page_timeout, 1000);
+        testing_page_timer = null;
 
+        if (wait_page_timer == null){
+          wait_page_timer = window.setInterval(wait_page_timeout, 1000);
+        }
     });
 }
 
 function continue_testing_handler() {
 
+
     get_next_test(login_uuid).done(function(value) {
 
-        if (value.messesge == "all templates complete"){
+        if (value.message == "all templates complete"){
             toggle_finish_from_wait();
         }
 
@@ -716,7 +728,9 @@ function continue_testing_handler() {
         // Transition the page
         toggle_test_from_wait();
 
-        testing_page_timer = window.setInterval(testing_page_timeout, 1000);
+        if (testing_page_timer == null){
+          testing_page_timer = window.setInterval(testing_page_timeout, 1000);
+        }
         $("#test-time").text(value.data.test_duration);
         $("#wait-time").text(value.data.wait_time);
         $("#test-count-remaining").text(parseInt(value.remaining)-1);
@@ -724,28 +738,3 @@ function continue_testing_handler() {
         build($("#graph-space-testing"), graph_context.TESTING, parseInt(value.data.graph_type[0])-1, graph_data);
     });
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
