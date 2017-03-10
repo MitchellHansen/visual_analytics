@@ -545,7 +545,7 @@ function create_new_template_handler() {
         alert("You are not logged in. Try logging in again");
 
     } else {
-        var templ_id = $('#test_set_id_name');
+        var templ_id = $('#test_set_id_name').val();
         var gtype = $("input[type='radio'][name='GraphType']:checked").val();
         var numofDP = $('#total_data_points').val();
         //alert("Template Id " + templ_id + " graphtype " + gtype + " num of points " + numofDP);
