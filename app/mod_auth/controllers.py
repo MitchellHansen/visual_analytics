@@ -322,7 +322,7 @@ def submit_user_trial_results():
     cursor.execute('select template_id from test_set_result WHERE login_uuid=\'{0}\' and result is NULL'.format(login_uuid));
     data = cursor.fetchone()
     if data is None:
-        response = {'status':'success','messesge':'all tests completed'}
+        response = {'status':'success','message':'all tests completed'}
         return json.dumps(response)
     template_id = data[0]
     
@@ -498,9 +498,9 @@ def new_template():
     if data == None:
 	cursor.execute('INSERT INTO templates VALUES(\'{0}\',{1},{2})'.format(template_id, total_data_points, graph_type))
 	conn.commit()
-        response = {'status':'success', 'messege':'Template added'}
+        response = {'status':'success', 'message':'Template added'}
     else:
-       response = {'status':'success', 'messege':'Template already exists'}
+       response = {'status':'success', 'message':'Template already exists'}
     return json.dumps(response)
 
 
