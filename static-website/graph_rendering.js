@@ -126,7 +126,7 @@ function build(container, context, type, data){
 
         // insert in a random position
         // JQuery sucks
-        if ($(container).children().length == 0 || graph_context.NOP)
+        if ($(container).children().length == 0 || context == graph_context.NOP)
             $(container).append(graph.svg_g);
         else
             $(container).children().eq(Math.floor(Math.random() * $(container).children().length)).after(graph.svg_g);
@@ -144,7 +144,7 @@ function build(container, context, type, data){
         $(this).toggleClass("parent-class-1")
     });
 
-    if ($(container).children().length == 0 || graph_context.NOP)
+    if ($(container).children().length == 0 || context == graph_context.NOP)
         $(container).append(parent_graph.svg_g);
     else
         $(container).children().eq(Math.floor(Math.random() * $(container).children().length)).after(parent_graph.svg_g);
@@ -170,7 +170,7 @@ function build(container, context, type, data){
 
         // insert in a random position if anything other than NOP
         // Jquery sucks and requires you to do it pretty much by hand
-        if ($(container).children().length == 0 || graph_context.NOP)
+        if ($(container).children().length == 0 || context == graph_context.NOP)
             $(container).append(graph.svg_g);
         else
             // In the most disgusting way possible
@@ -190,7 +190,7 @@ function build(container, context, type, data){
         $(this).toggleClass("parent-class-2")
     });
 
-    if ($(container).children().length == 0 || graph_context.NOP)
+    if ($(container).children().length == 0 || context == graph_context.NOP)
         $(container).append(parent_graph.svg_g);
     else
         $(container).children().eq(Math.floor(Math.random() * $(container).children().length)).after(parent_graph.svg_g);

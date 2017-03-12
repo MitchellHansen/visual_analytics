@@ -216,7 +216,7 @@ function submit_user_trial_results(login_uuid, selected_points, selected_classes
             "selected_point"   : selected_points,
             "selected_class"   : selected_classes,
             "result"           : result,
-            "time"             : time
+            "time_remaining"   : time
         }),
 
         dataType: "json",
@@ -667,7 +667,7 @@ function get_template_render(auth_token, template_id, test_set_id) {
 
     return $.ajax({
 
-        url: "http://" + SERVER_IP + "/auth/new_template",
+        url: "http://" + SERVER_IP + "/auth/get_template_render",
         contentType: "application/json;charset=UTF-8",
         type: "POST",
         async: true,
