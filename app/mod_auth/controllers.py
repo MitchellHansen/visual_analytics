@@ -427,14 +427,18 @@ def get_next_test():
     test_set_id = cursor.fetchone()
     cursor.execute('select close_time from test_set_details WHERE test_set_id=\'{0}\''.format(test_set_id[0]))
     close_time = cursor.fetchone()	
-    
-    close_time = datetime.datetime.strptime(close_time, "%Y-%d-%mT%H:%M")
-    current_time = datetime.datetime.now()
-    if(current_time < close_time):
-	print("Keep going")
-    else:
-	response = {'status':'success', 'messege':'Test is closed'}
-        return json.dumps(response)
+    try:
+        close_time = datetime.datetime.strptime(close_time, "%Y-%d-%mT%H:%M")
+	current_time = datetime.datetime.now()
+	if(current_time < close_time):
+	    response = {'status':'success', 'messege':'On to next test'}
+        else:
+	    response = {'status':'success', 'messege':'Test is closed'}
+            return json.dumps(response)
+        except:
+	    response = {'status':'failed', 'messege':'Unable to parse string'}
+	    return json.dumps(response)
+
 
     if test_set_id is None:
         response = {'status':'success','messesge':'UUID not found'}
