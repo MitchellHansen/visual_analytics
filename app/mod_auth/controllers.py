@@ -18,6 +18,8 @@ import StringIO
 mod_auth = Blueprint('auth', __name__, url_prefix='/auth')
 import time
 import datetime
+import string
+
 
 @mod_auth.route('/home')
 def index():
@@ -264,8 +266,8 @@ def admin_login():
 	cursor.execute("SELECT uuid FROM admin where email=\'{0}\' and password=\'{1}\'".format(email, password))
 	data = cursor.fetchone()
 	if(data[0] is None):
-	    new_UUID = str(uuid.uuid4())
-	    new_uuid = "\'"+str(new_UUID)+"\'"
+	    new_uuid = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
+
 	    cursor.execute("UPDATE admin SET uuid=\'{0}\' WHERE email=\'{1}\' and password=\'{2}\'".format(new_uuid, email, password))
             conn.commit()
         cursor.execute("SELECT uuid FROM admin where email=\'{0}\' and password=\'{1}\'".format(email, password))
@@ -295,8 +297,7 @@ def new_admin():
     cursor.execute("SELECT * FROM admin where email=\'{0}\' and password=\'{1}\'".format(email, password))
     cursor.execute("Delete from admin where email=\'{0}\'".format(email))
     conn.commit()
-    new_UUID = str(uuid.uuid4())
-    new_uuid = str(new_UUID)
+    new_uuid = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
     cursor.execute("INSERT INTO admin VALUES(\'{0}\',\'{1}\',\'{2}\')".format(email, password, new_uuid))
     conn.commit()
     response={'status':'success'}
@@ -396,9 +397,8 @@ def new_test_set():
 	     
         response ={}
         for x in range(int(uuid_count)):     
-            new_UUID = str(uuid.uuid4())
-            new_uuid = "\'"+str(new_UUID)+"\'"
-            print("UUID COUNT", uuid_count)
+            new_uuid = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
+	    print("UUID COUNT", uuid_count)
             cursor.execute('INSERT INTO test_set_user_login_id VALUES(\'{0}\', {1})'.format(test_set_id, new_uuid))
             conn.commit()
             for i in template_id:
