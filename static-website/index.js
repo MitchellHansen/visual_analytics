@@ -72,6 +72,33 @@ function admin_login_handler() {
     });
 }
 
+function template_render_handler(template_id, test_set_id){
+
+    get_template_render(credentials.auth_token, template_id, test_set_id).done(function(value) {
+
+        if (value.status == "success"){
+
+            let graph_data = {
+                class_1_parent: eval(value.data.class1_parent_data_points),
+                class_2_parent: eval(value.data.class2_parent_data_points),
+                class_1_child: eval(value.data.class1_generated_data_points),
+                class_2_child: eval(value.data.class2_generated_data_points)
+            };
+
+            // graph-type on the server doesn't represent the same on the client, bandaid this by subtracting
+            // 1. Reeeaalll ghetto
+            build($("#view-template-render-admin-panel"), graph_context.NOP, parseInt(value.data.graph_type[0])-1, graph_data);
+
+            toggle_view_template_render();
+
+        } else if (value.status == "failed") {
+
+            alert("Login token, template id or test set id malformed");
+        }
+
+    });
+}
+
 function new_admin_handler(){
     toggle_new_admin();
 }
@@ -302,8 +329,7 @@ function populate_view_template_page(template_details) {
 
 }
 
-// Takes the response from the [get_test_set_statuses] API call and parses it into the
-// trial-view-admin-panel-id-list, which is in need of a rename
+// ==================================================================================================================
 function populate_view_test_page(test_details) {
 
     // list all the id's
@@ -321,22 +347,35 @@ function populate_view_test_page(test_details) {
     $("#trial-view-admin-panel-details").empty();
 
     // Now fill in the other details
-    $("#trial-view-admin-panel-details").append("<p>Trial Name    : " + test_details.test_details[0][0] + "<p>");
-    $("#trial-view-admin-panel-details").append("<p>Wait time     : " + test_details.test_details[0][1] + "<p>");
-    $("#trial-view-admin-panel-details").append("<p>Close time    : " + test_details.test_details[0][2] + "<p>");
-    $("#trial-view-admin-panel-details").append("<p>Test Status   : " + test_details.test_details[0][3] + "<p>");
-    $("#trial-view-admin-panel-details").append("<p>Test Duration : " + test_details.test_details[0][4] + "<p>");
+    $("#trial-view-admin-panel-details").append("<p>Test Set Name    : " + test_details.test_details[0][0] + "<p>");
+    $("#trial-view-admin-panel-details").append("<p>Test Wait Time     : " + test_details.test_details[0][1] + "<p>");
+    $("#trial-view-admin-panel-details").append("<p>Close Time    : " + test_details.test_details[0][2] + "<p>");
 
-    $("#trial-view-admin-panel-details").append("<p>Templates used : <br>");
-
-    html = "";
-    for (let i in test_details.template_list){
-        html += test_details.template_list[i][0] + "<br>";
+    let status_text = "";
+    if (test_details.test_details[0][3] == 1){
+        status_text = "Test Running";
+    } else if (test_details.test_details[0][3] == 2){
+        status_text = "Test Complete";
+    } else if (test_details.test_details[0][3] == 3){
+        status_text = "Test Waiting";
     }
 
-    html += "<p>";
+    $("#trial-view-admin-panel-details").append("<p>Test Set Status   : " + status_text + "<p>");
+    $("#trial-view-admin-panel-details").append("<p>Test Duration : " + test_details.test_details[0][4] + "<p>");
 
-    $("#trial-view-admin-panel-details").append(html);
+    $("#trial-view-admin-panel-details").append("<p>Templates Used : <br>");
+
+    $("#trial-view-admin-panel-templates").empty();
+
+    for (let i in test_details.template_list){
+
+        let button = $("<button type=\"button\" class=\"w3-btn w3-left w3-threequarter w3-btn-block w3-hover-blue-grey w3-padding-16 w3-black\" onclick=\"\"></button>");
+        $(button).html(test_details.template_list[i][0]);
+        $(button).attr('onClick', "template_render_handler(\"" + test_details.template_list[i][0] + "\",\"" + test_details.test_details[0][0]+"\")");
+        $("#trial-view-admin-panel-templates").append(button);
+        $("#trial-view-admin-panel-templates").append("<br>");
+    }
+
 }
 
 // Takes the response from the [get_template_ids] API call and parses it into the
@@ -391,7 +430,7 @@ function populate_admin_page_active_tests(test_statuses) {
         $("#test-status-list").append(elem);
 
         // Make sure that we un-hid it
-        $("#" + test_set_id).show();
+        $("#" + test_set_id).removeClass("hidden");
     }
 
 }
@@ -426,7 +465,7 @@ function populate_admin_page_test_templates(test_templates) {
 
         // Add it to the list and show it
         $("#test-template-list").append(elem);
-        $("#" + template_id).show();
+        $("#" + template_id).removeClass("hidden");
     }
 }
 

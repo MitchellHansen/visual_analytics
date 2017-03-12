@@ -601,10 +601,18 @@ function new_test_template(auth_token, template_id, graph_type, total_data_point
     });
 }
 
+// ============================================================================================================
+//  API CALL TO :  "/auth/new_admin"
+//  SENDS       : A JSON object specifying the admin details
+//                JSON = {
+//                         "login_token"  : credentials.auth_token,
+//                         "email"        : "mitchellhansen1234@gmail.com",
+//                         "password"     : "1234
+//                };
+//  RECEIVES    : Success or fail
+// ============================================================================================================
 
 function new_admin(auth_token, email, password) {
-    //The alert shows that the values passed in are correct it works
-    //alert("auth_token " + auth_token + " Template Id " + template_id + " graphtype " + graph_type + " num of points " + total_data_points);
 
     return $.ajax({
 
@@ -617,6 +625,57 @@ function new_admin(auth_token, email, password) {
             "login_token": auth_token,
             "email": email,
             "password" : password
+        }),
+
+        dataType: "json",
+        success: function(result){
+
+            console.log(result);
+        },
+
+        error: function(e) {
+
+            if (e.responseText == ""){
+
+            } else {
+                alert("Api call failed");
+                console.log(e);
+            }
+        },
+    });
+}
+
+
+// ============================================================================================================
+//  API CALL TO :  "/auth/get_template_render"
+//  SENDS       : A JSON object specifying the template variables
+//                JSON = {
+//                         "login_token"  : credentials.auth_token,
+//                         "test_set_id"  : "trial-1",
+//                         "template_id"  : "template-1"
+//                };
+//  RECEIVES    : A JSON object representing the render
+//                JSON = {
+//                    "class1_example" : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+//                    "class2_example" : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+//                    "class1_data"    : [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]],
+//                    "class1_data"    : [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]],
+//                };
+// ============================================================================================================
+
+function get_template_render(auth_token, template_id, test_set_id) {
+
+    return $.ajax({
+
+        url: "http://" + SERVER_IP + "/auth/new_template",
+        contentType: "application/json;charset=UTF-8",
+        type: "POST",
+        async: true,
+
+        data : JSON.stringify({
+            "login_token": auth_token,
+            "template_id": template_id,
+            "test_set_id": test_set_id
         }),
 
         dataType: "json",

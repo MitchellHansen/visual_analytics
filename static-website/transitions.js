@@ -26,7 +26,8 @@ var screen_enum = {
                     TESTING_TEST:12,
                     TESTING_WAIT:13,
                     TESTING_FINISH:14,
-                    NEW_ADMIN:15
+                    NEW_ADMIN:15,
+                    TEMPLATE_RENDER:16
                   };
 
 var screen = screen_enum.HOME;
@@ -98,6 +99,10 @@ function transfer_back(){
         toggle_new_admin();
         screen = screen_enum.ADMIN_HOME;
     }
+    else if (screen == screen_enum.TEMPLATE_RENDER) {
+        toggle_view_template_render();
+        screen = screen_enum.TEST_VIEW;
+    }
     else if (screen == screen_enum.ADMIN_HOME){
         toggle_admin_panel();
         screen = screen_enum.HOME;
@@ -136,23 +141,23 @@ function transfer_through_training() {
 // ==========================================================================
 
 function show_trial_login(){
-    $("#right-hand-container").children().hide();
-    $("#trial-login-div").show();
+    $("#right-hand-container").children().addClass("hidden");
+    $("#trial-login-div").toggleClass("hidden");
 }
 
 function show_training_info(){
-    $("#right-hand-container").children().hide();
-    $("#training-info-div").show();
+    $("#right-hand-container").children().addClass("hidden");
+    $("#training-info-div").toggleClass("hidden");
 }
 
 function show_about(){
-    $("#right-hand-container").children().hide();
-    $("#about-div").show();
+    $("#right-hand-container").children().addClass("hidden");
+    $("#about-div").toggleClass("hidden");
 }
 
 function show_admin_login(){
-    $("#right-hand-container").children().hide();
-    $("#admin-login-div").show();
+    $("#right-hand-container").children().addClass("hidden");
+    $("#admin-login-div").toggleClass("hidden");
 }
 
 // ========================================================================
@@ -162,8 +167,8 @@ function show_admin_login(){
 // Open and close the view test set page
 function toggle_view_test_set(){
 
-    $("#main-admin-panel").slideToggle();
-    $("#view-test-set-admin-panel").slideToggle();
+    $("#main-admin-panel").toggleClass("hidden");
+    $("#view-test-set-admin-panel").toggleClass("hidden");
 
     if (screen == screen_enum.TEST_VIEW)
         screen = screen_enum.ADMIN_HOME;
@@ -174,8 +179,8 @@ function toggle_view_test_set(){
 // Open and close the new test set page
 function toggle_new_test_set(){
 
-    $("#main-admin-panel").slideToggle();
-    $("#new-test-set-admin-panel").slideToggle();
+    $("#main-admin-panel").toggleClass("hidden");
+    $("#new-test-set-admin-panel").toggleClass("hidden");
 
     if (screen == screen_enum.TEST_NEW)
         screen = screen_enum.ADMIN_HOME;
@@ -186,8 +191,8 @@ function toggle_new_test_set(){
 // Open and close the new template page
 function toggle_new_template(){
 
-    $("#main-admin-panel").slideToggle();
-    $("#new-template-admin-panel").slideToggle();
+    $("#main-admin-panel").toggleClass("hidden");
+    $("#new-template-admin-panel").toggleClass("hidden");
 
     if (screen == screen_enum.TEMPLATE_NEW)
         screen = screen_enum.HOME;
@@ -198,8 +203,8 @@ function toggle_new_template(){
 // Open and close the new template page
 function toggle_new_admin(){
 
-    $("#main-admin-panel").toggle();
-    $("#new-admin-admin-panel").toggle();
+    $("#main-admin-panel").toggleClass("hidden");
+    $("#new-admin-admin-panel").toggleClass("hidden");
 
     if (screen == screen_enum.NEW_ADMIN)
         screen = screen_enum.HOME;
@@ -210,8 +215,8 @@ function toggle_new_admin(){
 // Open and close the new template page
 function toggle_view_template(){
 
-    $("#main-admin-panel").slideToggle();
-    $("#view-template-admin-panel").slideToggle();
+    $("#main-admin-panel").toggleClass("hidden");
+    $("#view-template-admin-panel").toggleClass("hidden");
 
     if (screen == screen_enum.TEMPLATE_VIEW)
         screen = screen_enum.HOME;
@@ -221,9 +226,9 @@ function toggle_view_template(){
 
 function toggle_admin_panel() {
 
-    $("#home-row").slideToggle();
+    $("#home-row").toggleClass("hidden");
     $("#navbar-row").toggleClass("hidden");
-    $("#main-admin-panel").slideToggle();
+    $("#main-admin-panel").toggleClass("hidden");
 
     if (screen == screen_enum.ADMIN_HOME)
         screen = screen_enum.HOME;
@@ -242,7 +247,7 @@ function toggle_admin_panel() {
 }
 
 function toggle_start_testing(){
-    $("#home-row").slideToggle();
+    $("#home-row").toggleClass("hidden");
     $("#testing-start-panel").toggleClass("hidden");
 }
 
@@ -282,13 +287,13 @@ function toggle_finish_from_test_start(){
 
 function stop_testing(){
     $("#testing-finish-panel").toggleClass("hidden");
-    $("#home-row").slideToggle();
+    $("#home-row").toggleClass("hidden");
 }
 
 //Brings the user back to the main screen from the training info
 function toggle_home_from_training() {
     $("#training-panel").toggleClass("hidden");
-    $("#home-row").slideToggle();
+    $("#home-row").toggleClass("hidden");
     window.clearInterval(training_page_timer);
     training_page_timer = null;
 }
@@ -319,7 +324,7 @@ function toggle_practice_from_results() {
 
 //This is the function which brings the training screen to the front
 function toggle_training_intro_view() {
-    $("#home-row").slideToggle();
+    $("#home-row").toggleClass("hidden");
     $("#training-panel").toggleClass("hidden");
     $("#training-time").text(parseInt(120));
 
@@ -389,4 +394,16 @@ function toggle_back_to_home() {
     training_page_timer = null;
     $("#training-results").toggleClass("hidden");
     $("#home-row").slideToggle();
+}
+
+function toggle_view_template_render(){
+
+    $("#view-template-render-admin-panel").toggleClass("hidden");
+    $("#view-test-set-admin-panel").toggleClass("hidden");
+
+    if (screen == screen_enum.TEMPLATE_RENDER)
+        screen = screen_enum.TEST_VIEW;
+    else
+        screen = screen_enum.TEMPLATE_RENDER;
+
 }

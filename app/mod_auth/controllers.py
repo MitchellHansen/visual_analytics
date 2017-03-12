@@ -478,7 +478,29 @@ def new_template():
     return json.dumps(response)
 
 
+@mod_auth.route('/get_template_render', methods=['GET', 'POST'])
+def get_template_render():
+    login_token = None
+    login_token = request.json['login_token']
+    if (check_token(login_token) is False):
+        return json.dumps({'Status': "Invalid Token"})
 
+    template_id = None
+    template_id = request.json['template_id']
+    test_set_id = None
+    test_set_id = request.json['test_set_id']
 
+    conn = mysql.connect()
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT class1_parent_data_points, class2_parent_data_points, class2_generated_data_points, class1_generated_data_points from test_set_template_list WHERE template_id=\'{0}\' and test_set_id=\'{1}\''.format(template_id, test_set_id))
+
+    data = cursor.fetchone()
+    cursor.execute('SELECT graph_type from templates WHERE template_id=\'{0}\''.format(template_id))
+    graph_type = cursor.fetchone()
+
+    info = {'class1_parent_data_points': data[0], 'class2_parent_data_points': data[1], 'class2_generated_data_points': data[2], 'class1_generated_data_points': data[3], 'graph_type': graph_type}
+    response = {'status': 'success', 'data': info}
+    return json.dumps(response)
 
 
