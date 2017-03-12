@@ -352,10 +352,14 @@ def export_csv():
     data = cursor.fetchall()
     cw.writerow([i[0] for i in cursor.description])
     cw.writerows(data)
-    cursor.execute('SELECT * FROM  test_set_result INNER JOIN test_set_user_login_id on test_set_result.login_uuid = test_set_user_login_id.login_uuid WHERE test_set_id=\'{0}\' and result is not NULL'.format(test_set_id))
-    data = cursor.fetchall()
-    cw.writerow([i[0] for i in cursor.description])
-    cw.writerows(data)
+    cursor.execute('SELECT * FROM test_set_template_list where test_set_id = \'{0}\''.format(test_set_id))
+    data2 = cursor.fetchall()
+    cw.writerow([j[0] for j in cursor.description])
+    cw.writerows(data2)
+    cursor.execute('select test_set_id, test_duration from test_set_details WHERE test_set_id = \'{0}\''.format(test_set_id))
+    data3 = cursor.fetchall()
+    cw.writerow([k[0] for k in cursor.description])
+    cw.writerows(data3)
     response = make_response(si.getvalue())
     response.headers['Content-Disposition'] = 'attachment; filename=report.csv'
     response.headers["Content-type"] = "text/csv"
@@ -432,29 +436,29 @@ def get_next_test():
         close_time = datetime.datetime.strptime(close_time[0], "%Y-%m-%dT%H:%M")
         current_time = datetime.datetime.now()
         if(current_time < close_time):
-	    response = {'status':'success', 'messege':'On to next test'}
+	    response = {'status':'success', 'message':'On to next test'}
         else:
-            response = {'status':'success', 'messege':'Test is closed'}
+            response = {'status':'success', 'message':'Test is closed'}
             return json.dumps(response)
     except:
-    	response = {'status':'failed', 'messege':'Unable to parse string'}
+    	response = {'status':'failed', 'message':'Unable to parse string'}
     	return json.dumps(response)
 
 
     if test_set_id is None:
-        response = {'status':'success','messesge':'UUID not found'}
+        response = {'status':'success','message':'UUID not found'}
         return json.dumps(response)
     else:
         cursor.execute('select status from test_set_details WHERE test_set_id=\'{0}\''.format(test_set_id[0]))
 	status = cursor.fetchone()
         if status[0] != 1:
-	    response = {'status':'success', 'messege':'Testset is not running'}
+	    response = {'status':'success', 'message':'Testset is not running'}
 	    return json.dumps(response)
 	
         cursor.execute('select template_id from test_set_result WHERE login_uuid=\'{0}\' and result is NULL'.format(login_uuid));
         data = cursor.fetchone()
         if data is None:
-	    response = {'status':'success','messesge':'all templates complete'}
+	    response = {'status':'success','message':'all templates complete'}
             return json.dumps(response)
 
         template_id = data[0]
