@@ -435,9 +435,9 @@ def get_next_test():
         else:
 	    response = {'status':'success', 'messege':'Test is closed'}
             return json.dumps(response)
-        except:
-	    response = {'status':'failed', 'messege':'Unable to parse string'}
-	    return json.dumps(response)
+    except:
+	response = {'status':'failed', 'messege':'Unable to parse string'}
+	return json.dumps(response)
 
 
     if test_set_id is None:
