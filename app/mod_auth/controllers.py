@@ -399,10 +399,11 @@ def new_test_set():
             new_uuid = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
 	    print("UUID COUNT", uuid_count)
             cursor.execute('INSERT INTO test_set_user_login_id VALUES(\'{0}\', \'{1}\')'.format(test_set_id, new_uuid))
-            conn.commit()
+            #conn.commit()
             for i in template_id:
 	        cursor.execute('insert into test_set_result values(\'{0}\', \'{1}\', NULL, NULL, NULL,NULL)'.format(i, new_uuid))
-	        conn.commit()
+	        #conn.commit()
+        conn.commit()
         cursor.execute('SELECT test_set_id from test_set_details WHERE test_set_id=\'{0}\''.format(test_set_id))
         data = cursor.fetchone()
         if len(data)>0:
