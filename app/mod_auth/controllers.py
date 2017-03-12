@@ -19,7 +19,7 @@ mod_auth = Blueprint('auth', __name__, url_prefix='/auth')
 import time
 import datetime
 import string
-
+import random
 
 @mod_auth.route('/home')
 def index():
@@ -267,7 +267,6 @@ def admin_login():
 	data = cursor.fetchone()
 	if(data[0] is None):
 	    new_uuid = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
-
 	    cursor.execute("UPDATE admin SET uuid=\'{0}\' WHERE email=\'{1}\' and password=\'{2}\'".format(new_uuid, email, password))
             conn.commit()
         cursor.execute("SELECT uuid FROM admin where email=\'{0}\' and password=\'{1}\'".format(email, password))
@@ -399,10 +398,10 @@ def new_test_set():
         for x in range(int(uuid_count)):     
             new_uuid = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
 	    print("UUID COUNT", uuid_count)
-            cursor.execute('INSERT INTO test_set_user_login_id VALUES(\'{0}\', {1})'.format(test_set_id, new_uuid))
+            cursor.execute('INSERT INTO test_set_user_login_id VALUES(\'{0}\', \'{1}\')'.format(test_set_id, new_uuid))
             conn.commit()
             for i in template_id:
-	        cursor.execute('insert into test_set_result values(\'{0}\', {1}, NULL, NULL, NULL,NULL)'.format(i, new_uuid))
+	        cursor.execute('insert into test_set_result values(\'{0}\', \'{1}\', NULL, NULL, NULL,NULL)'.format(i, new_uuid))
 	        conn.commit()
         cursor.execute('SELECT test_set_id from test_set_details WHERE test_set_id=\'{0}\''.format(test_set_id))
         data = cursor.fetchone()
@@ -425,19 +424,19 @@ def get_next_test():
     cursor = conn.cursor()
     cursor.execute('select test_set_id from test_set_user_login_id WHERE login_uuid=\'{0}\''.format(login_uuid))
     test_set_id = cursor.fetchone()
-    cursor.execute('select close_time from test_set_details WHERE test_set_id=\'{0}\''.format(test_set_id[0]))
+    cursor.execute('select closing_time from test_set_details WHERE test_set_id=\'{0}\''.format(test_set_id[0]))
     close_time = cursor.fetchone()	
     try:
-        close_time = datetime.datetime.strptime(close_time, "%Y-%d-%mT%H:%M")
-	current_time = datetime.datetime.now()
-	if(current_time < close_time):
+        close_time = datetime.datetime.strptime(close_time[0], "%Y-%m-%dT%H:%M")
+        current_time = datetime.datetime.now()
+        if(current_time < close_time):
 	    response = {'status':'success', 'messege':'On to next test'}
         else:
-	    response = {'status':'success', 'messege':'Test is closed'}
+            response = {'status':'success', 'messege':'Test is closed'}
             return json.dumps(response)
     except:
-	response = {'status':'failed', 'messege':'Unable to parse string'}
-	return json.dumps(response)
+    	response = {'status':'failed', 'messege':'Unable to parse string'}
+    	return json.dumps(response)
 
 
     if test_set_id is None:
