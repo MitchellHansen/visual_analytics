@@ -444,6 +444,12 @@ def get_next_test():
         response = {'status':'success','messesge':'UUID not found'}
         return json.dumps(response)
     else:
+        cursor.execute('select status from test_set_details WHERE test_set_id=\'{0}\''.format(test_set_id[0]))
+	status = cursor.fetchone()
+        if status[0] != 1:
+	    response = {'status':'success', 'messege':'No open tests'}
+	    return json.dumps(response)
+	
         cursor.execute('select template_id from test_set_result WHERE login_uuid=\'{0}\' and result is NULL'.format(login_uuid));
         data = cursor.fetchone()
         if data is None:
