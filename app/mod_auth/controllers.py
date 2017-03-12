@@ -17,7 +17,9 @@ import StringIO
 # Define the blueprint: 'auth', set its url prefix: app.url/auth
 mod_auth = Blueprint('auth', __name__, url_prefix='/auth')
 import time
-
+import datetime
+import string
+import random
 
 @mod_auth.route('/home')
 def index():
@@ -203,9 +205,6 @@ def close_test():
     conn.commit()    
     cursor.execute('SELECT status FROM test_set_details WHERE test_set_id=\'{0}\''.format(test_set_id))
     data=cursor.fetchone()[0]
-    #d1 = datetime.datetime.strptime('2018-05-05T17:05', "%Y-%d-%mT%H:%M").date()
-    #d2 = datetime.datetime.strptime('2019-05-05T17:05', "%Y-%d-%mT%H:%M").date()
-    #print(d2<d1)
     if data==2:
         response={'status':'success'}
     else:
@@ -264,8 +263,7 @@ def admin_login():
 	cursor.execute("SELECT uuid FROM admin where email=\'{0}\' and password=\'{1}\'".format(email, password))
 	data = cursor.fetchone()
 	if(data[0] is None):
-	    new_UUID = str(uuid.uuid4())
-	    new_uuid = "\'"+str(new_UUID)+"\'"
+	    new_uuid = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
 	    cursor.execute("UPDATE admin SET uuid=\'{0}\' WHERE email=\'{1}\' and password=\'{2}\'".format(new_uuid, email, password))
             conn.commit()
         cursor.execute("SELECT uuid FROM admin where email=\'{0}\' and password=\'{1}\'".format(email, password))
@@ -295,8 +293,7 @@ def new_admin():
     cursor.execute("SELECT * FROM admin where email=\'{0}\' and password=\'{1}\'".format(email, password))
     cursor.execute("Delete from admin where email=\'{0}\'".format(email))
     conn.commit()
-    new_UUID = str(uuid.uuid4())
-    new_uuid = str(new_UUID)
+    new_uuid = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
     cursor.execute("INSERT INTO admin VALUES(\'{0}\',\'{1}\',\'{2}\')".format(email, password, new_uuid))
     conn.commit()
     response={'status':'success'}
@@ -310,13 +307,13 @@ def submit_user_trial_results():
     template_id = None
     login_uuid = None
     result = None
-    time = None
+    time_remaining = None
     selected_point = None
     selected_class = None
     
     login_uuid = request.json['login_uuid']
     result = request.json['result']
-    time = request.json['time']
+    time_remaining = request.json['time_remaining']
     selected_point = request.json['selected_point']
     selected_class = request.json['selected_class']
 
@@ -329,7 +326,7 @@ def submit_user_trial_results():
         return json.dumps(response)
     template_id = data[0]
     
-    cursor.execute("UPDATE test_set_result SET result=\'{0}\', time=\'{1}\', selected_point=\'{2}\', class=\'{3}\' WHERE login_uuid=\'{4}\' and template_id=\'{5}\' and class IS NULL LIMIT 1".format(result, time, selected_point, selected_class, login_uuid, template_id)) 
+    cursor.execute("UPDATE test_set_result SET result=\'{0}\', time_remaining=\'{1}\', selected_point=\'{2}\', class=\'{3}\' WHERE login_uuid=\'{4}\' and template_id=\'{5}\' and class IS NULL LIMIT 1".format(result, time_remaining, selected_point, selected_class, login_uuid, template_id)) 
 
 
     
@@ -355,6 +352,14 @@ def export_csv():
     data = cursor.fetchall()
     cw.writerow([i[0] for i in cursor.description])
     cw.writerows(data)
+    cursor.execute('SELECT * FROM test_set_template_list where test_set_id = \'{0}\''.format(test_set_id))
+    data2 = cursor.fetchall()
+    cw.writerow([j[0] for j in cursor.description])
+    cw.writerows(data2)
+    cursor.execute('select test_set_id, test_duration from test_set_details WHERE test_set_id = \'{0}\''.format(test_set_id))
+    data3 = cursor.fetchall()
+    cw.writerow([k[0] for k in cursor.description])
+    cw.writerows(data3)
     response = make_response(si.getvalue())
     response.headers['Content-Disposition'] = 'attachment; filename=report.csv'
     response.headers["Content-type"] = "text/csv"
@@ -396,14 +401,14 @@ def new_test_set():
 	     
         response ={}
         for x in range(int(uuid_count)):     
-            new_UUID = str(uuid.uuid4())
-            new_uuid = "\'"+str(new_UUID)+"\'"
-            print("UUID COUNT", uuid_count)
-            cursor.execute('INSERT INTO test_set_user_login_id VALUES(\'{0}\', {1})'.format(test_set_id, new_uuid))
-            conn.commit()
+            new_uuid = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
+	    print("UUID COUNT", uuid_count)
+            cursor.execute('INSERT INTO test_set_user_login_id VALUES(\'{0}\', \'{1}\')'.format(test_set_id, new_uuid))
+            #conn.commit()
             for i in template_id:
-	        cursor.execute('insert into test_set_result values(\'{0}\', {1}, NULL, NULL, NULL,NULL)'.format(i, new_uuid))
-	        conn.commit()
+	        cursor.execute('insert into test_set_result values(\'{0}\', \'{1}\', NULL, NULL, NULL,NULL)'.format(i, new_uuid))
+	        #conn.commit()
+        conn.commit()
         cursor.execute('SELECT test_set_id from test_set_details WHERE test_set_id=\'{0}\''.format(test_set_id))
         data = cursor.fetchone()
         if len(data)>0:
@@ -425,14 +430,35 @@ def get_next_test():
     cursor = conn.cursor()
     cursor.execute('select test_set_id from test_set_user_login_id WHERE login_uuid=\'{0}\''.format(login_uuid))
     test_set_id = cursor.fetchone()
+    cursor.execute('select closing_time from test_set_details WHERE test_set_id=\'{0}\''.format(test_set_id[0]))
+    close_time = cursor.fetchone()	
+    try:
+        close_time = datetime.datetime.strptime(close_time[0], "%Y-%m-%dT%H:%M")
+        current_time = datetime.datetime.now()
+        if(current_time < close_time):
+	    response = {'status':'success', 'message':'On to next test'}
+        else:
+            response = {'status':'success', 'message':'Test is closed'}
+            return json.dumps(response)
+    except:
+    	response = {'status':'failed', 'message':'Unable to parse string'}
+    	return json.dumps(response)
+
+
     if test_set_id is None:
-        response = {'status':'success','messesge':'UUID not found'}
+        response = {'status':'success','message':'UUID not found'}
         return json.dumps(response)
     else:
+        cursor.execute('select status from test_set_details WHERE test_set_id=\'{0}\''.format(test_set_id[0]))
+	status = cursor.fetchone()
+        if status[0] != 1:
+	    response = {'status':'success', 'message':'Testset is not running'}
+	    return json.dumps(response)
+	
         cursor.execute('select template_id from test_set_result WHERE login_uuid=\'{0}\' and result is NULL'.format(login_uuid));
         data = cursor.fetchone()
         if data is None:
-	    response = {'status':'success','messesge':'all templates complete'}
+	    response = {'status':'success','message':'all templates complete'}
             return json.dumps(response)
 
         template_id = data[0]
