@@ -205,9 +205,6 @@ def close_test():
     conn.commit()    
     cursor.execute('SELECT status FROM test_set_details WHERE test_set_id=\'{0}\''.format(test_set_id))
     data=cursor.fetchone()[0]
-    #d1 = datetime.datetime.strptime('2018-05-05T17:05', "%Y-%d-%mT%H:%M").date()
-    #d2 = datetime.datetime.strptime('2019-05-05T17:05', "%Y-%d-%mT%H:%M").date()
-    #print(d2<d1)
     if data==2:
         response={'status':'success'}
     else:
@@ -310,13 +307,13 @@ def submit_user_trial_results():
     template_id = None
     login_uuid = None
     result = None
-    time = None
+    time_remaining = None
     selected_point = None
     selected_class = None
     
     login_uuid = request.json['login_uuid']
     result = request.json['result']
-    time = request.json['time']
+    time_remaining = request.json['time_remaining']
     selected_point = request.json['selected_point']
     selected_class = request.json['selected_class']
 
@@ -329,7 +326,7 @@ def submit_user_trial_results():
         return json.dumps(response)
     template_id = data[0]
     
-    cursor.execute("UPDATE test_set_result SET result=\'{0}\', time=\'{1}\', selected_point=\'{2}\', class=\'{3}\' WHERE login_uuid=\'{4}\' and template_id=\'{5}\' and class IS NULL LIMIT 1".format(result, time, selected_point, selected_class, login_uuid, template_id)) 
+    cursor.execute("UPDATE test_set_result SET result=\'{0}\', time_remaining=\'{1}\', selected_point=\'{2}\', class=\'{3}\' WHERE login_uuid=\'{4}\' and template_id=\'{5}\' and class IS NULL LIMIT 1".format(result, time_remaining, selected_point, selected_class, login_uuid, template_id)) 
 
 
     
@@ -351,6 +348,10 @@ def export_csv():
     cw = csv.writer(si)
     conn = mysql.connect()
     cursor = conn.cursor()
+    cursor.execute('SELECT * FROM  test_set_result INNER JOIN test_set_user_login_id on test_set_result.login_uuid = test_set_user_login_id.login_uuid WHERE test_set_id=\'{0}\' and result is not NULL'.format(test_set_id))
+    data = cursor.fetchall()
+    cw.writerow([i[0] for i in cursor.description])
+    cw.writerows(data)
     cursor.execute('SELECT * FROM  test_set_result INNER JOIN test_set_user_login_id on test_set_result.login_uuid = test_set_user_login_id.login_uuid WHERE test_set_id=\'{0}\' and result is not NULL'.format(test_set_id))
     data = cursor.fetchall()
     cw.writerow([i[0] for i in cursor.description])
@@ -447,7 +448,7 @@ def get_next_test():
         cursor.execute('select status from test_set_details WHERE test_set_id=\'{0}\''.format(test_set_id[0]))
 	status = cursor.fetchone()
         if status[0] != 1:
-	    response = {'status':'success', 'messege':'No open tests'}
+	    response = {'status':'success', 'messege':'Testset is not running'}
 	    return json.dumps(response)
 	
         cursor.execute('select template_id from test_set_result WHERE login_uuid=\'{0}\' and result is NULL'.format(login_uuid));
