@@ -17,7 +17,7 @@ import StringIO
 # Define the blueprint: 'auth', set its url prefix: app.url/auth
 mod_auth = Blueprint('auth', __name__, url_prefix='/auth')
 import time
-
+import datetime
 
 @mod_auth.route('/home')
 def index():
@@ -425,6 +425,17 @@ def get_next_test():
     cursor = conn.cursor()
     cursor.execute('select test_set_id from test_set_user_login_id WHERE login_uuid=\'{0}\''.format(login_uuid))
     test_set_id = cursor.fetchone()
+    cursor.execute('select close_time from test_set_details WHERE test_set_id=\'{0}\''.format(test_set_id[0]))
+    close_time = cursor.fetchone()	
+    
+    close_time = datetime.datetime.strptime(close_time, "%Y-%d-%mT%H:%M")
+    current_time = datetime.datetime.now()
+    if(current_time < close_time):
+	print("Keep going")
+    else:
+	response = {'status':'success', 'messege':'Test is closed'}
+        return json.dumps(response)
+
     if test_set_id is None:
         response = {'status':'success','messesge':'UUID not found'}
         return json.dumps(response)
